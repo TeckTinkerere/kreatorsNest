@@ -13,9 +13,18 @@ const Feedback = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log(formData);
+  
+    const form = e.target;
+    const data = new FormData(form);
+  
+    fetch("/", {
+      method: "POST",
+      body: data,
+    })
+      .then(() => alert("Form submitted successfully"))
+      .catch((error) => alert("Error submitting form"));
   };
+  
 
   const handleChange = (e) => {
     setFormData({
@@ -65,8 +74,10 @@ const Feedback = () => {
       <motion.form
         variants={itemVariants}
         onSubmit={handleSubmit}
+        data-netlify="true"
         className="max-w-2xl mx-auto bg-white p-6 md:p-8 rounded-xl shadow-lg"
       >
+      <input type="hidden" name="form-name" value="feedback" />
         <div className="space-y-6">
           <motion.div
             variants={itemVariants}

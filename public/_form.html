@@ -1,0 +1,21 @@
+<form name="feedback" method="POST" data-netlify="true" hidden>
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <select name="category">
+      <option value="suggestion">Suggestion</option>
+      <option value="filter-request">Filter Request</option>
+      <option value="enquiry">General Enquiry</option>
+      <option value="question">Question</option>
+      <option value="error">Error Report</option>
+      <option value="other">Other</option>
+    </select>
+    <input type="text" name="subject" />
+    <select name="priority">
+      <option value="low">Low</option>
+      <option value="normal" selected>Normal</option>
+      <option value="high">High</option>
+      <option value="urgent">Urgent</option>
+    </select>
+    <textarea name="message"></textarea>
+  </form>
+  

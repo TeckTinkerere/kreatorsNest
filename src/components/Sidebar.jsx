@@ -84,14 +84,16 @@ const Sidebar = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
             >
-              <img 
-                src={whitelogo} 
-                alt="KreatorNest Logo" 
-                className="w-8 h-8 object-contain" 
-              />
-              <h1 className="text-2xl font-extrabold tracking-wide">
-                KreatorNest
-              </h1>
+              <Link to="/" onClick={() => setIsOpen(false)} className="flex items-center gap-3">
+                <img 
+                  src={whitelogo} 
+                  alt="KreatorNest Logo" 
+                  className="w-8 h-8 object-contain" 
+                />
+                <h1 className="text-2xl font-extrabold tracking-wide">
+                  KreatorNest
+                </h1>
+              </Link>
             </motion.div>
 
             {/* Navigation */}
@@ -129,14 +131,14 @@ const Sidebar = () => {
 
       {/* Desktop Sidebar */}
       <aside className="hidden md:flex flex-col fixed top-0 left-0 w-64 h-screen bg-gray-900 text-white p-6 z-30">
-        <div className="flex items-center gap-3 mb-10">
+        <Link to="/" className="flex items-center gap-3 mb-10">
           <img 
             src={whitelogo} 
             alt="KreatorNest Logo" 
             className="w-8 h-8 object-contain" 
           />
           <h1 className="text-2xl font-extrabold tracking-wide">KreatorNest</h1>
-        </div>
+        </Link>
         <nav className="flex-1">
           <ul className="space-y-3">
             {navItems.map((item) => {

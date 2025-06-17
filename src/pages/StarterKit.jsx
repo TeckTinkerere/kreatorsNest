@@ -2,6 +2,27 @@ import { motion } from "framer-motion";
 import AdviceCarousel from "../components/carousel";
 
 const StarterKit = () => {
+  // Function to convert URLs to clickable links
+  const convertUrlsToLinks = (text) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.split(urlRegex).map((part, index) => {
+      if (part.match(urlRegex)) {
+        return (
+          <a
+            key={index}
+            href={part}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:text-blue-800 underline"
+          >
+            {part}
+          </a>
+        );
+      }
+      return part;
+    });
+  };
+
   const resources = [
     {
       title: "Getting Started Guide",
@@ -151,7 +172,9 @@ const StarterKit = () => {
               <span className="text-xl select-none">{resource.icon}</span>
             </div>
             <div className="p-3 flex flex-col flex-grow">
-              <p className="text-gray-700 mb-3 flex-grow leading-relaxed text-xs md:text-sm">{resource.description}</p>
+              <p className="text-gray-700 mb-3 flex-grow leading-relaxed text-xs md:text-sm">
+                {convertUrlsToLinks(resource.description)}
+              </p>
               <div className="flex items-center justify-between">
                 <span className="bg-gray-100 text-gray-900 px-2 py-0.5 rounded-full text-xs font-medium tracking-wide select-none">
                   {resource.type}

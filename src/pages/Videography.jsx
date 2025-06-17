@@ -1,6 +1,27 @@
 import { motion } from 'framer-motion';
 
 const Videography = () => {
+  // Function to convert URLs to clickable links
+  const convertUrlsToLinks = (text) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.split(urlRegex).map((part, index) => {
+      if (part.match(urlRegex)) {
+        return (
+          <a
+            key={index}
+            href={part}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:text-blue-800 underline"
+          >
+            {part}
+          </a>
+        );
+      }
+      return part;
+    });
+  };
+
   const videoResources = [
     {
       title: 'Event Videography',
@@ -9,7 +30,7 @@ const Videography = () => {
 🎥 Tools: DJI Ronin SC, Sony A7C, lapel mics, ND filters.
 🌐 Communities: r/videography, SG Videographers Club on Facebook.
 🎯 Gigs: Poly open houses, proposals, orientation highlights.
-📌 Scenario: Student uses a gimbal and CapCut Pro to film a friend’s proposal. The clip goes semi-viral on TikTok, leading to paid gigs from classmates.
+📌 Scenario: Student uses a gimbal and CapCut Pro to film a friend's proposal. The clip goes semi-viral on TikTok, leading to paid gigs from classmates.
       `,
       price: 'Free & Paid Learning Kits',
       image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=500'
@@ -105,7 +126,7 @@ const Videography = () => {
             <div className="p-6">
               <h2 className="text-xl font-semibold mb-3">{resource.title}</h2>
               <p className="text-gray-600 mb-4 whitespace-pre-line text-sm">
-                {resource.description.trim()}
+                {convertUrlsToLinks(resource.description.trim())}
               </p>
               <div className="flex items-center justify-between">
                 <p className="text-blue-600 font-semibold">{resource.price}</p>

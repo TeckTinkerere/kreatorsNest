@@ -5,8 +5,10 @@ const Feedback = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    service: '',
-    feedback: ''
+    category: '',
+    subject: '',
+    message: '',
+    priority: 'normal'
   });
 
   const handleSubmit = (e) => {
@@ -53,10 +55,10 @@ const Feedback = () => {
     >
       <motion.div variants={itemVariants} className="text-center mb-12">
         <h1 className="text-3xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-          Feedback
+          Resource Hub Support
         </h1>
         <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-          We value your feedback! Please let us know about your experience with our services.
+          Have a question, suggestion, or need help? We're here to assist you with any inquiries about our freelancer resources.
         </p>
       </motion.div>
 
@@ -110,22 +112,25 @@ const Feedback = () => {
             variants={itemVariants}
             className="space-y-2"
           >
-            <label htmlFor="service" className="block text-gray-700 font-medium">
-              Service Used
+            <label htmlFor="category" className="block text-gray-700 font-medium">
+              Category
             </label>
             <motion.select
               whileFocus={{ scale: 1.02 }}
-              id="service"
-              name="service"
-              value={formData.service}
+              id="category"
+              name="category"
+              value={formData.category}
               onChange={handleChange}
               className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
               required
             >
-              <option value="">Select a service</option>
-              <option value="photography">Photography</option>
-              <option value="videography">Videography</option>
-              <option value="graphic-design">Graphic Design</option>
+              <option value="">Select a category</option>
+              <option value="suggestion">Suggestion</option>
+              <option value="filter-request">Filter Request</option>
+              <option value="enquiry">General Enquiry</option>
+              <option value="question">Question</option>
+              <option value="error">Error Report</option>
+              <option value="other">Other</option>
             </motion.select>
           </motion.div>
 
@@ -133,18 +138,60 @@ const Feedback = () => {
             variants={itemVariants}
             className="space-y-2"
           >
-            <label htmlFor="feedback" className="block text-gray-700 font-medium">
-              Your Feedback
+            <label htmlFor="subject" className="block text-gray-700 font-medium">
+              Subject
+            </label>
+            <motion.input
+              whileFocus={{ scale: 1.02 }}
+              type="text"
+              id="subject"
+              name="subject"
+              value={formData.subject}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+              placeholder="Brief description of your inquiry"
+              required
+            />
+          </motion.div>
+
+          <motion.div
+            variants={itemVariants}
+            className="space-y-2"
+          >
+            <label htmlFor="priority" className="block text-gray-700 font-medium">
+              Priority Level
+            </label>
+            <motion.select
+              whileFocus={{ scale: 1.02 }}
+              id="priority"
+              name="priority"
+              value={formData.priority}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+            >
+              <option value="low">Low</option>
+              <option value="normal">Normal</option>
+              <option value="high">High</option>
+              <option value="urgent">Urgent</option>
+            </motion.select>
+          </motion.div>
+
+          <motion.div
+            variants={itemVariants}
+            className="space-y-2"
+          >
+            <label htmlFor="message" className="block text-gray-700 font-medium">
+              Message
             </label>
             <motion.textarea
               whileFocus={{ scale: 1.02 }}
-              id="feedback"
-              name="feedback"
-              value={formData.feedback}
+              id="message"
+              name="message"
+              value={formData.message}
               onChange={handleChange}
-              rows="4"
+              rows="6"
               className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-none"
-              placeholder="Share your experience with us..."
+              placeholder="Please provide details about your inquiry..."
               required
             ></motion.textarea>
           </motion.div>
@@ -156,7 +203,7 @@ const Feedback = () => {
             type="submit"
             className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all"
           >
-            Submit Feedback
+            Submit Inquiry
           </motion.button>
         </div>
       </motion.form>
@@ -166,11 +213,11 @@ const Feedback = () => {
         className="mt-12 text-center"
       >
         <p className="text-gray-600">
-          Thank you for helping us improve our services!
+          We'll get back to you as soon as possible. Thank you for helping us improve our resource hub!
         </p>
       </motion.div>
     </motion.div>
   );
 };
 
-export default Feedback; 
+export default Feedback;

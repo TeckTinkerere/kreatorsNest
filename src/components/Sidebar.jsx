@@ -1,167 +1,215 @@
 import { Link, useLocation } from 'react-router-dom';
 import {
-  Home, Camera, Video, Palette, MessageSquare,
-  Users, Package, Menu, X
+  Home, Package, BookOpen, Wrench, FileText, 
+  Briefcase, Users, LayoutTemplate, MessageSquare, Menu, X, Download, ChevronLeft, ChevronRight
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import whitelogo from '../assets/whitelogo.png';
 
 const navItems = [
   { path: '/', icon: <Home size={20} />, label: 'Home' },  
   { path: '/starter-kit', icon: <Package size={20} />, label: 'Starter Kit' },
-  { path: '/photography', icon: <Camera size={20} />, label: 'Photography' },
-  { path: '/videography', icon: <Video size={20} />, label: 'Videography' },  
-  { path: '/caricature', icon: <Users size={20} />, label: 'Caricature' },
-  { path: '/graphic-design', icon: <Palette size={20} />, label: 'Graphic Design' },
-  { path: '/featured-freelancers', icon: <Users size={20} />, label: 'Featured Freelancers' },
+  { path: '/learning', icon: <BookOpen size={20} />, label: 'Learning' },
+  { path: '/tools', icon: <Wrench size={20} />, label: 'Tools' },  
+  { path: '/templates', icon: <FileText size={20} />, label: 'Templates' },
+  { path: '/gigs', icon: <Briefcase size={20} />, label: 'Gigs Boards' },
+  { path: '/communities', icon: <Users size={20} />, label: 'Communities' },
+  { path: '/scenarios', icon: <LayoutTemplate size={20} />, label: 'Scenarios' },
   { path: '/feedback', icon: <MessageSquare size={20} />, label: 'Feedback' }
 ];
 
-const sidebarVariants = {
-  open: {
-    x: 0,
-    transition: {
-      type: "spring",
-      stiffness: 260,
-      damping: 25
-    }
-  },
-  closed: {
-    x: "-100%",
-    transition: {
-      type: "spring",
-      stiffness: 260,
-      damping: 25
-    }
-  }
+const mobileSidebarVariants = {
+  open: { x: 0, transition: { type: "tween", ease: "circOut", duration: 0.3 } },
+  closed: { x: "-100%", transition: { type: "tween", ease: "circIn", duration: 0.2 } }
 };
 
-const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
   const location = useLocation();
 
-  // Lock body scroll on mobile when sidebar is open
+  // Handle body scroll locking for mobile
   useEffect(() => {
-    document.body.style.overflow = isOpen ? 'hidden' : 'auto';
+    document.body.style.overflow = isMobileOpen ? 'hidden' : 'auto';
     return () => (document.body.style.overflow = 'auto');
-  }, [isOpen]);
+  }, [isMobileOpen]);
+
+  // Handle PWA Installation event
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        setDeferredPrompt(null);
+      }
+    }
+  };
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Escape') setIsOpen(false);
+    if (e.key === 'Escape') setIsMobileOpen(false);
   };
 
   return (
     <>
-      {/* Mobile Menu Toggle */}
       <button
-        aria-label={isOpen ? "Close sidebar" : "Open sidebar"}
-        onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-4 left-4 z-50 p-2 rounded-lg bg-gray-900 text-white shadow-lg md:hidden"
+        aria-label={isMobileOpen ? "Close sidebar" : "Open sidebar"}
+        onClick={() => setIsMobileOpen(!isMobileOpen)}
+        className="fixed top-4 left-4 z-50 p-2.5 rounded-full bg-white text-organic-charcoal shadow hover:shadow-md border border-organic-stone md:hidden transition-shadow"
       >
-        {isOpen ? <X size={24} /> : <Menu size={24} />}
+        {isMobileOpen ? <X size={20} /> : <Menu size={20} />}
       </button>
 
-      {/* Mobile Sidebar */}
       <AnimatePresence>
-        {isOpen && (
-          <motion.aside
-            key="mobile-sidebar"
-            role="navigation"
-            aria-label="Main Sidebar"
-            tabIndex={-1}
-            onKeyDown={handleKeyDown}
-            initial="closed"
-            animate="open"
-            exit="closed"
-            variants={sidebarVariants}
-            className="fixed inset-y-0 left-0 w-64 bg-gray-900 text-white p-6 z-40 shadow-lg md:hidden"
-          >
-            {/* Branding */}
-            <motion.div
-              className="flex items-center gap-3 mb-10"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
+        {isMobileOpen && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileOpen(false)}
+              className="fixed inset-0 bg-organic-charcoal/20 backdrop-blur-sm z-30 md:hidden" 
+            />
+            <motion.aside
+              key="mobile-sidebar"
+              role="navigation"
+              aria-label="Main Sidebar"
+              tabIndex={-1}
+              onKeyDown={handleKeyDown}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              variants={mobileSidebarVariants}
+              className="fixed inset-y-0 left-0 w-64 bg-organic-cream text-organic-charcoal p-5 z-40 shadow-2xl overflow-y-auto flex flex-col md:hidden"
             >
-              <Link to="/" onClick={() => setIsOpen(false)} className="flex items-center gap-3">
-                <img 
-                  src={whitelogo} 
-                  alt="KreatorNest Logo" 
-                  className="w-8 h-8 object-contain" 
-                />
-                <h1 className="text-2xl font-extrabold tracking-wide">
-                  KreatorNest
-                </h1>
-              </Link>
-            </motion.div>
+              <div className="flex items-center gap-3 mb-8 pt-2 pl-2">
+                <div className="w-8 h-8 bg-primary-600 rounded-lg shrink-0"></div>
+                <h1 className="text-2xl font-serif font-semibold tracking-tight">KreatorNest</h1>
+              </div>
 
-            {/* Navigation */}
-            <nav>
-              <ul className="space-y-3">
-                {navItems.map((item, index) => {
-                  const isActive = location.pathname === item.path;
-                  return (
-                    <motion.li
-                      key={item.path}
-                      initial={{ opacity: 0, x: -15 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.05 }}
-                    >
-                      <Link
-                        to={item.path}
-                        onClick={() => setIsOpen(false)}
-                        className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
-                          isActive
-                            ? 'bg-blue-600 text-white font-semibold'
-                            : 'hover:bg-gray-700 hover:text-white'
-                        }`}
-                      >
-                        {item.icon}
-                        <span>{item.label}</span>
-                      </Link>
-                    </motion.li>
-                  );
-                })}
-              </ul>
-            </nav>
-          </motion.aside>
+              <nav className="flex-1">
+                <ul className="space-y-1">
+                  {navItems.map((item) => {
+                    const isActive = location.pathname === item.path;
+                    return (
+                      <li key={item.path}>
+                        <Link
+                          to={item.path}
+                          onClick={() => setIsMobileOpen(false)}
+                          className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 font-medium ${
+                            isActive ? 'bg-white text-primary-700 shadow-sm border border-organic-stone' : 'text-organic-clay hover:bg-organic-stone/50 hover:text-organic-charcoal'
+                          }`}
+                        >
+                          {item.icon}
+                          <span>{item.label}</span>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </nav>
+
+              {deferredPrompt && (
+                <div className="mt-6 pt-5 border-t border-organic-stone">
+                  <button 
+                    onClick={handleInstallClick}
+                    className="w-full flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white p-3 rounded-xl font-semibold transition-colors"
+                  >
+                    <Download size={18} />
+                    <span>Install App</span>
+                  </button>
+                </div>
+              )}
+            </motion.aside>
+          </>
         )}
       </AnimatePresence>
 
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex flex-col fixed top-0 left-0 w-64 h-screen bg-gray-900 text-white p-6 z-30">
-        <Link to="/" className="flex items-center gap-3 mb-10">
-          <img 
-            src={whitelogo} 
-            alt="KreatorNest Logo" 
-            className="w-8 h-8 object-contain" 
-          />
-          <h1 className="text-2xl font-extrabold tracking-wide">KreatorNest</h1>
-        </Link>
-        <nav className="flex-1">
-          <ul className="space-y-3">
+      <motion.aside 
+        initial={false}
+        animate={{ width: isDesktopOpen ? 256 : 80 }}
+        className="hidden md:flex flex-col fixed top-0 left-0 h-screen bg-organic-cream border-r border-organic-stone py-5 z-30 overflow-x-hidden overflow-y-auto overflow-y-hidden hover:overflow-y-auto custom-scrollbar"
+      >
+        <div className="flex items-center justify-between px-5 mb-8 relative pt-2">
+          <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity min-w-max">
+            <div className="w-8 h-8 rounded-full bg-primary-600 shrink-0"></div>
+            <motion.h1 
+              initial={false}
+              animate={{ opacity: isDesktopOpen ? 1 : 0, width: isDesktopOpen ? "auto" : 0 }}
+              className="text-2xl font-serif font-bold tracking-tight text-organic-charcoal overflow-hidden"
+            >
+              KreatorNest
+            </motion.h1>
+          </Link>
+          
+          <button 
+            onClick={() => setIsDesktopOpen(!isDesktopOpen)}
+            className={`absolute ${isDesktopOpen ? 'right-4' : 'right-[24px] bg-white translate-x-[4px]'} p-1.5 rounded-full text-organic-charcoal shadow-sm border border-organic-stone hover:bg-organic-stone/50 transition-colors z-50`}
+            aria-label={isDesktopOpen ? "Collapse sidebar" : "Expand sidebar"}
+          >
+            {isDesktopOpen ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
+          </button>
+        </div>
+
+        <nav className="flex-1 px-3">
+          <ul className="space-y-1">
             {navItems.map((item) => {
               const isActive = location.pathname === item.path;
               return (
                 <li key={item.path}>
                   <Link
                     to={item.path}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
-                      isActive
-                        ? 'bg-blue-600 text-white font-semibold'
-                        : 'hover:bg-gray-700 hover:text-white'
-                    }`}
+                    title={!isDesktopOpen ? item.label : ""}
+                    className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 font-medium whitespace-nowrap ${
+                      isActive ? 'bg-white text-primary-700 shadow-sm border border-organic-stone' : 'text-organic-clay hover:bg-organic-stone/50 hover:text-organic-charcoal'
+                    } ${!isDesktopOpen && 'justify-center px-0'}`}
                   >
-                    {item.icon}
-                    <span>{item.label}</span>
+                    <div className="shrink-0">{item.icon}</div>
+                    <motion.span
+                      initial={false}
+                      animate={{ opacity: isDesktopOpen ? 1 : 0, width: isDesktopOpen ? "auto" : 0 }}
+                      className="overflow-hidden"
+                    >
+                      {item.label}
+                    </motion.span>
                   </Link>
                 </li>
               );
             })}
           </ul>
         </nav>
-      </aside>
+
+        {deferredPrompt && (
+          <div className="mt-6 pt-5 border-t border-organic-stone/80 px-4">
+            <button 
+              onClick={handleInstallClick}
+              title={!isDesktopOpen ? "Install Web App" : ""}
+              className={`flex items-center justify-center gap-2 bg-organic-charcoal hover:bg-black text-organic-cream p-2.5 rounded-xl font-semibold transition-all shadow-sm ${
+                isDesktopOpen ? 'w-full' : 'w-10 h-10 p-0 mx-auto'
+              }`}
+            >
+              <Download size={18} className="shrink-0" />
+              <motion.span
+                initial={false}
+                animate={{ opacity: isDesktopOpen ? 1 : 0, width: isDesktopOpen ? "auto" : 0 }}
+                className="overflow-hidden whitespace-nowrap"
+              >
+                Install App
+              </motion.span>
+            </button>
+          </div>
+        )}
+      </motion.aside>
     </>
   );
 };

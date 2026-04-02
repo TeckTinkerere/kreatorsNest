@@ -1,231 +1,49 @@
-import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { motion } from "framer-motion";
 
 const Feedback = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    category: '',
-    subject: '',
-    message: '',
-    priority: 'normal'
-  });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  
-    const form = e.target;
-    const data = new FormData(form);
-  
-    fetch("/", {
-      method: "POST",
-      body: data,
-    })
-      .then(() => alert("Form submitted successfully"))
-      .catch((error) => alert("Error submitting form"));
-  };
-  
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 100
-      }
-    }
-  };
-
   return (
     <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      className="p-4 md:p-8 max-w-7xl mx-auto"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="p-4 md:p-8 max-w-4xl mx-auto space-y-8 min-h-screen flex flex-col"
     >
-      <motion.div variants={itemVariants} className="text-center mb-12">
-        <h1 className="text-3xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-          Resource Hub Support
+      <div className="text-center mt-10">
+        <h1 className="text-3xl md:text-5xl font-extrabold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          We Value Your Feedback
         </h1>
-        <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-          Have a question, suggestion, or need help? We're here to assist you with any inquiries about our freelancer resources.
+        <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          Help us make KreatorNest the ultimate platform for freelancers. Drop your thoughts, feature requests, or bugs below!
         </p>
-      </motion.div>
+      </div>
 
-      <motion.form
-        variants={itemVariants}
-        onSubmit={handleSubmit}
-        data-netlify="true"
-        className="max-w-2xl mx-auto bg-white p-6 md:p-8 rounded-xl shadow-lg"
+      <motion.div 
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.2 }}
+        className="flex-grow bg-white rounded-3xl p-4 md:p-8 shadow-sm border border-gray-100 flex items-center justify-center relative overflow-hidden"
       >
-      <input type="hidden" name="form-name" value="feedback" />
-        <div className="space-y-6">
-          <motion.div
-            variants={itemVariants}
-            className="space-y-2"
+        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-full blur-3xl -z-10 opacity-50"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-50 rounded-full blur-3xl -z-10 opacity-50"></div>
+        
+        {/*
+          To the User/Admin: 
+          Copy and paste your Google Form embed URL into the src attribute below.
+          You can get this by clicking "Send" on your Google Form > "Embed HTML" < > > Copy the URL only.
+        */}
+        <div className="w-full h-full min-h-[600px] flex items-center justify-center">
+          <iframe 
+            src="https://docs.google.com/forms/d/e/1FAIpQLSf4hM92kU66c2K1a_vG4vAqz6qT94X3gYcT_Q4rBqkH1xHnQg/viewform?embedded=true" 
+            width="100%" 
+            height="100%" 
+            frameBorder="0" 
+            marginHeight="0" 
+            marginWidth="0"
+            className="rounded-xl w-full h-[800px]"
+            title="Feedback Form"
           >
-            <label htmlFor="name" className="block text-gray-700 font-medium">
-              Name
-            </label>
-            <motion.input
-              whileFocus={{ scale: 1.02 }}
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-              placeholder="Your name"
-              required
-            />
-          </motion.div>
-
-          <motion.div
-            variants={itemVariants}
-            className="space-y-2"
-          >
-            <label htmlFor="email" className="block text-gray-700 font-medium">
-              Email
-            </label>
-            <motion.input
-              whileFocus={{ scale: 1.02 }}
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-              placeholder="Your email"
-              required
-            />
-          </motion.div>
-
-          <motion.div
-            variants={itemVariants}
-            className="space-y-2"
-          >
-            <label htmlFor="category" className="block text-gray-700 font-medium">
-              Category
-            </label>
-            <motion.select
-              whileFocus={{ scale: 1.02 }}
-              id="category"
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-              required
-            >
-              <option value="">Select a category</option>
-              <option value="suggestion">Suggestion</option>
-              <option value="filter-request">Filter Request</option>
-              <option value="enquiry">General Enquiry</option>
-              <option value="question">Question</option>
-              <option value="error">Error Report</option>
-              <option value="other">Other</option>
-            </motion.select>
-          </motion.div>
-
-          <motion.div
-            variants={itemVariants}
-            className="space-y-2"
-          >
-            <label htmlFor="subject" className="block text-gray-700 font-medium">
-              Subject
-            </label>
-            <motion.input
-              whileFocus={{ scale: 1.02 }}
-              type="text"
-              id="subject"
-              name="subject"
-              value={formData.subject}
-              onChange={handleChange}
-              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-              placeholder="Brief description of your inquiry"
-              required
-            />
-          </motion.div>
-
-          <motion.div
-            variants={itemVariants}
-            className="space-y-2"
-          >
-            <label htmlFor="priority" className="block text-gray-700 font-medium">
-              Priority Level
-            </label>
-            <motion.select
-              whileFocus={{ scale: 1.02 }}
-              id="priority"
-              name="priority"
-              value={formData.priority}
-              onChange={handleChange}
-              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-            >
-              <option value="low">Low</option>
-              <option value="normal">Normal</option>
-              <option value="high">High</option>
-              <option value="urgent">Urgent</option>
-            </motion.select>
-          </motion.div>
-
-          <motion.div
-            variants={itemVariants}
-            className="space-y-2"
-          >
-            <label htmlFor="message" className="block text-gray-700 font-medium">
-              Message
-            </label>
-            <motion.textarea
-              whileFocus={{ scale: 1.02 }}
-              id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              rows="6"
-              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-none"
-              placeholder="Please provide details about your inquiry..."
-              required
-            ></motion.textarea>
-          </motion.div>
-
-          <motion.button
-            variants={itemVariants}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            type="submit"
-            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all"
-          >
-            Submit Inquiry
-          </motion.button>
+            Loading Feedback Form...
+          </iframe>
         </div>
-      </motion.form>
-
-      <motion.div
-        variants={itemVariants}
-        className="mt-12 text-center"
-      >
-        <p className="text-gray-600">
-          We'll get back to you as soon as possible. Thank you for helping us improve our resource hub!
-        </p>
       </motion.div>
     </motion.div>
   );

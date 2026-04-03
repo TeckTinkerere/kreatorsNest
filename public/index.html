@@ -41,11 +41,22 @@
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('%PUBLIC_URL%/sw.js').then(registration => {
-            console.log('SW registered: ', registration);
-          }).catch(registrationError => {
-            console.log('SW registration failed: ', registrationError);
-          });
+          navigator.serviceWorker.register('%PUBLIC_URL%/sw.js')
+            .then(registration => {
+              console.log('SW registered:', registration.scope);
+            })
+            .catch(err => {
+              console.log('SW registration failed:', err);
+            });
+        });
+
+        // If a waiting SW exists, skip waiting so the new one activates immediately
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          // Only reload once to avoid loops
+          if (!sessionStorage.getItem('sw-reloaded')) {
+            sessionStorage.setItem('sw-reloaded', '1');
+            window.location.reload();
+          }
         });
       }
     </script>

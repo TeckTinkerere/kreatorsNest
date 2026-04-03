@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { resourceData, CATEGORIES } from '../data/resources';
+import { resourceData } from '../data/resources';
 
 const DB_NAME = 'KreatorNestDB';
 const DB_VERSION = 1;

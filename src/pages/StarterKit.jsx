@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { resourceData } from "../data/resources";
+import { useRecommendations } from "../hooks/useRecommendations";
 import ResourceCard from "../components/ResourceCard";
 
 const StarterKit = () => {
@@ -14,6 +15,7 @@ const StarterKit = () => {
   ];
   
   const [activeRole, setActiveRole] = useState(roles[0].filter);
+  const { trackInteraction } = useRecommendations();
 
   // Filter resources to get the starter kit for that role
   // We showcase up to 8 top resources across different types
@@ -76,9 +78,9 @@ const StarterKit = () => {
               transition={{ duration: 0.3 }}
             >
               {currentResources.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6">
                   {currentResources.map(resource => (
-                    <ResourceCard key={resource.id} resource={resource} />
+                    <ResourceCard key={resource.id} resource={resource} onInteract={trackInteraction} />
                   ))}
                 </div>
               ) : (

@@ -1,11 +1,13 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { resourceData, CATEGORIES } from '../data/resources';
+import { useRecommendations } from '../hooks/useRecommendations';
 import CategoryFilter from '../components/CategoryFilter';
 import ResourceCard from '../components/ResourceCard';
 
 const ResourceHub = ({ title, typeDescription, hubType }) => {
   const [activeCategory, setActiveCategory] = useState("All");
+  const { trackInteraction } = useRecommendations();
 
   const filteredResources = useMemo(() => {
     return resourceData.filter(resource => {
@@ -43,10 +45,10 @@ const ResourceHub = ({ title, typeDescription, hubType }) => {
         {filteredResources.length > 0 ? (
           <motion.div 
             layout
-            className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8"
+            className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6 md:gap-8"
           >
             {filteredResources.map((resource) => (
-              <ResourceCard key={resource.id} resource={resource} />
+              <ResourceCard key={resource.id} resource={resource} onInteract={trackInteraction} />
             ))}
           </motion.div>
         ) : (

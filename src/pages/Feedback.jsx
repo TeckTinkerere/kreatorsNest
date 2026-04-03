@@ -31,17 +31,16 @@ const Feedback = () => {
           You can get this by clicking "Send" on your Google Form > "Embed HTML" < > > Copy the URL only.
         */}
         <div className="w-full h-full min-h-[600px] flex items-center justify-center">
-          <iframe 
-            src="https://docs.google.com/forms/d/e/1FAIpQLSf4hM92kU66c2K1a_vG4vAqz6qT94X3gYcT_Q4rBqkH1xHnQg/viewform?embedded=true" 
-            width="100%" 
-            height="100%" 
-            frameBorder="0" 
-            marginHeight="0" 
+          <iframe
+            src="https://docs.google.com/forms/d/e/1FAIpQLSfpNX_3OWzXz7zcF3uipcyp28I6T_vquZz7YxpXb0XNYRCHSA/viewform?embedded=true"
+            width="640"
+            height="1201"
+            frameBorder="0"
+            marginHeight="0"
             marginWidth="0"
-            className="rounded-xl w-full h-[800px]"
             title="Feedback Form"
           >
-            Loading Feedback Form...
+            Loading…
           </iframe>
         </div>
       </motion.div>

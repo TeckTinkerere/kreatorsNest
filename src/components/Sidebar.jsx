@@ -140,7 +140,7 @@ const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
         animate={{ width: isDesktopOpen ? 256 : 80 }}
         className="hidden md:flex flex-col fixed top-0 left-0 h-screen bg-organic-cream border-r border-organic-stone py-5 z-30 overflow-x-hidden overflow-y-auto hover:overflow-y-auto custom-scrollbar"
       >
-        <div className="flex items-center justify-between px-5 mb-8 relative pt-2">
+        <div className={`flex items-center mb-8 pt-2 px-5 ${isDesktopOpen ? 'justify-between' : 'flex-col gap-3'}`}>
           <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity min-w-max">
             <img src="/logomain.png" alt="KreatorNest Logo" className="w-8 h-8 object-contain shrink-0" />
             <motion.h1 
@@ -154,7 +154,7 @@ const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
           
           <button 
             onClick={() => setIsDesktopOpen(!isDesktopOpen)}
-            className={`absolute ${isDesktopOpen ? 'right-4' : 'right-[24px] bg-white translate-x-[4px]'} p-1.5 rounded-full text-organic-charcoal shadow-sm border border-organic-stone hover:bg-organic-stone/50 transition-colors z-50`}
+            className="p-1.5 rounded-full text-organic-charcoal shadow-sm border border-organic-stone bg-white hover:bg-organic-stone/50 transition-colors"
             aria-label={isDesktopOpen ? "Collapse sidebar" : "Expand sidebar"}
           >
             {isDesktopOpen ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}

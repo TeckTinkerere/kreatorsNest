@@ -4,7 +4,7 @@ import { useRecommendations } from "../hooks/useRecommendations";
 import ResourceCard from "../components/ResourceCard";
 
 const Home = () => {
-  const { recommendations, isReady } = useRecommendations();
+  const { recommendations, isReady, trackInteraction } = useRecommendations();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -60,10 +60,10 @@ const Home = () => {
               View all resources →
             </Link>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6">
             {recommendations.map(resource => (
-              <ResourceCard key={resource.id} resource={resource} />
+              <ResourceCard key={resource.id} resource={resource} onInteract={trackInteraction} />
             ))}
           </div>
         </motion.div>
@@ -83,7 +83,7 @@ const Home = () => {
                 <div className="absolute inset-0 noise-bg opacity-30 group-hover:opacity-10 transition-opacity"></div>
                 {/* Background wash on hover */}
                 <div className="absolute inset-0 bg-primary-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out z-0"></div>
-                
+
                 <div className="relative z-10 h-full flex flex-col justify-between">
                   <div className="text-4xl">{section.icon}</div>
                   <div>
@@ -107,7 +107,7 @@ const Home = () => {
             >
               <div className="max-w-2xl">
                 <span className="text-sm font-semibold tracking-widest text-organic-clay uppercase">Real-world Studies</span>
-                <h3 className="text-3xl md:text-4xl font-serif mt-3 mb-4">Case Scenarios</h3>
+                <h3 className="text-3xl md:text-4xl font-serif mt-3 mb-4 text-white">Case Scenarios</h3>
                 <p className="text-organic-sand text-lg">Learn how other professionals handle complex pricing, ghosting clients, and legal battles.</p>
               </div>
               <div className="w-16 h-16 rounded-full bg-primary-600 flex items-center justify-center text-2xl group-hover:bg-white group-hover:text-primary-600 transition-colors shrink-0">

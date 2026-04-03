@@ -1,15 +1,17 @@
 import { motion } from 'framer-motion';
-import { useRecommendations } from '../hooks/useRecommendations';
+import * as LucideIcons from 'lucide-react';
 
-const ResourceCard = ({ resource }) => {
-  const { trackInteraction } = useRecommendations();
-
+const ResourceCard = ({ resource, onInteract }) => {
   const handleLinkClick = () => {
-    trackInteraction(resource.category);
+    if (onInteract) onInteract(resource.category);
   };
 
-  // Give slightly different shapes based on type to avoid generic repetition
   const isEditorial = resource.type === 'Learning' || resource.type === 'Scenarios';
+
+  // Resolve icon: if it's a string matching a lucide icon, use that; otherwise fall back to emoji
+  const IconComponent = typeof resource.icon === 'string' && LucideIcons[resource.icon]
+    ? LucideIcons[resource.icon]
+    : null;
   
   return (
     <motion.div
@@ -18,7 +20,7 @@ const ResourceCard = ({ resource }) => {
       viewport={{ once: true, margin: "-50px" }}
       whileHover={{ y: -4 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className={`group flex flex-col relative overflow-hidden bg-white border border-organic-stone shadow-sm hover:shadow-md transition-shadow duration-500
+      className={`group flex flex-col relative overflow-hidden bg-white border border-organic-stone shadow-sm hover:shadow-md transition-shadow duration-500 min-w-[280px]
         ${isEditorial ? 'rounded-tl-3xl rounded-br-3xl rounded-tr-xl rounded-bl-xl p-8 min-h-[320px]' : 'rounded-2xl p-6 min-h-[280px]'}
       `}
     >
@@ -28,8 +30,11 @@ const ResourceCard = ({ resource }) => {
       <div className="relative z-10 flex flex-col h-full">
         {/* Top Header area */}
         <div className="flex items-start justify-between mb-5 select-none">
-          <div className="flex items-center justify-center w-12 h-12 rounded-full bg-organic-cream border border-organic-stone text-2xl shadow-sm group-hover:scale-110 transition-transform duration-500">
-            {resource.icon}
+          <div className="flex items-center justify-center w-12 h-12 rounded-full bg-organic-cream border border-organic-stone shadow-sm group-hover:scale-110 transition-transform duration-500">
+            {IconComponent
+              ? <IconComponent size={22} className="text-primary-600" />
+              : <span className="text-2xl">{resource.icon}</span>
+            }
           </div>
           <span className="text-[10px] font-bold uppercase tracking-widest text-primary-600 bg-primary-50 px-3 py-1.5 rounded-full border border-primary-100">
             {resource.type}

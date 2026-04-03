@@ -58,6 +58,8 @@ const ResourceCard = ({ resource }) => {
           </div>
           <a 
             href={resource.link} 
+            target="_blank"
+            rel="noopener noreferrer"
             onClick={handleLinkClick}
             className="flex-shrink-0 text-sm font-semibold text-white bg-primary-700 hover:bg-primary-800 px-5 py-2 rounded-lg transition-colors flex items-center gap-2"
           >

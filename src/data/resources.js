@@ -8,23 +8,31 @@ export const CATEGORIES = [
 ];
 
 export const resourceData = [
-  // ======================
   // LEARNING
-  // ======================
   {
     id: "l1",
     title: "Typography & Layout Fundamentals",
-    description: "Learn spacing, hierarchy, font pairing, and layout basics that make your visuals look intentional.",
+    description: "Learn spacing, hierarchy, and font pairing fundamentals in a concise interactive lesson (Canva Design School).",
     type: "Learning",
     category: "Visual Communication",
     link: "https://www.canva.com/design-school/courses/typography-and-layout",
-    icon: "🅰️",
-    tags: ["Typography", "Layout", "Hierarchy"],
+    icon: "📐",
+    tags: ["Typography", "Layout", "Basics"],
   },
   {
     id: "l2",
+    title: "Understanding Typography Theory",
+    description: "Beginner-friendly Canva lesson on identifying & pairing typefaces, building visual hierarchy, and aligning text for impact.",
+    type: "Learning",
+    category: "Visual Communication",
+    link: "https://www.canva.com/design-school/lessons/understanding-typography-theory",
+    icon: "🔤",
+    tags: ["Typography", "Readability", "Basics"],
+  },
+  {
+    id: "l3",
     title: "After Effects Beginner Guide",
-    description: "Start from zero and understand the interface, timeline, and animation basics.",
+    description: "Adobe’s official After Effects user guide covering the interface, timeline, and animation basics (updated 2026)【30†L5-L13】.",
     type: "Learning",
     category: "Motion Graphics",
     link: "https://helpx.adobe.com/after-effects/user-guide.html",
@@ -32,9 +40,9 @@ export const resourceData = [
     tags: ["After Effects", "Basics"],
   },
   {
-    id: "l3",
+    id: "l4",
     title: "Blender Beginner Manual",
-    description: "Official Blender guide covering modeling, lighting, and rendering workflows.",
+    description: "Official Blender documentation for modeling, lighting, animation and rendering workflows (free 3D suite).",
     type: "Learning",
     category: "Animation & 3D Arts",
     link: "https://docs.blender.org/manual/en/latest/",
@@ -42,9 +50,9 @@ export const resourceData = [
     tags: ["Blender", "3D"],
   },
   {
-    id: "l4",
+    id: "l5",
     title: "Figma Auto Layout Guide",
-    description: "Learn responsive design properly so your UI actually adapts instead of breaking.",
+    description: "Figma’s help guide on Auto Layout and responsive design so your interface adapts correctly in use.",
     type: "Learning",
     category: "UX/UI & Web Design",
     link: "https://help.figma.com/hc/en-us/articles/360040451373-Guide-to-auto-layout",
@@ -52,9 +60,9 @@ export const resourceData = [
     tags: ["Figma", "Responsive"],
   },
   {
-    id: "l5",
+    id: "l6",
     title: "Premiere Pro Editing Basics",
-    description: "Understand timeline editing, cutting, transitions, and exporting clean videos.",
+    description: "Adobe’s official Premiere Pro workflow guide: timeline editing, cuts, transitions, and exporting clean videos.",
     type: "Learning",
     category: "Media Production",
     link: "https://helpx.adobe.com/premiere-pro/using/basic-workflow.html",
@@ -62,19 +70,19 @@ export const resourceData = [
     tags: ["Editing", "Video"],
   },
   {
-    id: "l6",
+    id: "l7",
     title: "School of Motion: Path to MoGraph",
-    description: "A deep dive into what it takes to become a professional motion designer.",
+    description: "Free 2-hour intro course to motion design. Covers brainstorming, animating in After Effects, sound, and delivery【35†L372-L379】.",
     type: "Learning",
     category: "Motion Graphics",
     link: "https://www.schoolofmotion.com/blog/path-to-mograph",
     icon: "🎓",
-    tags: ["Career", "Basics"],
+    tags: ["Motion Design", "Overview"],
   },
   {
-    id: "l7",
+    id: "l8",
     title: "Refactoring UI",
-    description: "Learn how to design beautiful user interfaces by yourselves using specific tactics.",
+    description: "Learn to design beautiful user interfaces with developer-friendly tactics (visual design book + videos)【39†L364-L370】.",
     type: "Learning",
     category: "UX/UI & Web Design",
     link: "https://www.refactoringui.com/",
@@ -82,9 +90,9 @@ export const resourceData = [
     tags: ["UI", "Tactics"],
   },
   {
-    id: "l8",
+    id: "l9",
     title: "Cinematography Basics",
-    description: "Understand lighting, framing, and camera theory to shoot better videos.",
+    description: "StudioBinder blog guide on lighting, framing and camera theory for better video shoot planning.",
     type: "Learning",
     category: "Media Production",
     link: "https://www.studiobinder.com/blog/ultimate-guide-to-cinematography/",
@@ -92,9 +100,9 @@ export const resourceData = [
     tags: ["Cinematography", "Lighting"],
   },
   {
-    id: "l9",
+    id: "l10",
     title: "Logo Design Principles",
-    description: "A complete framework for designing logos that are memorable and scalable.",
+    description: "Guide by 99designs on designing memorable, scalable logos – covering brand research, simplicity, and color theory.",
     type: "Learning",
     category: "Visual Communication",
     link: "https://99designs.com/blog/logo-branding/how-to-design-logo/",
@@ -102,23 +110,21 @@ export const resourceData = [
     tags: ["Logo", "Branding"],
   },
   {
-    id: "l10",
-    title: "Substance Painter Tutorials",
-    description: "Texturing basics for 3D arts to create hyper-realistic or stylized models.",
+    id: "l11",
+    title: "Substance 3D Painter Tutorials",
+    description: "Adobe’s official “Getting Started” tutorials for Substance 3D Painter (project setup and texture painting). (Docs updated Mar 2026)【44†L8-L16】.",
     type: "Learning",
     category: "Animation & 3D Arts",
-    link: "https://substance3d.adobe.com/tutorials/courses/Getting-Started-with-Substance-3D-Painter",
+    link: "https://experienceleague.adobe.com/en/docs/substance-3d-painter/using/getting-started/getting-started",
     icon: "🖌️",
     tags: ["Texturing", "Materials"],
   },
 
-  // ======================
   // TOOLS
-  // ======================
   {
     id: "t1",
     title: "Figma",
-    description: "Industry standard for UI/UX design, prototyping, and collaboration.",
+    description: "Industry-standard UI/UX design and prototyping tool (browser-based, collaborative, free tier available).",
     type: "Tools",
     category: "UX/UI & Web Design",
     link: "https://www.figma.com/",
@@ -128,7 +134,7 @@ export const resourceData = [
   {
     id: "t2",
     title: "Blender",
-    description: "Free and powerful 3D software for modeling, animation, and rendering.",
+    description: "Free, powerful 3D modeling and animation software for artists and studios.",
     type: "Tools",
     category: "Animation & 3D Arts",
     link: "https://www.blender.org/",
@@ -138,7 +144,7 @@ export const resourceData = [
   {
     id: "t3",
     title: "Vercel",
-    description: "Deploy websites instantly with global performance and zero setup.",
+    description: "Deploy front-end web projects instantly with global CDN and zero configuration.",
     type: "Tools",
     category: "UX/UI & Web Design",
     link: "https://vercel.com/",
@@ -148,7 +154,7 @@ export const resourceData = [
   {
     id: "t4",
     title: "Notion",
-    description: "Organize clients, projects, tasks, and invoices in one centralized place.",
+    description: "All-in-one workspace to organize clients, projects, tasks and notes. Many templates available.",
     type: "Tools",
     category: "Media Production",
     link: "https://www.notion.com/",
@@ -157,8 +163,8 @@ export const resourceData = [
   },
   {
     id: "t5",
-    title: "Wave Invoicing",
-    description: "Create clean invoices and track payments without paying for complex accounting tools.",
+    title: "Wave (Invoicing)",
+    description: "Free invoicing and accounting software. “Wave’s invoicing software saves you time, gets you paid, and makes managing customer information easier.”【54†L1-L4】",
     type: "Tools",
     category: "Media Production",
     link: "https://www.waveapps.com/",
@@ -167,8 +173,8 @@ export const resourceData = [
   },
   {
     id: "t6",
-    title: "Illustrator",
-    description: "Industry standard vector graphics software for logos, icons, and illustrations.",
+    title: "Adobe Illustrator",
+    description: "Industry-standard vector graphics editor for logos, icons and illustrations.",
     type: "Tools",
     category: "Visual Communication",
     link: "https://www.adobe.com/products/illustrator.html",
@@ -178,7 +184,7 @@ export const resourceData = [
   {
     id: "t7",
     title: "Cavalry",
-    description: "A powerful 2D animation software built for procedural motion graphics.",
+    description: "Free 2D motion-graphics software (by Scene Group). “Cavalry makes 2d animation smarter, easier and faster to produce”【48†L1-L4】.",
     type: "Tools",
     category: "Motion Graphics",
     link: "https://cavalry.scenegroup.co/",
@@ -188,7 +194,7 @@ export const resourceData = [
   {
     id: "t8",
     title: "Milanote",
-    description: "The tool for organizing creative projects, storyboards, and moodboards.",
+    description: "Visual organization tool for creative projects. “Milanote is an easy-to-use tool for organizing creative projects.”【56†L2-L4】 Great for moodboards and planning.",
     type: "Tools",
     category: "Visual Communication",
     link: "https://milanote.com/",
@@ -197,8 +203,8 @@ export const resourceData = [
   },
   {
     id: "t9",
-    title: "Davinci Resolve",
-    description: "Free industry-standard color grading, editing and visual effects platform.",
+    title: "DaVinci Resolve",
+    description: "Free professional video editing, color grading, and VFX suite (used in film and TV post-production).",
     type: "Tools",
     category: "Media Production",
     link: "https://www.blackmagicdesign.com/products/davinciresolve",
@@ -208,7 +214,7 @@ export const resourceData = [
   {
     id: "t10",
     title: "Rive",
-    description: "Build interactive animations that run anywhere, great for UI motion.",
+    description: "Interactive animation engine (used by Spotify, Duolingo, etc.). Build animations that run natively in apps, games or web【86†L29-L32】.",
     type: "Tools",
     category: "Motion Graphics",
     link: "https://rive.app/",
@@ -216,13 +222,11 @@ export const resourceData = [
     tags: ["Interactive", "Animation"],
   },
 
-  // ======================
   // TEMPLATES
-  // ======================
   {
     id: "temp1",
     title: "Freelance Contract Template",
-    description: "Covers scope, revisions, payment terms, and protects you from bad clients.",
+    description: "Simple contract covering scope, revisions and payment terms, protecting you from scope creep and non-payment.",
     type: "Templates",
     category: "Media Production",
     link: "https://www.hellobonsai.com/contract-template/freelance",
@@ -232,7 +236,7 @@ export const resourceData = [
   {
     id: "temp2",
     title: "Invoice Template",
-    description: "Simple invoice you can send to clients without overcomplicating things.",
+    description: "Clean, professional invoice you can customize and send to clients without fuss.",
     type: "Templates",
     category: "Media Production",
     link: "https://www.hubspot.com/resources/templates/basic-invoice",
@@ -242,7 +246,7 @@ export const resourceData = [
   {
     id: "temp3",
     title: "Notion Freelancer Workspace",
-    description: "Track projects, deadlines, and client communication in one dashboard.",
+    description: "Free Notion template to track projects, deadlines and client communications in one dashboard.",
     type: "Templates",
     category: "Media Production",
     link: "https://www.notion.com/templates/freelancer-project-management",
@@ -251,8 +255,8 @@ export const resourceData = [
   },
   {
     id: "temp4",
-    title: "Figma UI Templates",
-    description: "Kickstart UI projects instead of designing everything from scratch.",
+    title: "Figma UI Starter Templates",
+    description: "Set of Figma template files (UI kits and components) to jumpstart UI design projects without starting from scratch.",
     type: "Templates",
     category: "UX/UI & Web Design",
     link: "https://www.figma.com/templates/",
@@ -262,7 +266,7 @@ export const resourceData = [
   {
     id: "temp5",
     title: "Brand Guidelines Deck",
-    description: "A sleek template for presenting brand identities and rules to clients.",
+    description: "Envato presentation template for showcasing brand identity and usage guidelines to clients.",
     type: "Templates",
     category: "Visual Communication",
     link: "https://elements.envato.com/presentation-templates/brand-guidelines",
@@ -272,7 +276,7 @@ export const resourceData = [
   {
     id: "temp6",
     title: "Storyboard Template",
-    description: "Printable and digital storyboard frames for video and animation planning.",
+    description: "Printable/digital storyboard frames for planning video shots or animation scenes.",
     type: "Templates",
     category: "Motion Graphics",
     link: "https://boords.com/storyboard-templates",
@@ -281,18 +285,18 @@ export const resourceData = [
   },
   {
     id: "temp7",
-    title: "3D Lighting Studio Setup",
-    description: "A free Blender file packed with perfect 3-point lighting for portfolios.",
+    title: "3-Point Lighting Setup (Blender)",
+    description: "Free Blender file with a standard three-light studio setup – ready to drop into your 3D scenes for polished lighting.",
     type: "Templates",
     category: "Animation & 3D Arts",
-    link: "https://blendswap.com/",
+    link: "https://blendswap.com/3-point-lighting",
     icon: "💡",
     tags: ["Lighting", "Rendering"],
   },
   {
     id: "temp8",
-    title: "Website Wireframe Kits",
-    description: "Low-fidelity wireframes to rapidly structure user experiences before designing.",
+    title: "Website Wireframe Kits (Figma)",
+    description: "Low-fidelity website wireframe and layout components in Figma to sketch UX flows quickly before design.",
     type: "Templates",
     category: "UX/UI & Web Design",
     link: "https://www.figma.com/community/file/890457193616238640",
@@ -300,13 +304,11 @@ export const resourceData = [
     tags: ["Wireframing", "Layout"],
   },
 
-  // ======================
   // GIGS
-  // ======================
   {
     id: "g1",
     title: "Upwork",
-    description: "One of the largest freelance marketplaces with consistent job listings.",
+    description: "One of the largest freelance marketplaces (design, web, marketing, etc.) with thousands of new projects daily.",
     type: "Gigs",
     category: "UX/UI & Web Design",
     link: "https://www.upwork.com/",
@@ -316,7 +318,7 @@ export const resourceData = [
   {
     id: "g2",
     title: "Contra",
-    description: "Commission-free platform where creatives connect directly with clients.",
+    description: "Commission-free creative platform where designers and creators connect directly with clients.",
     type: "Gigs",
     category: "Visual Communication",
     link: "https://contra.com/",
@@ -326,7 +328,7 @@ export const resourceData = [
   {
     id: "g3",
     title: "Dribbble Jobs",
-    description: "High-quality design jobs across branding, UI, and product design.",
+    description: "High-quality design job listings (branding, UI/product design) on Dribbble’s own job board.",
     type: "Gigs",
     category: "Visual Communication",
     link: "https://dribbble.com/jobs",
@@ -336,7 +338,7 @@ export const resourceData = [
   {
     id: "g4",
     title: "Motionographer Jobs",
-    description: "Top-tier job board for motion designers and animators.",
+    description: "Industry-standard job board for motion designers and animators (top studios and agencies post here).",
     type: "Gigs",
     category: "Motion Graphics",
     link: "https://jobs.motionographer.com/",
@@ -345,8 +347,8 @@ export const resourceData = [
   },
   {
     id: "g5",
-    title: "Behance Jobs",
-    description: "Adobe's official job board featuring high-quality creative work globally.",
+    title: "Behance Joblist",
+    description: "Adobe’s official creative job board. Browse design and multimedia roles worldwide (full-time and contract).",
     type: "Gigs",
     category: "Visual Communication",
     link: "https://www.behance.net/joblist",
@@ -356,7 +358,7 @@ export const resourceData = [
   {
     id: "g6",
     title: "ArtStation Jobs",
-    description: "The primary job board for 3D arts, concept art, and game development.",
+    description: "Primary job board for 3D artists, concept artists, and game development roles.",
     type: "Gigs",
     category: "Animation & 3D Arts",
     link: "https://www.artstation.com/jobs",
@@ -366,7 +368,7 @@ export const resourceData = [
   {
     id: "g7",
     title: "Mandy Network",
-    description: "Search platform for cast, crew, and media production professionals.",
+    description: "Platform for film and TV production jobs (cast, crew, post-production roles).",
     type: "Gigs",
     category: "Media Production",
     link: "https://www.mandy.com/",
@@ -376,21 +378,39 @@ export const resourceData = [
   {
     id: "g8",
     title: "Wellfound (AngelList)",
-    description: "Find UI/UX and Graphic Design roles at massive startups worldwide.",
+    description: "Startup job board focused on tech/design roles at growing startups worldwide.",
     type: "Gigs",
     category: "UX/UI & Web Design",
     link: "https://wellfound.com/",
     icon: "✌️",
     tags: ["Startups", "Tech"],
   },
+  {
+    id: "g9",
+    title: "Freelancer.com",
+    description: "One of the world’s largest freelance marketplaces. “Hire the best freelancers for any job…World’s largest freelance marketplace.”【75†L180-L184】",
+    type: "Gigs",
+    category: "Visual Communication",
+    link: "https://www.freelancer.com/",
+    icon: "🌐",
+    tags: ["Marketplace", "All"],
+  },
+  {
+    id: "g10",
+    title: "Fiverr",
+    description: "Massive marketplace of creative services (logodesign, video, audio, etc.). Clients browse portfolios and buy “gigs” at set prices.",
+    type: "Gigs",
+    category: "Visual Communication",
+    link: "https://www.fiverr.com/",
+    icon: "🎨",
+    tags: ["Marketplace", "Quick Jobs"],
+  },
 
-  // ======================
   // COMMUNITIES
-  // ======================
   {
     id: "c1",
-    title: "Figma Forum",
-    description: "Ask questions, get feedback, and learn from other designers.",
+    title: "Figma Community Forum",
+    description: "Official forum for Figma designers – ask questions, share work, and learn from other UI/UX professionals.",
     type: "Communities",
     category: "UX/UI & Web Design",
     link: "https://forum.figma.com/",
@@ -399,8 +419,8 @@ export const resourceData = [
   },
   {
     id: "c2",
-    title: "Frontend Mentor Community",
-    description: "Improve by building projects and getting real critiques from peers.",
+    title: "Frontend Mentor (Community)",
+    description: "Discord community for front-end developers to build real projects and get peer code/design feedback.",
     type: "Communities",
     category: "UX/UI & Web Design",
     link: "https://www.frontendmentor.io/community",
@@ -409,8 +429,8 @@ export const resourceData = [
   },
   {
     id: "c3",
-    title: "Blender Artists",
-    description: "Massive 3D community for learning, feedback, and inspiration.",
+    title: "Blender Artists Forum",
+    description: "Largest community forum for Blender users – great for 3D feedback, troubleshooting, and tutorials.",
     type: "Communities",
     category: "Animation & 3D Arts",
     link: "https://blenderartists.org/",
@@ -420,7 +440,7 @@ export const resourceData = [
   {
     id: "c4",
     title: "Adobe Community",
-    description: "Official community for troubleshooting and learning Adobe tools.",
+    description: "Official Adobe forums for troubleshooting and sharing tips on all Adobe tools (After Effects, Premiere, etc.).",
     type: "Communities",
     category: "Media Production",
     link: "https://community.adobe.com/",
@@ -429,18 +449,18 @@ export const resourceData = [
   },
   {
     id: "c5",
-    title: "Motion Hatch",
-    description: "A community to help motion designers with the business side of the industry.",
+    title: "Motion Hatch (Facebook Group)",
+    description: "Community for motion designers focusing on the business side of motion graphics. Founded by Hayley Akins (“Motion Hatch”), it helps creatives grow their motion design businesses【65†L24-L28】.",
     type: "Communities",
     category: "Motion Graphics",
-    link: "https://motionhatch.com/",
+    link: "https://www.motionhatch.com/",
     icon: "💡",
     tags: ["Business", "Motion"],
   },
   {
     id: "c6",
     title: "The Futur Pro Group",
-    description: "A global community of creatives mastering the art of business and communication.",
+    description: "Premium community of creative entrepreneurs. As The Futur explains, it’s a safe space “to get advice, connect with like-minded individuals, and get the accountability you need”【61†L29-L34】.",
     type: "Communities",
     category: "Visual Communication",
     link: "https://thefutur.com/pro-group",
@@ -450,7 +470,7 @@ export const resourceData = [
   {
     id: "c7",
     title: "Polycount",
-    description: "A community platform focused heavily on 3D game art and rendering.",
+    description: "Community forum for 3D game artists and animators. Heavy on peer critique for game art and modeling.",
     type: "Communities",
     category: "Animation & 3D Arts",
     link: "https://polycount.com/",
@@ -458,13 +478,11 @@ export const resourceData = [
     tags: ["Gaming", "3D Art"],
   },
 
-  // ======================
   // SCENARIOS (REAL FREELANCER PROBLEMS)
-  // ======================
   {
     id: "s1",
     title: "Client Asks for Unlimited Revisions",
-    description: "Always define revision limits in your contract to avoid endless, unpaid work.",
+    description: "Always define a firm limit on revisions in your contract. Scope creep is common – set clear boundaries so you don’t end up doing endless free work.",
     type: "Scenarios",
     category: "Media Production",
     link: "https://www.thefutur.com/video/how-to-handle-client-revisions",
@@ -474,17 +492,17 @@ export const resourceData = [
   {
     id: "s2",
     title: "Client Ghosts After Work Starts",
-    description: "Always take a deposit upfront and document everything clearly before beginning.",
+    description: "Always take a deposit up front and have a signed agreement before starting work. If a client goes silent, stop work until payment is made. (Industry guides recommend clear payment terms and up-front deposits【91†L235-L244】.)",
     type: "Scenarios",
     category: "Visual Communication",
-    link: "https://freelancersunion.org/blog/2019/11/04/what-to-do-when-a-client-ghosts-you/",
+    link: "https://medium.com/@elizabethmjoneswrites/why-ghosting-haunts-freelancers-and-what-you-can-do-about-it-f5519faa28e4",
     icon: "👻",
     tags: ["Payment", "Risk"],
   },
   {
     id: "s3",
-    title: "You Don’t Have a Portfolio Yet",
-    description: "Create 3–5 strong fake or personal projects and publish them professionally.",
+    title: "No Portfolio Yet",
+    description: "Build 3–5 mock or personal projects and present them professionally. (Many YouTubers walk you through creating portfolio pieces, which you can list on Behance or your own site.)",
     type: "Scenarios",
     category: "Visual Communication",
     link: "https://www.youtube.com/watch?v=1b-S2-kHtsQ",
@@ -493,8 +511,8 @@ export const resourceData = [
   },
   {
     id: "s4",
-    title: "You Underpriced Your Work",
-    description: "Learn to re-scope or charge extra respectfully when the project outgrows the budget.",
+    title: "Underpriced Your Work",
+    description: "If a project has grown beyond the original budget/scope, renegotiate respectfully. Learning to adjust quotes or charge extra for new features is part of business sense. (See videos on scope creep and pricing from industry channels.)",
     type: "Scenarios",
     category: "UX/UI & Web Design",
     link: "https://www.youtube.com/watch?v=RKX1b3hQ28E",
@@ -504,27 +522,27 @@ export const resourceData = [
   {
     id: "s5",
     title: "Too Many Clients, No System",
-    description: "Use a tracker like Notion or Trello to manage deadlines, comms, and tasks safely.",
+    description: "Use a project management system (e.g. Notion, Trello or Asana). Track deadlines, milestones and communications in one place. For example, Notion’s blog suggests a dashboard to manage freelance projects and clients, keeping everything organized.",
     type: "Scenarios",
     category: "Media Production",
     link: "https://www.notion.com/blog/freelance-management",
     icon: "📊",
-    tags: ["Organisation", "Workflow"],
+    tags: ["Organization", "Workflow"],
   },
   {
     id: "s6",
-    title: "Dealing with Imposter Syndrome",
-    description: "It's common when starting out. Focus on the value your motion graphics bring.",
+    title: "Imposter Syndrome",
+    description: "Almost every beginner feels this. Remember: “Everyone is faking it.” No one truly knows everything【68†L1-L4】. Focus on improving skills and delivering client value. Finishing small projects will build confidence.",
     type: "Scenarios",
     category: "Motion Graphics",
-    link: "https://www.schoolofmotion.com/blog/imposter-syndrome-motion-design",
+    link: "https://www.schoolofmotion.com/blog/creative-imposter-syndrome",
     icon: "🧠",
     tags: ["Mindset", "Health"],
   },
   {
     id: "s7",
     title: "Client Disputes Final Invoice",
-    description: "Protect yourself against disputes by tracking communication and signing variations.",
+    description: "Protect yourself by keeping written records of scope and change requests. Track all communication. Some experts advise including late fees and stopping work if payments are late【91†L235-L244】. If a client balks, you’ll have documentation to fall back on.",
     type: "Scenarios",
     category: "UX/UI & Web Design",
     link: "https://www.hellobonsai.com/blog/unpaid-invoices",
@@ -534,7 +552,7 @@ export const resourceData = [
   {
     id: "s8",
     title: "Optimizing Render Times",
-    description: "Stop waiting for days. Learn to optimize your scenes and use render farms.",
+    description: "Long render times slow productivity. Learn to optimize 3D scenes (reduce polycount, bake textures, use render farms or GPU rendering). For example, CG Director’s guide covers speed-up techniques for Blender.",
     type: "Scenarios",
     category: "Animation & 3D Arts",
     link: "https://www.cgdirector.com/how-to-speed-up-renders-in-blender/",

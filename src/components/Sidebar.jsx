@@ -26,7 +26,19 @@ const mobileSidebarVariants = {
 const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [isInstalled, setIsInstalled] = useState(false);
   const location = useLocation();
+
+  // Check if already installed
+  useEffect(() => {
+    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+      setIsInstalled(true);
+    }
+    const handler = (e) => setIsInstalled(e.matches);
+    const mq = window.matchMedia('(display-mode: standalone)');
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
 
   // Handle body scroll locking for mobile
   useEffect(() => {
@@ -118,14 +130,19 @@ const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
                 </ul>
               </nav>
 
-              {deferredPrompt && (
+              {!isInstalled && (
                 <div className="mt-6 pt-5 border-t border-organic-stone">
                   <button 
-                    onClick={handleInstallClick}
-                    className="w-full flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white p-3 rounded-xl font-semibold transition-colors"
+                    onClick={deferredPrompt ? handleInstallClick : undefined}
+                    disabled={!deferredPrompt}
+                    className={`w-full flex items-center justify-center gap-2 p-3 rounded-xl font-semibold transition-colors ${
+                      deferredPrompt
+                        ? 'bg-primary-600 hover:bg-primary-700 text-white cursor-pointer'
+                        : 'bg-organic-stone/50 text-organic-clay cursor-not-allowed'
+                    }`}
                   >
                     <Download size={18} />
-                    <span>Install App</span>
+                    <span>{deferredPrompt ? 'Install App' : 'Install (build only)'}</span>
                   </button>
                 </div>
               )}
@@ -189,22 +206,25 @@ const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
           </ul>
         </nav>
 
-        {deferredPrompt && (
+        {!isInstalled && (
           <div className="mt-6 pt-5 border-t border-organic-stone/80 px-4">
             <button 
-              onClick={handleInstallClick}
-              title={!isDesktopOpen ? "Install Web App" : ""}
-              className={`flex items-center justify-center gap-2 bg-organic-charcoal hover:bg-black text-organic-cream p-2.5 rounded-xl font-semibold transition-all shadow-sm ${
-                isDesktopOpen ? 'w-full' : 'w-10 h-10 p-0 mx-auto'
-              }`}
+              onClick={deferredPrompt ? handleInstallClick : undefined}
+              title={!isDesktopOpen ? (deferredPrompt ? "Install Web App" : "Install not available in dev mode") : ""}
+              disabled={!deferredPrompt}
+              className={`flex items-center justify-center gap-2 p-2.5 rounded-xl font-semibold transition-all shadow-sm ${
+                deferredPrompt
+                  ? 'bg-organic-charcoal hover:bg-black text-organic-cream cursor-pointer'
+                  : 'bg-organic-stone/50 text-organic-clay cursor-not-allowed'
+              } ${isDesktopOpen ? 'w-full' : 'w-10 h-10 p-0 mx-auto'}`}
             >
               <Download size={18} className="shrink-0" />
               <motion.span
                 initial={false}
                 animate={{ opacity: isDesktopOpen ? 1 : 0, width: isDesktopOpen ? "auto" : 0 }}
-                className="overflow-hidden whitespace-nowrap"
+                className="overflow-hidden whitespace-nowrap text-sm"
               >
-                Install App
+                {deferredPrompt ? 'Install App' : 'Install (build only)'}
               </motion.span>
             </button>
           </div>

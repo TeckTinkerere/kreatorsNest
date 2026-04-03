@@ -138,7 +138,7 @@ const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
       <motion.aside 
         initial={false}
         animate={{ width: isDesktopOpen ? 256 : 80 }}
-        className="hidden md:flex flex-col fixed top-0 left-0 h-screen bg-organic-cream border-r border-organic-stone py-5 z-30 overflow-x-hidden overflow-y-auto overflow-y-hidden hover:overflow-y-auto custom-scrollbar"
+        className="hidden md:flex flex-col fixed top-0 left-0 h-screen bg-organic-cream border-r border-organic-stone py-5 z-30 overflow-x-hidden overflow-y-auto hover:overflow-y-auto custom-scrollbar"
       >
         <div className="flex items-center justify-between px-5 mb-8 relative pt-2">
           <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity min-w-max">

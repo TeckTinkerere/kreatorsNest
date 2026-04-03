@@ -92,7 +92,7 @@ const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
               className="fixed inset-y-0 left-0 w-64 bg-organic-cream text-organic-charcoal p-5 z-40 shadow-2xl overflow-y-auto flex flex-col md:hidden"
             >
               <div className="flex items-center gap-3 mb-8 pt-2 pl-2">
-                <div className="w-8 h-8 bg-primary-600 rounded-lg shrink-0"></div>
+                <img src="/logomain-bg.png" alt="KreatorNest Logo" className="w-8 h-8 object-contain shrink-0" />
                 <h1 className="text-2xl font-serif font-semibold tracking-tight">KreatorNest</h1>
               </div>
 
@@ -142,7 +142,7 @@ const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
       >
         <div className="flex items-center justify-between px-5 mb-8 relative pt-2">
           <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity min-w-max">
-            <div className="w-8 h-8 rounded-full bg-primary-600 shrink-0"></div>
+            <img src="/logomain.png" alt="KreatorNest Logo" className="w-8 h-8 object-contain shrink-0" />
             <motion.h1 
               initial={false}
               animate={{ opacity: isDesktopOpen ? 1 : 0, width: isDesktopOpen ? "auto" : 0 }}

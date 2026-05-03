@@ -9,6 +9,7 @@ import Feedback from './pages/Feedback';
 import ResourceHub from './pages/ResourceHub';
 import ScenariosHub from './pages/ScenariosHub';
 import ScenarioArticle from './pages/ScenarioArticle';
+import Contributors from './pages/Contributors';
 
 function App() {
   const [isDesktopOpen, setIsDesktopOpen] = useState(true);
@@ -37,6 +38,7 @@ function App() {
               <Route path="/communities" element={<ResourceHub key="communities" title="Communities" typeDescription="Network, get feedback, and grow with peers." hubType="Communities" />} />
               <Route path="/scenarios" element={<ScenariosHub />} />
               <Route path="/scenarios/:slug" element={<ScenarioArticle />} />
+              <Route path="/contributors" element={<Contributors />} />
             </Routes>
           </AnimatePresence>
         </main>

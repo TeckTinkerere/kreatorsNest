@@ -15,6 +15,7 @@ const navItems = [
   { path: '/gigs', icon: <Briefcase size={20} />, label: 'Gigs Boards' },
   { path: '/communities', icon: <Users size={20} />, label: 'Communities' },
   { path: '/scenarios', icon: <LayoutTemplate size={20} />, label: 'Scenarios' },
+  { path: '/contributors', icon: <Users size={20} />, label: 'Contributors' },
   { path: '/feedback', icon: <MessageSquare size={20} />, label: 'Feedback' }
 ];
 

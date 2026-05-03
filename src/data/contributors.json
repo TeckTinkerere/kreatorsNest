@@ -1,0 +1,47 @@
+[
+  {
+    "id": "1",
+    "name": "Jane Doe",
+    "avatar": "",
+    "bio": "Visual storyteller and motion designer sharing tutorials on color grading and After Effects workflows.",
+    "contributions": [
+      "Color Grading Masterclass",
+      "After Effects Tips for Beginners"
+    ],
+    "socials": {
+      "youtube": "https://youtube.com/@janedoe",
+      "twitter": "https://twitter.com/janedoe",
+      "instagram": "https://instagram.com/janedoe"
+    }
+  },
+  {
+    "id": "2",
+    "name": "Alex Rivera",
+    "avatar": "",
+    "bio": "Freelance photographer and educator covering portrait lighting and business strategies for creatives.",
+    "contributions": [
+      "Portrait Lighting Setup Guide",
+      "How to Price Your Photography"
+    ],
+    "socials": {
+      "youtube": "https://youtube.com/@alexrivera",
+      "instagram": "https://instagram.com/alexrivera",
+      "tiktok": "https://tiktok.com/@alexrivera"
+    }
+  },
+  {
+    "id": "3",
+    "name": "Sam Kim",
+    "avatar": "",
+    "bio": "UI/UX designer and Figma enthusiast. Creates content on design systems and freelance workflows.",
+    "contributions": [
+      "Building Design Systems in Figma",
+      "Freelance Client Onboarding Process"
+    ],
+    "socials": {
+      "twitter": "https://twitter.com/samkim",
+      "linkedin": "https://linkedin.com/in/samkim",
+      "youtube": "https://youtube.com/@samkim"
+    }
+  }
+]

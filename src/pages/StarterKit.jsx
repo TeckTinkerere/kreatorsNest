@@ -11,7 +11,10 @@ const StarterKit = () => {
     { label: "Motion Graphics", filter: "Motion Graphics" },
     { label: "UX/UI & Web Design", filter: "UX/UI & Web Design" },
     { label: "Animation & 3D Arts", filter: "Animation & 3D Arts" },
-    { label: "Media Production", filter: "Media Production" }
+    { label: "Media Production", filter: "Media Production" },
+    { label: "Photography", filter: "Photography" },
+    { label: "Video Editing", filter: "Video Editing" },
+    { label: "Videography", filter: "Videography" }
   ];
   
   const [activeRole, setActiveRole] = useState(roles[0].filter);

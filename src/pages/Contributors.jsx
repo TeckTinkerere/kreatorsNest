@@ -255,7 +255,7 @@ const Contributors = () => {
             Kreator's Nest is built by the community. Share your resources and knowledge with the next generation of creators.
           </p>
           <a 
-            href="mailto:hello@kreatornest.com" 
+            href="mailto:mohamedaslam.of@gmail.com" 
             className="inline-flex items-center gap-2 px-10 py-4 bg-white text-organic-charcoal rounded-full font-bold text-base hover:bg-primary-50 transition-all shadow-xl shadow-white/5"
           >
             <Mail size={18} />

@@ -3,12 +3,15 @@ import { AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import Sidebar from './components/Sidebar';
 import ScrollToTop from './components/ScrollToTop';
+import LegacyRedirect from './components/LegacyRedirect';
 import Home from './pages/Home';
 import StarterKit from './pages/StarterKit';
 import Feedback from './pages/Feedback';
-import Downloads from './pages/Downloads';
 import Documents from './pages/Documents';
-import ResourceHub from './pages/ResourceHub';
+import Essentials from './pages/Essentials';
+import Resources from './pages/Resources';
+import More from './pages/More';
+import Community from './pages/Community';
 import ScenariosHub from './pages/ScenariosHub';
 import ScenarioArticle from './pages/ScenarioArticle';
 import Contributors from './pages/Contributors';
@@ -27,15 +30,19 @@ function AnimatedRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/starter-kit" element={<StarterKit />} />
         <Route path="/feedback" element={<Feedback />} />
-        <Route path="/downloads" element={<Downloads />} />
         <Route path="/documents" element={<Documents />} />
+        <Route path="/essentials" element={<Essentials />} />
+        <Route path="/resources" element={<Resources />} />
+        <Route path="/more" element={<More />} />
+        <Route path="/community" element={<Community />} />
 
-        {/* Dynamic Resource Hub Routes */}
-        <Route path="/learning" element={<ResourceHub title="Learning" typeDescription="Courses, masterclasses, and step-by-step guides." hubType="Learning" />} />
-        <Route path="/tools" element={<ResourceHub title="Tools & Software" typeDescription="Boost your workflow with these handpicked applications." hubType="Tools" />} />
-        <Route path="/templates" element={<ResourceHub title="Templates" typeDescription="Drop-in templates to speed up administrative and design work." hubType="Templates" />} />
-        <Route path="/gigs" element={<ResourceHub title="Job Boards & Gigs" typeDescription="Find your next freelance client." hubType="Gigs" />} />
-        <Route path="/communities" element={<ResourceHub title="Communities" typeDescription="Network, get feedback, and grow with peers." hubType="Communities" />} />
+        {/* Legacy routes redirected to mode-aware hubs */}
+        <Route path="/templates" element={<LegacyRedirect from="/templates" />} />
+        <Route path="/downloads" element={<LegacyRedirect from="/downloads" />} />
+        <Route path="/learning" element={<LegacyRedirect from="/learning" />} />
+        <Route path="/tools" element={<LegacyRedirect from="/tools" />} />
+        <Route path="/gigs" element={<LegacyRedirect from="/gigs" />} />
+        <Route path="/communities" element={<LegacyRedirect from="/communities" />} />
 
         <Route path="/scenarios" element={<ScenariosHub />} />
         <Route path="/scenarios/:slug" element={<ScenarioArticle />} />

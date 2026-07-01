@@ -1,34 +1,39 @@
 import { Link, useLocation } from 'react-router-dom';
 import {
-  Home, Package, BookOpen, Wrench, FileText, 
-  Briefcase, Users, LayoutTemplate, MessageSquare, Menu, X, Download, ChevronLeft, ChevronRight
+  Menu, X, Download, ChevronLeft, ChevronRight
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect } from 'react';
-
-const navItems = [
-  { path: '/', icon: <Home size={20} />, label: 'Home' },  
-  { path: '/starter-kit', icon: <Package size={20} />, label: 'Starter Kit' },
-  { path: '/learning', icon: <BookOpen size={20} />, label: 'Learning' },
-  { path: '/tools', icon: <Wrench size={20} />, label: 'Tools' },  
-  { path: '/templates', icon: <FileText size={20} />, label: 'Templates' },
-  { path: '/gigs', icon: <Briefcase size={20} />, label: 'Gigs Boards' },
-  { path: '/communities', icon: <Users size={20} />, label: 'Communities' },
-  { path: '/scenarios', icon: <LayoutTemplate size={20} />, label: 'Scenarios' },
-  { path: '/contributors', icon: <Users size={20} />, label: 'Contributors' },
-  { path: '/feedback', icon: <MessageSquare size={20} />, label: 'Feedback' }
-];
+import { useState, useEffect, useRef } from 'react';
+import { useFocusTrap } from '../hooks/useFocusTrap';
+import { getNavForMode } from '../config/navigation';
+import { useBrowseMode } from '../context/BrowseModeContext';
+import BrowseModeToggle from './BrowseModeToggle';
+import { NAV_ICONS } from '../utils/navIcons';
 
 const mobileSidebarVariants = {
   open: { x: 0, transition: { type: "tween", ease: "circOut", duration: 0.3 } },
   closed: { x: "-100%", transition: { type: "tween", ease: "circIn", duration: 0.2 } }
 };
 
+/**
+ * Sidebar
+ * Responsive navigation sidebar with mobile drawer and desktop collapsible variants.
+ *
+ * @param {object} props
+ * @param {boolean} props.isDesktopOpen - Whether the desktop sidebar is expanded
+ * @param {function} props.setIsDesktopOpen - Setter for desktop sidebar open state
+ */
 const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isInstalled, setIsInstalled] = useState(false);
+  const { effectiveMode } = useBrowseMode();
+  const navItems = getNavForMode(effectiveMode);
   const location = useLocation();
+  // Ref for the mobile drawer — used by useFocusTrap
+  const mobileDrawerRef = useRef(null);
+  // Trap focus inside the mobile drawer while it's open (WCAG 2.1 §F79)
+  useFocusTrap(mobileDrawerRef, isMobileOpen);
 
   // Check if already installed
   useEffect(() => {
@@ -94,8 +99,10 @@ const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
             />
             <motion.aside
               key="mobile-sidebar"
-              role="navigation"
-              aria-label="Main Sidebar"
+              ref={mobileDrawerRef}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Main navigation"
               tabIndex={-1}
               onKeyDown={handleKeyDown}
               initial="closed"
@@ -113,6 +120,7 @@ const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
                 <ul className="space-y-1">
                   {navItems.map((item) => {
                     const isActive = location.pathname === item.path;
+                    const Icon = NAV_ICONS[item.iconKey];
                     return (
                       <li key={item.path}>
                         <Link
@@ -122,7 +130,7 @@ const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
                             isActive ? 'bg-white text-primary-700 shadow-sm border border-organic-stone' : 'text-organic-clay hover:bg-organic-stone/50 hover:text-organic-charcoal'
                           }`}
                         >
-                          {item.icon}
+                          {Icon ? <Icon size={20} /> : null}
                           <span>{item.label}</span>
                         </Link>
                       </li>
@@ -131,8 +139,12 @@ const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
                 </ul>
               </nav>
 
+              <div className="mt-6 pt-5 border-t border-organic-stone">
+                <BrowseModeToggle isDesktopOpen={true} />
+              </div>
+
               {!isInstalled && (
-                <div className="mt-6 pt-5 border-t border-organic-stone">
+                <div className="mt-4">
                   <button 
                     onClick={deferredPrompt ? handleInstallClick : undefined}
                     disabled={!deferredPrompt}
@@ -183,6 +195,7 @@ const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
           <ul className="space-y-1">
             {navItems.map((item) => {
               const isActive = location.pathname === item.path;
+              const Icon = NAV_ICONS[item.iconKey];
               return (
                 <li key={item.path}>
                   <Link
@@ -192,7 +205,7 @@ const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
                       isActive ? 'bg-white text-primary-700 shadow-sm border border-organic-stone' : 'text-organic-clay hover:bg-organic-stone/50 hover:text-organic-charcoal'
                     } ${!isDesktopOpen && 'justify-center px-0'}`}
                   >
-                    <div className="shrink-0">{item.icon}</div>
+                    <div className="shrink-0">{Icon ? <Icon size={20} /> : null}</div>
                     <motion.span
                       initial={false}
                       animate={{ opacity: isDesktopOpen ? 1 : 0, width: isDesktopOpen ? "auto" : 0 }}
@@ -207,8 +220,12 @@ const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
           </ul>
         </nav>
 
+        <div className="mt-6 pt-5 border-t border-organic-stone/80 px-3">
+          <BrowseModeToggle isDesktopOpen={isDesktopOpen} />
+        </div>
+
         {!isInstalled && (
-          <div className="mt-6 pt-5 border-t border-organic-stone/80 px-4">
+          <div className="mt-4 px-4">
             <button 
               onClick={deferredPrompt ? handleInstallClick : undefined}
               title={!isDesktopOpen ? (deferredPrompt ? "Install Web App" : "Install not available in dev mode") : ""}

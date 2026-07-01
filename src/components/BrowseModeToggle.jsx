@@ -1,12 +1,23 @@
 import { Map, Compass } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useBrowseMode } from '../context/BrowseModeContext';
+import { isRouteAvailable, MODE_HOME } from '../config/navigation';
 
 export default function BrowseModeToggle({ isDesktopOpen = true }) {
   const { effectiveMode, setMode } = useBrowseMode();
+  const navigate = useNavigate();
+  const location = useLocation();
   const current = effectiveMode;
 
   const handleSelect = (mode) => {
-    if (mode !== current) setMode(mode);
+    if (mode === current) return;
+    setMode(mode, {
+      onAfterSet: (nextMode) => {
+        if (!isRouteAvailable(location.pathname, nextMode)) {
+          navigate(MODE_HOME[nextMode], { replace: true });
+        }
+      },
+    });
   };
 
   if (!isDesktopOpen) {

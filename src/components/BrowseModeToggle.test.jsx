@@ -1,12 +1,15 @@
 import { render, screen, fireEvent } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { BrowseModeProvider } from '../context/BrowseModeContext';
 import BrowseModeToggle from './BrowseModeToggle';
 
 const renderToggle = (props = {}) =>
   render(
-    <BrowseModeProvider>
-      <BrowseModeToggle isDesktopOpen={true} {...props} />
-    </BrowseModeProvider>
+    <MemoryRouter>
+      <BrowseModeProvider>
+        <BrowseModeToggle isDesktopOpen={true} {...props} />
+      </BrowseModeProvider>
+    </MemoryRouter>
   );
 
 test('renders Guided and Explore segments', () => {

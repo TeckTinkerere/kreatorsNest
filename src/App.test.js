@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import App from './App';
 
 // Global browser API stubs (matchMedia, IntersectionObserver, scrollTo) live in setupTests.js.
@@ -77,4 +77,21 @@ test('renders sidebar navigation links', () => {
   // Explore mode is the default, so the first primary nav label is Discover.
   const discoverLinks = screen.getAllByRole('link', { name: /discover/i });
   expect(discoverLinks.length).toBeGreaterThan(0);
+});
+
+/**
+ * Smoke test: browse mode controls are present in the sidebar.
+ */
+test('renders browse mode toggle', () => {
+  render(<App />);
+  const toggleGroups = screen.getAllByRole('group', { name: /browse mode/i });
+  expect(toggleGroups.length).toBeGreaterThan(0);
+
+  const hasGuidedExploreButtons = toggleGroups.some((group) => {
+    const guided = within(group).queryByRole('button', { name: /guided/i });
+    const explore = within(group).queryByRole('button', { name: /explore/i });
+    return Boolean(guided && explore);
+  });
+
+  expect(hasGuidedExploreButtons).toBe(true);
 });

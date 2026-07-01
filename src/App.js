@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import StarterKit from './pages/StarterKit';
 import Feedback from './pages/Feedback';
 import Downloads from './pages/Downloads';
+import Documents from './pages/Documents';
 import ResourceHub from './pages/ResourceHub';
 import ScenariosHub from './pages/ScenariosHub';
 import ScenarioArticle from './pages/ScenarioArticle';
@@ -27,6 +28,7 @@ function AnimatedRoutes() {
         <Route path="/starter-kit" element={<StarterKit />} />
         <Route path="/feedback" element={<Feedback />} />
         <Route path="/downloads" element={<Downloads />} />
+        <Route path="/documents" element={<Documents />} />
 
         {/* Dynamic Resource Hub Routes */}
         <Route path="/learning" element={<ResourceHub title="Learning" typeDescription="Courses, masterclasses, and step-by-step guides." hubType="Learning" />} />

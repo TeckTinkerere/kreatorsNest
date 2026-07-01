@@ -46,10 +46,20 @@ const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
     return () => mq.removeEventListener('change', handler);
   }, []);
 
-  // Handle body scroll locking for mobile
+  // Handle body scroll locking for mobile (html only — avoid double scrollbars)
   useEffect(() => {
-    document.body.style.overflow = isMobileOpen ? 'hidden' : 'auto';
-    return () => (document.body.style.overflow = 'auto');
+    const root = document.documentElement;
+    if (isMobileOpen) {
+      root.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+    } else {
+      root.style.overflow = '';
+      document.body.style.overflow = '';
+    }
+    return () => {
+      root.style.overflow = '';
+      document.body.style.overflow = '';
+    };
   }, [isMobileOpen]);
 
   // Handle PWA Installation event
@@ -109,11 +119,15 @@ const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
               animate="open"
               exit="closed"
               variants={mobileSidebarVariants}
-              className="fixed inset-y-0 left-0 w-64 bg-organic-cream text-organic-charcoal p-5 z-40 shadow-2xl overflow-y-auto flex flex-col md:hidden"
+              className="fixed inset-y-0 left-0 w-64 bg-organic-cream text-organic-charcoal p-5 z-40 shadow-2xl overflow-y-auto overflow-x-hidden custom-scrollbar flex flex-col md:hidden"
             >
-              <div className="flex items-center gap-3 mb-8 pt-2 pl-2">
-                <img src="/logomain-bg.png" alt="KreatorNest Logo" className="w-8 h-8 object-contain shrink-0" />
-                <h1 className="text-2xl font-serif font-semibold tracking-tight">KreatorNest</h1>
+              <div className="mb-8 shrink-0">
+                {/* Clearance for fixed close button (top-4 left-4) */}
+                <div className="h-14 shrink-0" aria-hidden="true" />
+                <div className="flex items-center gap-3 pl-2">
+                  <img src="/logomain-bg.png" alt="KreatorNest Logo" className="w-8 h-8 object-contain shrink-0" />
+                  <h1 className="text-2xl font-serif font-semibold tracking-tight">KreatorNest</h1>
+                </div>
               </div>
 
               <nav className="flex-1">

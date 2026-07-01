@@ -1,0 +1,68 @@
+INVOICE
+=======
+
+From:
+  [Your Full Name / Studio Name]
+  [Your Address]
+  [Your Email]
+  [Your Phone / WhatsApp]
+  [Your Website]
+
+To:
+  [Client Full Name / Company Name]
+  [Client Address]
+  [Client Email]
+
+--------------------------------------------------------------------
+Invoice Number:   INV-[YYYY]-[001]
+Invoice Date:     [DATE]
+Due Date:         [DATE + 14 days]
+Project Name:     [Project Name]
+--------------------------------------------------------------------
+
+SERVICES RENDERED
+--------------------------------------------------------------------
+#   Description                                    Amount
+--------------------------------------------------------------------
+1   [Service / Deliverable description]       [CURRENCY] [AMOUNT]
+2   [Service / Deliverable description]       [CURRENCY] [AMOUNT]
+3   [Service / Deliverable description]       [CURRENCY] [AMOUNT]
+--------------------------------------------------------------------
+    Subtotal:                                 [CURRENCY] [AMOUNT]
+    Discount (if any):                        [CURRENCY] -[AMOUNT]
+    GST / Tax (if applicable):                [CURRENCY] [AMOUNT]
+--------------------------------------------------------------------
+    TOTAL DUE:                                [CURRENCY] [AMOUNT]
+====================================================================
+
+PAYMENT DETAILS
+--------------------------------------------------------------------
+Bank:           [Bank Name]
+Account Name:   [Your Name]
+Account No:     [Account Number]
+Reference:      INV-[YYYY]-[001]
+
+OR
+
+PayNow UEN / Mobile: [Your PayNow Details]
+PayPal:              [Your PayPal Email]
+
+--------------------------------------------------------------------
+PAYMENT TERMS
+--------------------------------------------------------------------
+- Payment is due within [14] days of this invoice date.
+- Late payments incur a [2%] monthly fee after the due date.
+- All deliverables remain the property of [Your Name] until
+  full payment is received.
+
+--------------------------------------------------------------------
+NOTES
+--------------------------------------------------------------------
+[Any additional notes, e.g.:]
+- Deposit of [CURRENCY] [AMOUNT] received on [DATE] — already deducted above.
+- This invoice covers the final balance for [Project Name].
+- Thank you for your business!
+
+--------------------------------------------------------------------
+Questions? Contact [Your Email] or [Your Phone]
+--------------------------------------------------------------------

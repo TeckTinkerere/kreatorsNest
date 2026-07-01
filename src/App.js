@@ -71,7 +71,7 @@ function App() {
           <ScrollToTop />
           <Sidebar isDesktopOpen={isDesktopOpen} setIsDesktopOpen={setIsDesktopOpen} />
           <main
-            className={`flex-1 relative min-w-0 max-w-full transition-all duration-300 ease-in-out pt-16 md:pt-0 ${
+            className={`flex-1 relative min-w-0 max-w-full overflow-x-hidden transition-all duration-300 ease-in-out pt-16 md:pt-0 ${
               isDesktopOpen ? 'md:ml-64' : 'md:ml-20'
             }`}
           >

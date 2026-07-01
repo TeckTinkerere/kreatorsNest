@@ -1,3 +1,8 @@
+/**
+ * KreatorNest
+ * Entry point for the React application. Renders the root App component
+ * inside StrictMode and invokes performance measurement (reportWebVitals).
+ */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';

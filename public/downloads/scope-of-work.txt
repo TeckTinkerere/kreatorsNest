@@ -1,0 +1,101 @@
+SCOPE OF WORK
+==============
+
+Project:  [Project Name]
+Client:   [Client Name / Company]
+Date:     [DATE]
+Version:  1.0
+
+This Scope of Work ("SOW") forms part of the Freelance Services Agreement
+dated [DATE] between [Freelancer Name] and [Client Name].
+
+--------------------------------------------------------------------
+PROJECT OVERVIEW
+--------------------------------------------------------------------
+[1–2 sentence summary of what the project is and its primary goal.]
+
+Example: "This project covers the creation of a complete visual identity
+system for [Brand Name], to be used across digital and print channels."
+
+--------------------------------------------------------------------
+DELIVERABLES
+--------------------------------------------------------------------
+The following deliverables are included in this SOW:
+
+INCLUDED:
+  1. [Deliverable name]
+     - [Specification / detail]
+     - [Format, dimensions, variants]
+
+  2. [Deliverable name]
+     - [Specification / detail]
+
+  3. [Deliverable name]
+     - [Specification / detail]
+
+NOT INCLUDED (explicitly out of scope):
+  - [List what you are NOT doing to prevent scope creep]
+  - [Example: "Website design or development"]
+  - [Example: "Photography or image sourcing"]
+  - [Example: "Copywriting or text content"]
+  - [Example: "Social media management or posting"]
+
+--------------------------------------------------------------------
+REVISIONS
+--------------------------------------------------------------------
+This SOW includes [2] rounds of revisions.
+
+A "revision round" is defined as: one consolidated batch of feedback
+delivered by the client, applied in a single pass by the freelancer.
+
+Additional revisions beyond those included are billed at
+[CURRENCY] [RATE] per hour, via a Change Order.
+
+--------------------------------------------------------------------
+TIMELINE
+--------------------------------------------------------------------
+Milestone                          Target Date
+-----------------------------------------------
+Project kickoff / deposit received  [DATE]
+Brief / assets due from client      [DATE]
+First draft delivery                [DATE]
+Client feedback due                 [DATE]
+Revision 1 delivery                 [DATE]
+Final delivery                      [DATE]
+
+--------------------------------------------------------------------
+CLIENT RESPONSIBILITIES
+--------------------------------------------------------------------
+To meet the timeline above, the Client agrees to:
+  - Provide all required assets, content, and information by [DATE]
+  - Respond to feedback requests within [48] hours
+  - Consolidate all feedback into a single document per round
+  - Designate one primary point of contact for approvals
+
+Delays caused by late client feedback will extend the timeline
+on a day-for-day basis.
+
+--------------------------------------------------------------------
+ASSUMPTIONS
+--------------------------------------------------------------------
+This SOW is based on the following assumptions:
+  - [Example: "All copy / text will be provided by the client"]
+  - [Example: "All photography / images will be sourced by the client"]
+  - [Example: "No more than [X] unique page templates required"]
+
+If these assumptions change, a Change Order will be required.
+
+--------------------------------------------------------------------
+ACCEPTANCE
+--------------------------------------------------------------------
+This Scope of Work is accepted by both parties as indicated below.
+
+CLIENT:
+Signature: ________________________  Date: __________
+Name:      ________________________
+
+FREELANCER:
+Signature: ________________________  Date: __________
+Name:      ________________________
+
+--------------------------------------------------------------------

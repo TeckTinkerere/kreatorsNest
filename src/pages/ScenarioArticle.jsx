@@ -2,7 +2,15 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Clock, User, Tag } from 'lucide-react';
 import { scenarioPosts } from '../data/scenarioPosts';
+import SEO from '../components/SEO';
 
+/**
+ * ScenarioArticle
+ * Displays a full scenario article by slug, with tags, author metadata, and rich content blocks.
+ *
+ * @param {object} routeProps - Route props (from react-router)
+ * @param {object} routeProps.match - Route match object
+ */
 const ScenarioArticle = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -18,12 +26,14 @@ const ScenarioArticle = () => {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="p-4 md:p-8 lg:p-12 max-w-3xl mx-auto min-h-screen"
-    >
+    <>
+      <SEO title={post?.title || "Article"} description={post?.excerpt || "Scenario article from KreatorNest"} ogType="article" />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="p-4 md:p-8 lg:p-12 max-w-3xl mx-auto min-h-screen"
+      >
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm text-organic-clay mb-10 mt-2">
         <button
@@ -117,6 +127,7 @@ const ScenarioArticle = () => {
         </button>
       </div>
     </motion.div>
+    </>
   );
 };
 

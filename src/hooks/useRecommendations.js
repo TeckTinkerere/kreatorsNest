@@ -1,15 +1,76 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { resourceData } from '../data/resources';
 
 const DB_NAME = 'KreatorNestDB';
 const DB_VERSION = 1;
 const STORE_NAME = 'userFavorites';
 
+/**
+ * useRecommendations
+ * Manages personalised content recommendations based on IndexedDB-stored user interaction history.
+ * The IndexedDB connection is opened once and cached for the lifetime of the hook instance.
+ *
+ * @returns {{ recommendations: Array, trackInteraction: Function, isReady: boolean }}
+ *   recommendations: array of up to 4 recommended resources;
+ *   trackInteraction: records a resource category interaction;
+ *   isReady: whether IndexedDB has been initialised
+ */
 export const useRecommendations = () => {
   const [recommendations, setRecommendations] = useState([]);
   const [isReady, setIsReady] = useState(false);
+  // Cache the db reference to avoid re-opening on every interaction
+  const dbRef = useRef(null);
 
-  // Initialize DB
+  /**
+   * generateRecommendations
+   * Reads interaction history from a live db reference and updates the recommendations state.
+   * Falls back to a random selection when no history exists.
+   *
+   * @param {IDBDatabase} db - The open IndexedDB database instance
+   */
+  const generateRecommendations = useCallback((db) => {
+    if (!db || !db.objectStoreNames.contains(STORE_NAME)) return;
+
+    const transaction = db.transaction(STORE_NAME, 'readonly');
+    const store = transaction.objectStore(STORE_NAME);
+    const getAllReq = store.getAll();
+
+    getAllReq.onsuccess = () => {
+      const history = getAllReq.result;
+
+      if (!history || history.length === 0) {
+        // No history — serve a random sample without mutating the shared module export
+        const shuffled = [...resourceData].sort(() => 0.5 - Math.random());
+        setRecommendations(shuffled.slice(0, 4));
+        return;
+      }
+
+      // Sort categories by most interactions
+      const topCategories = [...history]
+        .sort((a, b) => b.interactions - a.interactions)
+        .map(h => h.categoryId);
+
+      // Collect resources matching top categories (preserves category priority order)
+      let recs = topCategories.flatMap(cat =>
+        resourceData.filter(r => r.category === cat)
+      );
+
+      // Pad to at least 4 with resources from other categories
+      if (recs.length < 4) {
+        const existingIds = new Set(recs.map(r => r.id));
+        const others = resourceData
+          .filter(r => !existingIds.has(r.id))
+          .slice(0, 4 - recs.length);
+        recs = [...recs, ...others];
+      }
+
+      // Deduplicate by id (correct object deduplication — Set deduplicates by reference, not value)
+      const unique = [...new Map(recs.map(r => [r.id, r])).values()].slice(0, 4);
+      setRecommendations(unique);
+    };
+  }, []);
+
+  // Open the IndexedDB connection once on mount
   useEffect(() => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
 
@@ -20,87 +81,51 @@ export const useRecommendations = () => {
       }
     };
 
-    request.onsuccess = () => {
+    request.onsuccess = (e) => {
+      dbRef.current = e.target.result;
       setIsReady(true);
-      generateRecommendations();
+      generateRecommendations(dbRef.current);
     };
 
     request.onerror = (e) => {
-      console.error("IndexedDB Error:", e);
+      console.error('IndexedDB Error:', e);
     };
-  }, []);
 
-  const trackInteraction = (resourceCategory) => {
-    if (!resourceCategory) return;
-    
-    const request = indexedDB.open(DB_NAME, DB_VERSION);
-    request.onsuccess = (e) => {
-      const db = e.target.result;
-      const transaction = db.transaction(STORE_NAME, 'readwrite');
-      const store = transaction.objectStore(STORE_NAME);
-      
-      const getReq = store.get(resourceCategory);
-      getReq.onsuccess = () => {
-        let data = getReq.result;
-        if (data) {
-          data.interactions += 1;
-        } else {
-          data = { categoryId: resourceCategory, interactions: 1 };
-        }
-        store.put(data);
-      };
-      
-      transaction.oncomplete = () => {
-        generateRecommendations(); // Refresh after interacting
-      };
+    return () => {
+      // Close the connection when the hook unmounts to free resources
+      dbRef.current?.close();
+      dbRef.current = null;
     };
-  };
+  }, [generateRecommendations]);
 
-  const generateRecommendations = () => {
-    const request = indexedDB.open(DB_NAME, DB_VERSION);
-    request.onsuccess = (e) => {
-      const db = e.target.result;
-      if(!db.objectStoreNames.contains(STORE_NAME)) return; // Failsafe
-      
-      const transaction = db.transaction(STORE_NAME, 'readonly');
-      const store = transaction.objectStore(STORE_NAME);
-      const getAllReq = store.getAll();
+  /**
+   * trackInteraction
+   * Increments the interaction count for a given resource category in IndexedDB,
+   * then refreshes recommendations.
+   *
+   * @param {string} resourceCategory - The category identifier to track
+   */
+  const trackInteraction = useCallback((resourceCategory) => {
+    if (!resourceCategory || !dbRef.current) return;
 
-      getAllReq.onsuccess = () => {
-        const history = getAllReq.result; // Array of { categoryId, interactions }
-        
-        // If no history, showcase random/curated selection
-        if (!history || history.length === 0) {
-          const defaultRecs = resourceData
-            .sort(() => 0.5 - Math.random()) // very simple randomizing
-            .slice(0, 4);
-          setRecommendations(defaultRecs);
-          return;
-        }
+    const db = dbRef.current;
+    const transaction = db.transaction(STORE_NAME, 'readwrite');
+    const store = transaction.objectStore(STORE_NAME);
 
-        // Sort categories by highest interaction
-        history.sort((a, b) => b.interactions - a.interactions);
-        const topCategories = history.map(h => h.categoryId);
-
-        // Filter resources that belong to top categories
-        // Give higher preference or just take top ones
-        let recs = [];
-        topCategories.forEach(cat => {
-          const matches = resourceData.filter(r => r.category === cat);
-          recs = [...recs, ...matches];
-        });
-        
-        // Fill the rest with random unique if we don't have enough
-        if (recs.length < 4) {
-          const others = resourceData.filter(r => !recs.includes(r)).slice(0, 4 - recs.length);
-          recs = [...recs, ...others];
-        }
-
-        // Return top 4 unique (Set removes duplicates potentially caused if poor data map)
-        setRecommendations([...new Set(recs)].slice(0, 4));
-      };
+    const getReq = store.get(resourceCategory);
+    getReq.onsuccess = () => {
+      const existing = getReq.result;
+      store.put(
+        existing
+          ? { ...existing, interactions: existing.interactions + 1 }
+          : { categoryId: resourceCategory, interactions: 1 }
+      );
     };
-  };
+
+    transaction.oncomplete = () => {
+      generateRecommendations(db);
+    };
+  }, [generateRecommendations]);
 
   return { recommendations, trackInteraction, isReady };
 };

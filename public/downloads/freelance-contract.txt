@@ -1,0 +1,124 @@
+FREELANCE SERVICES AGREEMENT
+=============================
+
+This Freelance Services Agreement ("Agreement") is entered into as of [DATE]
+between:
+
+CLIENT: [Client Full Name / Company Name]
+Address: [Client Address]
+Email: [Client Email]
+
+FREELANCER: [Your Full Name]
+Address: [Your Address]
+Email: [Your Email]
+
+--------------------------------------------------------------------
+1. SCOPE OF WORK
+--------------------------------------------------------------------
+The Freelancer agrees to provide the following services ("Services"):
+
+[Describe the deliverables clearly and specifically, e.g.:
+- Design of a brand identity package including primary logo, secondary logo,
+  colour palette, and typography specification
+- Delivery in SVG, PNG (transparent, white, black variants), and PDF formats
+- Up to 3 initial concepts and 2 rounds of revisions]
+
+Any work outside this scope requires a written Change Order (see Section 5).
+
+--------------------------------------------------------------------
+2. TIMELINE
+--------------------------------------------------------------------
+Project Start Date:     [DATE]
+First Draft Delivery:   [DATE]
+Final Delivery:         [DATE]
+
+Timelines are contingent on the Client providing required materials (briefs,
+assets, feedback) within 48 hours of each request. Delays caused by the Client
+will extend the project timeline accordingly.
+
+--------------------------------------------------------------------
+3. PAYMENT TERMS
+--------------------------------------------------------------------
+Total Project Fee:      [CURRENCY] [AMOUNT]
+
+Payment Schedule:
+  - 50% deposit due before work commences:  [CURRENCY] [AMOUNT]
+  - 50% balance due upon final delivery:    [CURRENCY] [AMOUNT]
+
+Payment Method: [Bank Transfer / PayNow / PayPal / Other]
+Late Payment: Invoices unpaid after [14] days incur a [2%] monthly late fee.
+
+Ownership of all deliverables transfers to the Client only upon receipt of
+full payment. Until then, the Freelancer retains all intellectual property rights.
+
+--------------------------------------------------------------------
+4. REVISIONS
+--------------------------------------------------------------------
+This Agreement includes [2] rounds of revisions at no additional cost.
+A "revision round" means one consolidated set of feedback applied in one pass.
+
+Additional revision rounds beyond the included allowance are billed at
+[CURRENCY] [HOURLY RATE] per hour, invoiced separately.
+
+--------------------------------------------------------------------
+5. CHANGE ORDERS
+--------------------------------------------------------------------
+Any request for work outside the agreed Scope of Work must be submitted in
+writing. The Freelancer will provide a Change Order detailing the additional
+cost and timeline impact. Work on the change will not begin until the Change
+Order is signed by both parties.
+
+--------------------------------------------------------------------
+6. CONFIDENTIALITY
+--------------------------------------------------------------------
+Both parties agree to keep confidential any proprietary information shared
+during this project and not to disclose it to third parties without prior
+written consent.
+
+--------------------------------------------------------------------
+7. CREDIT & PORTFOLIO
+--------------------------------------------------------------------
+Unless agreed otherwise in writing, the Freelancer reserves the right to
+display completed work in their portfolio, website, and social media for
+promotional purposes.
+
+--------------------------------------------------------------------
+8. CANCELLATION
+--------------------------------------------------------------------
+If the Client cancels the project after work has commenced:
+- The deposit is non-refundable.
+- Any work completed beyond the deposit value will be invoiced at the agreed
+  pro-rata rate and is due within 14 days.
+
+--------------------------------------------------------------------
+9. LIMITATION OF LIABILITY
+--------------------------------------------------------------------
+The Freelancer's total liability under this Agreement shall not exceed the
+total fees paid by the Client for the Services.
+
+--------------------------------------------------------------------
+10. GOVERNING LAW
+--------------------------------------------------------------------
+This Agreement shall be governed by the laws of [JURISDICTION, e.g. Singapore].
+Disputes will be resolved through good-faith negotiation, then mediation,
+before any legal proceedings.
+
+--------------------------------------------------------------------
+SIGNATURES
+--------------------------------------------------------------------
+By signing below, both parties agree to the terms of this Agreement.
+
+CLIENT:
+Signature: ________________________  Date: __________
+Name:      ________________________
+Title:     ________________________
+
+FREELANCER:
+Signature: ________________________  Date: __________
+Name:      ________________________
+
+--------------------------------------------------------------------
+Note: This template is provided for general reference. It is not legal advice.
+Consider having a qualified legal professional review your contracts for your
+specific jurisdiction and situation.
+--------------------------------------------------------------------

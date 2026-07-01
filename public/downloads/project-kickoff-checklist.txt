@@ -1,0 +1,88 @@
+PROJECT KICKOFF CHECKLIST
+==========================
+
+Use this before starting any new freelance project. Tick every item before
+you put a single hour of work in.
+
+Project: _______________________________  Date: _______________
+Client:  _______________________________
+
+--------------------------------------------------------------------
+BEFORE YOU START
+--------------------------------------------------------------------
+
+LEGAL & FINANCIAL
+[ ] Contract signed by both parties
+[ ] Deposit received (minimum 50% recommended)
+[ ] Payment method confirmed and tested
+[ ] Invoice for deposit sent and marked paid
+[ ] Late payment clause included in contract
+[ ] Revision limit specified in contract (recommended: 2 rounds)
+[ ] File ownership transfer terms stated in contract
+
+CLIENT INFORMATION
+[ ] Client brief completed and received
+[ ] Target audience understood
+[ ] Brand assets received (logos, fonts, colours) — if applicable
+[ ] Reference examples / mood board reviewed
+[ ] Hard deadline confirmed in writing
+[ ] Final decision-maker identified and confirmed as main contact
+
+PROJECT SETUP
+[ ] Shared folder created and shared with client
+  (Google Drive / Dropbox / Notion — choose one, stick to one)
+[ ] Project timeline documented and shared with client
+[ ] Communication method agreed (email / WhatsApp / Slack)
+[ ] Response time expectations set (e.g. 24-hour reply window)
+[ ] Kickoff call scheduled or completed
+[ ] Kickoff call summary emailed to client (if call held)
+
+--------------------------------------------------------------------
+DURING THE PROJECT
+--------------------------------------------------------------------
+
+[ ] First draft delivered by: ____________________
+[ ] Client feedback received within agreed window
+[ ] Revision round 1 completed: ____________________
+[ ] Revision round 2 completed (if needed): ___________
+[ ] Any out-of-scope requests handled via Change Order
+[ ] Progress updates sent to client every [X] days
+[ ] All communications documented via email
+
+--------------------------------------------------------------------
+BEFORE FINAL DELIVERY
+--------------------------------------------------------------------
+
+[ ] All deliverables proofread / QA checked
+[ ] Files exported in all agreed formats
+[ ] Final files organised in client folder
+[ ] Final invoice prepared and ready to send
+[ ] Watermarks / working files removed (if applicable)
+
+--------------------------------------------------------------------
+FINAL DELIVERY & CLOSE
+--------------------------------------------------------------------
+
+[ ] Final files delivered to client
+[ ] Final invoice sent
+[ ] Handover call / walkthrough completed (if applicable)
+[ ] Usage instructions included (if complex deliverable)
+[ ] Final payment received
+[ ] Testimonial / review requested (do this at the happy moment!)
+[ ] Project archived in your records
+[ ] Lessons learned noted for next project
+
+--------------------------------------------------------------------
+POST-PROJECT
+--------------------------------------------------------------------
+
+[ ] Work added to portfolio (with client permission)
+[ ] Client added to CRM / contact list for future follow-up
+[ ] Case study started (optional but valuable)
+
+--------------------------------------------------------------------
+Notes:
+_____________________________________________
+_____________________________________________
+_____________________________________________
+--------------------------------------------------------------------

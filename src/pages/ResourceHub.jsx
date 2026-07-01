@@ -1,15 +1,26 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { resourceData, CATEGORIES } from '../data/resources';
+import { resourceData } from '../data/resources';
 import { useRecommendations } from '../hooks/useRecommendations';
 import CategoryFilter from '../components/CategoryFilter';
 import ResourceCard from '../components/ResourceCard';
+import SEO from '../components/SEO';
 
+/**
+ * ResourceHub
+ * Generic resource listing page with category filtering and animated grid.
+ *
+ * @param {object} props
+ * @param {string} props.title - Page heading
+ * @param {string} props.typeDescription - Subtitle/description text
+ * @param {string} props.hubType - Resource type key to filter from resourceData
+ */
 const ResourceHub = ({ title, typeDescription, hubType }) => {
   const [activeCategory, setActiveCategory] = useState("All");
   const { trackInteraction } = useRecommendations();
 
   const filteredResources = useMemo(() => {
+    // Derive categories from the actual resources for this hubType
     return resourceData.filter(resource => {
       const matchType = resource.type === hubType;
       const matchCat = activeCategory === "All" || resource.category === activeCategory;
@@ -17,13 +28,23 @@ const ResourceHub = ({ title, typeDescription, hubType }) => {
     });
   }, [hubType, activeCategory]);
 
+  // Only show categories that have resources for this hub type
+  const availableCategories = useMemo(() => {
+    const cats = resourceData
+      .filter(r => r.type === hubType)
+      .map(r => r.category);
+    return ['All', ...new Set(cats)];
+  }, [hubType]);
+
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="p-4 md:p-8 lg:p-12 max-w-[1400px] mx-auto min-h-screen"
-    >
+    <>
+      <SEO title={title} description={typeDescription} />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="p-4 md:p-8 lg:p-12 max-w-[1400px] mx-auto min-h-screen"
+      >
       <div className="mb-10 max-w-4xl">
         <h1 className="text-4xl md:text-5xl lg:text-7xl font-serif text-organic-charcoal mb-4 leading-tight tracking-tight">
           {title}
@@ -34,10 +55,10 @@ const ResourceHub = ({ title, typeDescription, hubType }) => {
       </div>
 
       <div className="sticky top-0 z-20 bg-surface/90 backdrop-blur-md pb-4 pt-2 -mx-4 px-4 md:mx-0 md:px-0 border-b border-organic-stone/30 mb-8">
-        <CategoryFilter 
-          categories={CATEGORIES} 
-          activeCategory={activeCategory} 
-          setActiveCategory={setActiveCategory} 
+        <CategoryFilter
+          categories={availableCategories}
+          activeCategory={activeCategory}
+          setActiveCategory={setActiveCategory}
         />
       </div>
 
@@ -65,6 +86,7 @@ const ResourceHub = ({ title, typeDescription, hubType }) => {
         )}
       </AnimatePresence>
     </motion.div>
+    </>
   );
 };
 

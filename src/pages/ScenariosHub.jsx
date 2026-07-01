@@ -1,20 +1,23 @@
-import { useMemo, useState, useEffect, useRef } from 'react';
+import { lazy, Suspense, useMemo, useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Clock, ArrowRight, ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
 import { resourceData } from '../data/resources';
 import { scenarioPosts } from '../data/scenarioPosts';
+import { useBrowseMode } from '../context/BrowseModeContext';
 import { useRecommendations } from '../hooks/useRecommendations';
 import { usePagination } from '../hooks/usePagination';
 import ResourceCard from '../components/ResourceCard';
-import VerticalScrollSlider from '../components/VerticalScrollSlider';
+import SEO from '../components/SEO';
 
 // ─── Config ────────────────────────────────────────────────────────────────
 const ARTICLES_PER_PAGE = 4;  // 2 top row + 2 bottom row
 const PAGINATION_ITEMS  = 5;
 const SCROLL_PANEL_H    = 520; // px — height of the scrollable blog panel
+const ScrollPanel = lazy(() => import('../components/VerticalScrollSlider'));
 
 // ─── Seeded shuffle (stable per session, random across reloads) ────────────
+/** Deterministic shuffle keyed on sessionStorage seed (stable within a session, random across reloads). */
 const seededShuffle = (arr) => {
   const a = [...arr];
   // Use a simple seed from session so it's random but stable during the session
@@ -32,7 +35,13 @@ const seededShuffle = (arr) => {
   return a;
 };
 
-// ─── BlogCard — grey bg, black text ────────────────────────────────────────
+/**
+ * BlogCard
+ * Card component linking to a scenario article with excerpt, read time, and date.
+ *
+ * @param {object} props
+ * @param {object} props.post - Scenario post data object
+ */
 const BlogCard = ({ post }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
@@ -75,7 +84,15 @@ const BlogCard = ({ post }) => (
   </motion.div>
 );
 
-// ─── Pagination Controls ────────────────────────────────────────────────────
+/**
+ * PaginationControls
+ * Renders paginated page buttons with ellipsis, prev/next, and active state.
+ *
+ * @param {object} props
+ * @param {number} props.currentPage - Currently active page number
+ * @param {number} props.totalPages - Total number of pages
+ * @param {(page: number) => void} props.onPageChange - Callback when a page is selected
+ */
 const PaginationControls = ({ currentPage, totalPages, onPageChange }) => {
   const { pages, showLeftEllipsis, showRightEllipsis } = usePagination({
     currentPage, totalPages, paginationItemsToDisplay: PAGINATION_ITEMS,
@@ -123,12 +140,17 @@ const PaginationControls = ({ currentPage, totalPages, onPageChange }) => {
 // ─── Filters ────────────────────────────────────────────────────────────────
 const FILTERS = ['All', 'Blog Articles', 'Visual Communication', 'Motion Graphics', 'UX/UI & Web Design', 'Animation & 3D Arts', 'Media Production'];
 
-// ─── ScenariosHub ───────────────────────────────────────────────────────────
+/**
+ * ScenariosHub
+ * Main scenarios page with filterable grid, paginated blog panel, and seeded random interleave of resources and articles.
+ */
 const ScenariosHub = () => {
+  const { effectiveMode } = useBrowseMode();
   const { trackInteraction } = useRecommendations();
   const [activeFilter, setActiveFilter] = useState('All');
   const [blogPage, setBlogPage] = useState(1);
   const scrollRef = useRef(null);
+  const isGuided = effectiveMode === 'guided';
 
   // Reset page + scroll to top of panel on filter/page change
   useEffect(() => { setBlogPage(1); }, [activeFilter]);
@@ -153,9 +175,8 @@ const ScenariosHub = () => {
   }, [activeFilter, scenarioResources]);
 
   // ── All view — seeded random interleave ───────────────────────────────
+  // Note: does NOT depend on activeFilter — it's computed once per session seed
   const mixedItems = useMemo(() => {
-    if (activeFilter !== 'All') return null;
-    // Shuffle both arrays with the same seed so order is random but stable per session
     const shuffledResources = seededShuffle(scenarioResources).map(d => ({ kind: 'resource', data: d }));
     const shuffledBlogs = seededShuffle(scenarioPosts).map(d => ({ kind: 'blog', data: d }));
     // Interleave: insert a blog card roughly every 2 resource cards
@@ -170,15 +191,22 @@ const ScenariosHub = () => {
     // Append remaining blog cards
     while (bi < shuffledBlogs.length) result.push(shuffledBlogs[bi++]);
     return result;
-  }, [activeFilter, scenarioResources]);
+  }, [scenarioResources]); // intentionally excludes activeFilter
+
+  const pinnedPosts = useMemo(
+    () => scenarioPosts.filter((post) => post.pinned).slice(0, 3),
+    []
+  );
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="p-4 md:p-8 lg:p-12 max-w-[1400px] mx-auto min-h-screen"
-    >
+    <>
+      <SEO title="Scenarios" description="Case studies on pricing, client management, and law — plus deep-dive articles from the field for creative freelancers." />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="p-4 md:p-8 lg:p-12 max-w-[1400px] mx-auto min-h-screen"
+      >
       {/* Header */}
       <div className="mb-10 max-w-4xl">
         <h1 className="text-4xl md:text-5xl lg:text-7xl font-serif text-organic-charcoal mb-4 leading-tight tracking-tight">
@@ -189,112 +217,136 @@ const ScenariosHub = () => {
         </p>
       </div>
 
-      {/* Filter bar */}
-      <div className="sticky top-0 z-20 bg-surface/90 backdrop-blur-md pb-4 pt-2 -mx-4 px-4 md:mx-0 md:px-0 border-b border-organic-stone/30 mb-8">
-        <div className="flex overflow-x-auto hide-scrollbar gap-2 py-4">
-          {FILTERS.map(filter => {
-            const isBlog = filter === 'Blog Articles';
-            const isActive = activeFilter === filter;
-            return (
-              <motion.button
-                key={filter}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => setActiveFilter(filter)}
-                className={`whitespace-nowrap px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 border
-                  ${isActive
-                    ? 'bg-organic-charcoal text-white border-organic-charcoal shadow-md'
-                    : isBlog
-                      ? 'bg-[#EBEBEB] text-black border-[#D5D5D5] hover:bg-[#DCDCDC]'
-                      : 'bg-white text-organic-charcoal border-organic-stone hover:bg-organic-stone/30'
-                  }`}
-              >
-                {filter}
-              </motion.button>
-            );
-          })}
-        </div>
-      </div>
-
-      <AnimatePresence mode="wait">
-
-        {/* ── Blog Articles paginated panel with custom slider ── */}
-        {isBlogFilter ? (
-          <motion.div
-            key="blog-panel"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="flex gap-4 items-start">
-              {/* Scrollable card area — hides native scrollbar */}
-              <div
-                ref={scrollRef}
-                style={{ maxHeight: SCROLL_PANEL_H }}
-                className="flex-1 overflow-y-auto hide-scrollbar"
-              >
-                <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6 md:gap-8 pb-2">
-                  <AnimatePresence mode="popLayout">
-                    {pagedBlogPosts.map(post => (
-                      <BlogCard key={post.id} post={post} />
-                    ))}
-                  </AnimatePresence>
-                </div>
-              </div>
-
-              {/* Custom vertical slider — replaces native scrollbar */}
-              <div className="shrink-0 flex items-center" style={{ height: SCROLL_PANEL_H }}>
-                <VerticalScrollSlider scrollRef={scrollRef} height={SCROLL_PANEL_H} />
-              </div>
-            </div>
-
-            <PaginationControls
-              currentPage={blogPage}
-              totalPages={totalBlogPages}
-              onPageChange={setBlogPage}
-            />
-            <p className="text-center text-xs text-organic-clay mt-3 pb-16">
-              Showing {Math.min((blogPage - 1) * ARTICLES_PER_PAGE + 1, scenarioPosts.length)}–{Math.min(blogPage * ARTICLES_PER_PAGE, scenarioPosts.length)} of {scenarioPosts.length} articles
-            </p>
-          </motion.div>
-
-        ) : (
-          /* ── Mixed / category grid ── */
-          <motion.div
-            key={`grid-${activeFilter}`}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
-            layout
-            className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6 md:gap-8 pb-16"
-          >
-            {activeFilter === 'All'
-              ? mixedItems.map(item =>
-                  item.kind === 'blog'
-                    ? <BlogCard key={item.data.id} post={item.data} />
-                    : <ResourceCard key={item.data.id} resource={item.data} onInteract={trackInteraction} />
-                )
-              : filteredResources.length > 0
-                ? filteredResources.map(r => (
-                    <ResourceCard key={r.id} resource={r} onInteract={trackInteraction} />
-                  ))
-                : (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="col-span-full text-center py-24 bg-white/50 rounded-3xl border border-organic-stone/50"
+      {isGuided ? (
+        <section className="pb-16">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6 md:gap-8">
+            {pinnedPosts.map((post) => (
+              <BlogCard key={post.id} post={post} />
+            ))}
+          </div>
+          <div className="mt-8 flex justify-center">
+            <Link
+              to="/scenarios?view=all"
+              className="inline-flex items-center gap-2 rounded-full border border-organic-charcoal px-6 py-3 text-sm font-semibold text-organic-charcoal hover:bg-organic-charcoal hover:text-organic-cream transition-colors duration-300"
+            >
+              See all articles
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+        </section>
+      ) : (
+        <>
+          {/* Filter bar */}
+          <div className="sticky top-0 z-20 bg-surface/90 backdrop-blur-md pb-4 pt-2 -mx-4 px-4 md:mx-0 md:px-0 border-b border-organic-stone/30 mb-8">
+            <div className="flex overflow-x-auto hide-scrollbar gap-2 py-4">
+              {FILTERS.map(filter => {
+                const isBlog = filter === 'Blog Articles';
+                const isActive = activeFilter === filter;
+                return (
+                  <motion.button
+                    key={filter}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setActiveFilter(filter)}
+                    className={`whitespace-nowrap px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 border
+                      ${isActive
+                        ? 'bg-organic-charcoal text-white border-organic-charcoal shadow-md'
+                        : isBlog
+                          ? 'bg-[#EBEBEB] text-black border-[#D5D5D5] hover:bg-[#DCDCDC]'
+                          : 'bg-white text-organic-charcoal border-organic-stone hover:bg-organic-stone/30'
+                      }`}
                   >
-                    <p className="text-2xl font-serif text-organic-charcoal mb-2">Nothing here yet.</p>
-                    <p className="text-organic-clay">Try a different filter.</p>
-                  </motion.div>
-                )
-            }
-          </motion.div>
-        )}
-      </AnimatePresence>
+                    {filter}
+                  </motion.button>
+                );
+              })}
+            </div>
+          </div>
+
+          <AnimatePresence mode="wait">
+
+            {/* ── Blog Articles paginated panel with custom slider ── */}
+            {isBlogFilter ? (
+              <motion.div
+                key="blog-panel"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="flex gap-4 items-start">
+                  {/* Scrollable card area — hides native scrollbar */}
+                  <div
+                    ref={scrollRef}
+                    style={{ maxHeight: SCROLL_PANEL_H }}
+                    className="flex-1 overflow-y-auto hide-scrollbar"
+                  >
+                    <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6 md:gap-8 pb-2">
+                      <AnimatePresence mode="popLayout">
+                        {pagedBlogPosts.map(post => (
+                          <BlogCard key={post.id} post={post} />
+                        ))}
+                      </AnimatePresence>
+                    </div>
+                  </div>
+
+                  {/* Custom vertical slider — replaces native scrollbar */}
+                  <div className="shrink-0 flex items-center" style={{ height: SCROLL_PANEL_H }}>
+                    <Suspense fallback={null}>
+                      <ScrollPanel scrollRef={scrollRef} height={SCROLL_PANEL_H} />
+                    </Suspense>
+                  </div>
+                </div>
+
+                <PaginationControls
+                  currentPage={blogPage}
+                  totalPages={totalBlogPages}
+                  onPageChange={setBlogPage}
+                />
+                <p className="text-center text-xs text-organic-clay mt-3 pb-16">
+                  Showing {Math.min((blogPage - 1) * ARTICLES_PER_PAGE + 1, scenarioPosts.length)}–{Math.min(blogPage * ARTICLES_PER_PAGE, scenarioPosts.length)} of {scenarioPosts.length} articles
+                </p>
+              </motion.div>
+
+            ) : (
+              /* ── Mixed / category grid ── */
+              <motion.div
+                key={`grid-${activeFilter}`}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+                layout
+                className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6 md:gap-8 pb-16"
+              >
+                {activeFilter === 'All'
+                  ? mixedItems.map(item =>
+                      item.kind === 'blog'
+                        ? <BlogCard key={item.data.id} post={item.data} />
+                        : <ResourceCard key={item.data.id} resource={item.data} onInteract={trackInteraction} />
+                    )
+                  : filteredResources.length > 0
+                    ? filteredResources.map(r => (
+                        <ResourceCard key={r.id} resource={r} onInteract={trackInteraction} />
+                      ))
+                    : (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="col-span-full text-center py-24 bg-white/50 rounded-3xl border border-organic-stone/50"
+                      >
+                        <p className="text-2xl font-serif text-organic-charcoal mb-2">Nothing here yet.</p>
+                        <p className="text-organic-clay">Try a different filter.</p>
+                      </motion.div>
+                    )
+                }
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </>
+      )}
     </motion.div>
+    </>
   );
 };
 

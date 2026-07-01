@@ -1,3 +1,4 @@
+/** Available filter categories for browsing resources. */
 export const CATEGORIES = [
   "All",
   "Visual Communication",
@@ -10,6 +11,7 @@ export const CATEGORIES = [
   "Videography"
 ];
 
+/** Curated collection of learning materials, tools, templates, gigs, communities, and scenario guides. */
 export const resourceData = [
   // LEARNING
   {
@@ -21,6 +23,7 @@ export const resourceData = [
     link: "https://www.canva.com/design-school/courses/typography-and-layout",
     icon: "Type",
     tags: ["Typography", "Layout", "Basics"],
+    tier: "essential",
   },
   {
     id: "l2",
@@ -41,6 +44,7 @@ export const resourceData = [
     link: "https://helpx.adobe.com/after-effects/user-guide.html",
     icon: "Film",
     tags: ["After Effects", "Basics"],
+    tier: "essential",
   },
   {
     id: "l4",
@@ -61,6 +65,7 @@ export const resourceData = [
     link: "https://help.figma.com/hc/en-us/articles/360040451373-Guide-to-auto-layout",
     icon: "LayoutTemplate",
     tags: ["Figma", "Responsive"],
+    tier: "essential",
   },
   {
     id: "l6",
@@ -81,6 +86,7 @@ export const resourceData = [
     link: "https://www.schoolofmotion.com/courses/path-to-mograph",
     icon: "GraduationCap",
     tags: ["Motion Design", "Overview"],
+    tier: "pro",
   },
   {
     id: "l8",
@@ -91,6 +97,7 @@ export const resourceData = [
     link: "https://www.refactoringui.com/",
     icon: "Palette",
     tags: ["UI", "Tactics"],
+    tier: "pro",
   },
   {
     id: "l9",
@@ -183,6 +190,7 @@ export const resourceData = [
     link: "https://www.figma.com/",
     icon: "Figma",
     tags: ["UI", "Design"],
+    tier: "essential",
   },
   {
     id: "t2",
@@ -193,6 +201,7 @@ export const resourceData = [
     link: "https://www.blender.org/",
     icon: "Cuboid",
     tags: ["3D", "Free"],
+    tier: "essential",
   },
   {
     id: "t3",
@@ -223,6 +232,7 @@ export const resourceData = [
     link: "https://www.waveapps.com/",
     icon: "Receipt",
     tags: ["Invoices", "Payments"],
+    tier: "essential",
   },
   {
     id: "t6",
@@ -233,6 +243,7 @@ export const resourceData = [
     link: "https://www.adobe.com/products/illustrator.html",
     icon: "Spline",
     tags: ["Vector", "Design"],
+    tier: "pro",
   },
   {
     id: "t7",
@@ -243,6 +254,7 @@ export const resourceData = [
     link: "https://cavalry.scenegroup.co/",
     icon: "Waypoints",
     tags: ["2D", "Procedural"],
+    tier: "hidden-gem",
   },
   {
     id: "t8",
@@ -273,6 +285,7 @@ export const resourceData = [
     link: "https://rive.app/",
     icon: "Zap",
     tags: ["Interactive", "Animation"],
+    tier: "hidden-gem",
   },
   {
     id: "t11",
@@ -303,6 +316,7 @@ export const resourceData = [
     link: "https://wonderunit.com/storyboarder/",
     icon: "PenTool",
     tags: ["Planning", "Pre-production"],
+    tier: "hidden-gem",
   },
   {
     id: "t14",
@@ -313,6 +327,7 @@ export const resourceData = [
     link: "https://www.sunsurveyor.com/",
     icon: "Sun",
     tags: ["Planning", "Outdoor"],
+    tier: "hidden-gem",
   },
   {
     id: "t15",
@@ -335,6 +350,7 @@ export const resourceData = [
     link: "https://www.hellobonsai.com/contract-template/freelance",
     icon: "FileSignature",
     tags: ["Contract", "Legal"],
+    tier: "essential",
   },
   {
     id: "temp2",
@@ -345,6 +361,7 @@ export const resourceData = [
     link: "https://www.hubspot.com/resources/templates/basic-invoice",
     icon: "FileText",
     tags: ["Invoice", "Billing"],
+    tier: "essential",
   },
   {
     id: "temp3",
@@ -395,6 +412,7 @@ export const resourceData = [
     link: "https://blendswap.com/blend/2178",
     icon: "Lightbulb",
     tags: ["Lighting", "Rendering"],
+    tier: "hidden-gem",
   },
   {
     id: "temp8",
@@ -599,6 +617,7 @@ export const resourceData = [
     link: "https://www.motionhatch.com/",
     icon: "Lightbulb",
     tags: ["Business", "Motion"],
+    tier: "hidden-gem",
   },
   {
     id: "c6",

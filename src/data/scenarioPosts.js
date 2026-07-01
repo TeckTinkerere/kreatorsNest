@@ -1,3 +1,4 @@
+/** Blog-style scenario articles offering freelance advice, client stories, and career guides for creatives. */
 export const scenarioPosts = [
   {
     id: "blog-1",
@@ -7,6 +8,7 @@ export const scenarioPosts = [
     author: "Kreator Editorial",
     date: "March 12, 2026",
     readTime: "6 min read",
+    pinned: true,
     category: "Media Production",
     tags: ["Payment", "Legal", "Contracts"],
     content: [
@@ -60,6 +62,7 @@ export const scenarioPosts = [
     author: "Kreator Editorial",
     date: "February 28, 2026",
     readTime: "8 min read",
+    pinned: true,
     category: "UX/UI & Web Design",
     tags: ["Pricing", "Business", "Beginner"],
     content: [
@@ -166,6 +169,7 @@ export const scenarioPosts = [
     author: "Kreator Editorial",
     date: "March 28, 2026",
     readTime: "7 min read",
+    pinned: true,
     category: "Media Production",
     tags: ["Scope Creep", "Contracts", "Client Management"],
     content: [

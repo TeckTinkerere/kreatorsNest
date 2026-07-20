@@ -1,12 +1,19 @@
 import { motion } from "framer-motion";
+import SEO from "../components/SEO";
 
+/**
+ * Feedback
+ * Renders a feedback page with an embedded Google Form for user submissions.
+ */
 const Feedback = () => {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="p-4 md:p-8 max-w-4xl mx-auto space-y-8 min-h-screen flex flex-col"
-    >
+    <>
+      <SEO title="Feedback" description="Help us make KreatorNest the ultimate platform for freelancers. Drop your thoughts, feature requests, or bugs below!" />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="p-4 md:p-8 max-w-4xl mx-auto space-y-8 min-h-screen flex flex-col"
+      >
       <div className="text-center mt-10">
         <h1 className="text-3xl md:text-5xl font-extrabold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
           We Value Your Feedback
@@ -35,9 +42,7 @@ const Feedback = () => {
             src="https://docs.google.com/forms/d/e/1FAIpQLSfpNX_3OWzXz7zcF3uipcyp28I6T_vquZz7YxpXb0XNYRCHSA/viewform?embedded=true"
             width="640"
             height="1201"
-            frameBorder="0"
-            marginHeight="0"
-            marginWidth="0"
+            style={{ border: 'none' }}
             title="Feedback Form"
           >
             Loading…
@@ -45,6 +50,7 @@ const Feedback = () => {
         </div>
       </motion.div>
     </motion.div>
+    </>
   );
 };
 

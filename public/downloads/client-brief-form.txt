@@ -1,0 +1,139 @@
+CLIENT PROJECT BRIEF
+=====================
+
+Complete this form before your kickoff call. The more detail you provide,
+the better your final deliverables will be.
+
+--------------------------------------------------------------------
+SECTION 1 — ABOUT YOU & YOUR BUSINESS
+--------------------------------------------------------------------
+Your Name / Company Name:
+_____________________________________________
+
+Industry / Type of Business:
+_____________________________________________
+
+Website (if any):
+_____________________________________________
+
+What does your business do in one sentence?
+_____________________________________________
+_____________________________________________
+
+--------------------------------------------------------------------
+SECTION 2 — THE PROJECT
+--------------------------------------------------------------------
+What type of project is this?
+[ ] Logo / Brand Identity
+[ ] Social Media Assets
+[ ] Video / Reel Editing
+[ ] Motion Graphics
+[ ] Photography
+[ ] UI/UX Design
+[ ] Other: ________________________
+
+What is the main goal of this project?
+_____________________________________________
+_____________________________________________
+
+Who is your target audience? (Age, interests, demographics)
+_____________________________________________
+_____________________________________________
+
+What problem does this project solve for your audience?
+_____________________________________________
+_____________________________________________
+
+--------------------------------------------------------------------
+SECTION 3 — DELIVERABLES & SCOPE
+--------------------------------------------------------------------
+What specific deliverables do you need?
+(e.g. "Primary logo + 3 colour variants + social media icon version")
+_____________________________________________
+_____________________________________________
+_____________________________________________
+
+What formats do you need files in?
+[ ] PNG / JPG     [ ] SVG / EPS / AI     [ ] PDF
+[ ] MP4 / MOV     [ ] Figma / Sketch     [ ] Other: ___________
+
+Where will this be used?
+[ ] Print           [ ] Website         [ ] Social Media
+[ ] Video / TV      [ ] App / Digital   [ ] Other: ___________
+
+--------------------------------------------------------------------
+SECTION 4 — STYLE & DIRECTION
+--------------------------------------------------------------------
+List 3–5 words that describe the feel you want:
+(e.g. clean, bold, playful, luxurious, minimal)
+_____________________________________________
+
+Share 3–5 reference examples you like (URLs or descriptions):
+1. _____________________________________________
+2. _____________________________________________
+3. _____________________________________________
+4. _____________________________________________
+5. _____________________________________________
+
+Are there any styles, colours, or elements you want to AVOID?
+_____________________________________________
+_____________________________________________
+
+--------------------------------------------------------------------
+SECTION 5 — EXISTING BRAND ASSETS
+--------------------------------------------------------------------
+Do you have an existing brand?
+[ ] Yes — I'll share files    [ ] No — starting from scratch
+
+Existing brand colours (hex codes or descriptions):
+_____________________________________________
+
+Existing fonts (if known):
+_____________________________________________
+
+Any mandatory elements to include? (tagline, logo, specific icons)
+_____________________________________________
+
+--------------------------------------------------------------------
+SECTION 6 — TIMELINE & BUDGET
+--------------------------------------------------------------------
+When do you need the final files by?
+_____________________________________________
+
+Is there a hard deadline (e.g. launch event, campaign date)?
+[ ] Yes: _______________________     [ ] No
+
+What is your budget range for this project?
+[ ] Under [500]     [ ] [500–1,000]     [ ] [1,000–2,500]
+[ ] [2,500–5,000]   [ ] Over [5,000]   [ ] Flexible / Open to quote
+
+--------------------------------------------------------------------
+SECTION 7 — COMMUNICATION & APPROVAL
+--------------------------------------------------------------------
+Who is the main point of contact for this project?
+Name: _____________________________________________
+Email: _____________________________________________
+Phone / WhatsApp: __________________________________
+
+Who has final approval on the work?
+[ ] Same person above
+[ ] Someone else: _________________________________
+
+Preferred communication method:
+[ ] Email     [ ] WhatsApp     [ ] Slack     [ ] Other: __________
+
+How quickly can you typically respond to feedback requests?
+[ ] Same day    [ ] Within 24 hrs    [ ] Within 48 hrs    [ ] Other: ______
+
+--------------------------------------------------------------------
+SECTION 8 — ANYTHING ELSE?
+--------------------------------------------------------------------
+Is there anything else I should know about this project?
+_____________________________________________
+_____________________________________________
+_____________________________________________
+
+--------------------------------------------------------------------
+Thank you for completing this brief. I'll review it and follow up
+within [24–48 hours] to confirm the scope and next steps.
+--------------------------------------------------------------------

@@ -5,8 +5,41 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: #D4CDC4 #F0EEEA;
+  }
+
+  html::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  html::-webkit-scrollbar-track {
+    background: #F0EEEA;
+  }
+
+  html::-webkit-scrollbar-thumb {
+    background-color: #D4CDC4;
+    border-radius: 9999px;
+    border: 2px solid #F0EEEA;
+  }
+
+  html::-webkit-scrollbar-thumb:hover {
+    background-color: #C2BAB0;
+  }
+
   body {
     @apply bg-[#FAF9F5] text-gray-900 font-sans antialiased;
+    overflow-x: hidden;
+    overflow-y: visible;
+    min-height: 100%;
+  }
+
+  #root {
+    min-height: 100%;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -33,20 +66,21 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
   }
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
+    background: #F0EEEA;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: #E8E6DF;
-    border-radius: 99px;
+    background-color: #D4CDC4;
+    border-radius: 9999px;
+    border: 2px solid #F0EEEA;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background-color: #A3998D;
+    background-color: #C2BAB0;
   }
   .custom-scrollbar {
     scrollbar-width: thin;
-    scrollbar-color: #E8E6DF transparent;
+    scrollbar-color: #D4CDC4 #F0EEEA;
   }
 }

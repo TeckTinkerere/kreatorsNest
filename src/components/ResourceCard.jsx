@@ -1,18 +1,41 @@
 import { motion } from 'framer-motion';
-import * as LucideIcons from 'lucide-react';
+import { ICON_MAP } from '../utils/iconMap';
 
-const ResourceCard = ({ resource, onInteract }) => {
+/**
+ * ResourceCard
+ * Displays a single resource as a styled card with icon, tags, and an explore link.
+ *
+ * @param {object} props
+ * @param {object} props.resource - Resource data object.
+ * @param {string} props.resource.icon - Lucide icon name (must be in ICON_MAP) or emoji string.
+ * @param {string} props.resource.type - Resource type (e.g. "Learning", "Scenarios").
+ * @param {string} props.resource.category - Resource category label.
+ * @param {string} props.resource.title - Resource title.
+ * @param {string} props.resource.description - Short description text.
+ * @param {string[]} props.resource.tags - List of tag strings.
+ * @param {string} props.resource.link - External URL for the resource.
+ * @param {(category: string) => void} [props.onInteract] - Optional callback fired when the explore link is clicked.
+ * @param {'full'|'compact'} [props.variant='full'] - Card layout variant; compact hides badge, category, and tags.
+ */
+const ResourceCard = ({ resource, onInteract, variant = 'full' }) => {
+  const isCompact = variant === 'compact';
+  /**
+   * handleLinkClick
+   * Calls onInteract with the resource category when the explore link is clicked.
+   */
   const handleLinkClick = () => {
     if (onInteract) onInteract(resource.category);
   };
 
   const isEditorial = resource.type === 'Learning' || resource.type === 'Scenarios';
 
-  // Resolve icon: if it's a string matching a lucide icon, use that; otherwise fall back to emoji
-  const IconComponent = typeof resource.icon === 'string' && LucideIcons[resource.icon]
-    ? LucideIcons[resource.icon]
+  // Resolve icon from the explicit map; fall back to rendering as an emoji string.
+  // Using ICON_MAP instead of `import * as LucideIcons` keeps the bundle lean —
+  // only the icons actually used in resourceData are included.
+  const IconComponent = typeof resource.icon === 'string'
+    ? ICON_MAP[resource.icon] ?? null
     : null;
-  
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -21,7 +44,12 @@ const ResourceCard = ({ resource, onInteract }) => {
       whileHover={{ y: -4 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
       className={`group flex flex-col relative overflow-hidden bg-white border border-organic-stone shadow-sm hover:shadow-md transition-shadow duration-500 min-w-[280px]
-        ${isEditorial ? 'rounded-tl-3xl rounded-br-3xl rounded-tr-xl rounded-bl-xl p-8 min-h-[320px]' : 'rounded-2xl p-6 min-h-[280px]'}
+        ${isCompact
+          ? 'rounded-2xl p-6 min-h-[200px]'
+          : isEditorial
+            ? 'rounded-tl-3xl rounded-br-3xl rounded-tr-xl rounded-bl-xl p-8 min-h-[320px]'
+            : 'rounded-2xl p-6 min-h-[280px]'
+        }
       `}
     >
       {/* Organic texture overlay */}
@@ -36,33 +64,39 @@ const ResourceCard = ({ resource, onInteract }) => {
               : <span className="text-2xl">{resource.icon}</span>
             }
           </div>
-          <span className="text-[10px] font-bold uppercase tracking-widest text-primary-600 bg-primary-50 px-3 py-1.5 rounded-full border border-primary-100">
-            {resource.type}
-          </span>
+          {!isCompact && (
+            <span className="text-[10px] font-bold uppercase tracking-widest text-primary-600 bg-primary-50 px-3 py-1.5 rounded-full border border-primary-100">
+              {resource.type}
+            </span>
+          )}
         </div>
 
         {/* Content area */}
         <div className="mb-4">
-          <p className="text-xs font-semibold tracking-wide text-organic-clay uppercase mb-1.5">{resource.category}</p>
-          <h3 className={`${isEditorial ? 'font-serif text-2xl mb-3' : 'font-sans font-bold text-lg mb-2'} text-organic-charcoal group-hover:text-primary-600 transition-colors duration-300 leading-tight`}>
+          {!isCompact && (
+            <p className="text-xs font-semibold tracking-wide text-organic-clay uppercase mb-1.5">{resource.category}</p>
+          )}
+          <h3 className={`${isEditorial && !isCompact ? 'font-serif text-2xl mb-3' : 'font-sans font-bold text-lg mb-2'} text-organic-charcoal group-hover:text-primary-600 transition-colors duration-300 leading-tight`}>
             {resource.title}
           </h3>
-          <p className="text-sm text-organic-clay flex-grow leading-relaxed break-words">
+          <p className={`text-sm text-organic-clay flex-grow leading-relaxed break-words${isCompact ? ' line-clamp-1' : ''}`}>
             {resource.description}
           </p>
         </div>
-        
+
         {/* Footer Area */}
         <div className="mt-auto pt-4 flex flex-wrap items-center justify-between gap-3 border-t border-organic-stone/50">
-          <div className="flex flex-wrap gap-1.5 flex-1 min-w-0">
-            {resource.tags.slice(0, 2).map(tag => (
-              <span key={tag} className="text-[11px] font-medium text-organic-clay bg-organic-cream px-2 py-1 rounded border border-organic-stone/30 truncate max-w-full">
-                {tag}
-              </span>
-            ))}
-          </div>
-          <a 
-            href={resource.link} 
+          {!isCompact && (
+            <div className="flex flex-wrap gap-1.5 flex-1 min-w-0">
+              {resource.tags.slice(0, 2).map(tag => (
+                <span key={tag} className="text-[11px] font-medium text-organic-clay bg-organic-cream px-2 py-1 rounded border border-organic-stone/30 truncate max-w-full">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+          <a
+            href={resource.link}
             target="_blank"
             rel="noopener noreferrer"
             onClick={handleLinkClick}

@@ -1,0 +1,13 @@
+/*
+  # Prevent clickjacking
+  X-Frame-Options: SAMEORIGIN
+  # Prevent MIME type sniffing
+  X-Content-Type-Options: nosniff
+  # Control referrer information
+  Referrer-Policy: strict-origin-when-cross-origin
+  # Basic permissions policy
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  # Content Security Policy
+  # - google.com/forms allowed in frames (Feedback page)
+  # - https: for images (contributor avatars, external resources)
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://docs.google.com; connect-src 'self'; font-src 'self' data:;

@@ -10,7 +10,10 @@ import { useCallback, useEffect, useState } from 'react';
 const VerticalScrollSlider = ({ scrollRef, height = 400 }) => {
   const [value, setValue] = useState([0]);
 
-  // Scroll → slider
+  /**
+   * onScroll
+   * Syncs slider value with the scrollable container's current scroll progress.
+   */
   const onScroll = useCallback(() => {
     const el = scrollRef.current;
     if (!el) return;
@@ -26,7 +29,12 @@ const VerticalScrollSlider = ({ scrollRef, height = 400 }) => {
     return () => el.removeEventListener('scroll', onScroll);
   }, [scrollRef, onScroll]);
 
-  // Slider → scroll
+  /**
+   * onValueChange
+   * Scrolls the container to the position corresponding to the slider value.
+   *
+   * @param {number[]} newVal - Slider value array (0–100)
+   */
   const onValueChange = useCallback((newVal) => {
     const el = scrollRef.current;
     if (!el) return;

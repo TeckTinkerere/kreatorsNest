@@ -3,8 +3,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import { resourceData } from "../data/resources";
 import { useRecommendations } from "../hooks/useRecommendations";
 import ResourceCard from "../components/ResourceCard";
+import SEO from "../components/SEO";
 import { BookOpen, Wrench, FileText, Briefcase, ChevronRight, Star, Sparkles } from "lucide-react";
 
+/**
+ * StarterKit
+ * Role-based learning roadmap with curated resources for creative freelancers.
+ *
+ * @param {object} props
+ * @param {string} [props.className] - additional class names
+ */
 const StarterKit = () => {
   const roles = [
     { 
@@ -137,12 +145,14 @@ const StarterKit = () => {
   ];
 
   return (
-    <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      className="p-4 md:p-8 lg:p-12 max-w-[1000px] mx-auto min-h-screen relative"
-    >
+    <>
+      <SEO title="Starter Kit" description="A streamlined path from beginner to job-ready. No noise, just the essential industry-standard steps for creative freelancers." />
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="p-4 md:p-8 lg:p-12 max-w-[1000px] mx-auto min-h-screen relative"
+      >
       <div className="absolute top-0 right-0 w-96 h-96 bg-primary-100 rounded-full blur-[100px] -z-10 opacity-40"></div>
 
       {/* Header Section */}
@@ -159,7 +169,7 @@ const StarterKit = () => {
       </motion.div>
 
       {/* Role Selector Tabs */}
-      <motion.div variants={itemVariants} className="flex overflow-x-auto hide-scrollbar gap-2 mb-12 pb-4 -mx-4 px-4 md:mx-0 md:px-0 sticky top-0 bg-surface/80 backdrop-blur-md z-40 border-b border-organic-stone/20">
+      <motion.div variants={itemVariants} className="flex overflow-x-auto hide-scrollbar gap-2 mb-12 pb-4 -mx-4 px-4 md:mx-0 md:px-0 sticky top-0 bg-surface/80 backdrop-blur-md z-20 border-b border-organic-stone/20">
         {roles.map((role, idx) => {
           const isActive = activeRoleIndex === idx;
           return (
@@ -307,6 +317,7 @@ const StarterKit = () => {
         </div>
       </motion.div>
     </motion.div>
+    </>
   );
 };
 

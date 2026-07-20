@@ -1,0 +1,70 @@
+CHANGE ORDER
+=============
+
+Project:         [Original Project Name]
+Original Agreement Date: [DATE]
+Change Order No: CO-[001]
+Change Order Date: [DATE]
+
+From:  [Freelancer Name]
+To:    [Client Name]
+
+--------------------------------------------------------------------
+DESCRIPTION OF CHANGE
+--------------------------------------------------------------------
+This Change Order documents additional work requested outside the
+original Scope of Work agreed on [ORIGINAL DATE].
+
+Requested change:
+_____________________________________________
+_____________________________________________
+_____________________________________________
+
+Reason / context (if relevant):
+_____________________________________________
+
+--------------------------------------------------------------------
+IMPACT ON SCOPE
+--------------------------------------------------------------------
+The original scope included:
+[Briefly restate the relevant original deliverable]
+
+This change adds / modifies:
+[Describe exactly what will be added or changed]
+
+--------------------------------------------------------------------
+ADDITIONAL COST
+--------------------------------------------------------------------
+Estimated hours:              [X] hours
+Hourly rate:                  [CURRENCY] [RATE] / hour
+Additional flat fee (if any): [CURRENCY] [AMOUNT]
+--------------------------------------------------------------------
+CHANGE ORDER TOTAL:           [CURRENCY] [TOTAL]
+====================================================================
+
+This amount will be invoiced separately from the original project fee
+and is due within [14] days of delivery of the additional work.
+
+--------------------------------------------------------------------
+TIMELINE IMPACT
+--------------------------------------------------------------------
+[ ] No impact on original delivery date
+[ ] Revised delivery date: ____________________
+
+--------------------------------------------------------------------
+APPROVAL
+--------------------------------------------------------------------
+By signing below, both parties agree to the additional scope and cost
+described in this Change Order.
+
+Work on this change will not begin until this document is signed.
+
+CLIENT:
+Signature: ________________________  Date: __________
+Name:      ________________________
+
+FREELANCER:
+Signature: ________________________  Date: __________
+Name:      ________________________
+
+--------------------------------------------------------------------

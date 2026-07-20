@@ -416,4 +416,6 @@ SymDex was unavailable in the authoring environment; route and symbol evidence g
 - First-time visitor sees fork once, can change mind later
 - Explore home surfaces tier-curated picks without bento clutter
 - No broken old URLs (redirects work)
-- Fraunces/Inter and organic/primary palette unchanged
+- Fraunces/Inter and organic/primary palette unchange
+- no Broken Design
+- All pages are Mobile Responsive

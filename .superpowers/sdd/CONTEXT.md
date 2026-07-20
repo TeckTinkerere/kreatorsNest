@@ -88,7 +88,15 @@ setMode(mode, {
 });
 ```
 
-### Task 5+ — not yet implemented
+### Task 5 — complete
+
+```jsx
+// src/components/ResourceCard.jsx
+export default function ResourceCard({ resource, onInteract, variant = 'full' })
+// variant: 'full' | 'compact' — compact hides type badge, category, tags; line-clamp-1 description
+```
+
+### Task 6+ — not yet implemented
 
 ## Test Commands
 

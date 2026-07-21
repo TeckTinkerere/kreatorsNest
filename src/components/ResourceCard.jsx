@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ICON_MAP } from '../utils/iconMap';
 
 /**
@@ -19,6 +19,7 @@ import { ICON_MAP } from '../utils/iconMap';
  */
 const ResourceCard = ({ resource, onInteract, variant = 'full' }) => {
   const isCompact = variant === 'compact';
+  const shouldReduceMotion = useReducedMotion();
   /**
    * handleLinkClick
    * Calls onInteract with the resource category when the explore link is clicked.
@@ -38,10 +39,10 @@ const ResourceCard = ({ resource, onInteract, variant = 'full' }) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={shouldReduceMotion ? false : { opacity: 0, y: 30 }}
+      whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      whileHover={{ y: -4 }}
+      whileHover={shouldReduceMotion ? undefined : { y: -4 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
       className={`group flex flex-col relative overflow-hidden bg-white border border-organic-stone shadow-sm hover:shadow-md transition-shadow duration-500 min-w-[280px]
         ${isCompact

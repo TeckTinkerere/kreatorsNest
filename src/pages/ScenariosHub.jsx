@@ -1,5 +1,5 @@
 import { lazy, Suspense, useMemo, useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Clock, ArrowRight, ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
 import { resourceData } from '../data/resources';
@@ -9,6 +9,13 @@ import { useRecommendations } from '../hooks/useRecommendations';
 import { usePagination } from '../hooks/usePagination';
 import ResourceCard from '../components/ResourceCard';
 import SEO from '../components/SEO';
+import {
+  contentTransition,
+  contentVariants,
+  layoutSpring,
+  pageTransition,
+  pageVariants,
+} from '../utils/motion';
 
 // ─── Config ────────────────────────────────────────────────────────────────
 const ARTICLES_PER_PAGE = 4;  // 2 top row + 2 bottom row
@@ -42,12 +49,12 @@ const seededShuffle = (arr) => {
  * @param {object} props
  * @param {object} props.post - Scenario post data object
  */
-const BlogCard = ({ post }) => (
+const BlogCard = ({ post, reduceMotion }) => (
   <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
+    initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+    whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
     viewport={{ once: true, margin: '-40px' }}
-    whileHover={{ y: -4 }}
+    whileHover={reduceMotion ? undefined : { y: -4 }}
     transition={{ duration: 0.4, ease: 'easeOut' }}
     className="min-w-[280px]"
   >
@@ -147,10 +154,14 @@ const FILTERS = ['All', 'Blog Articles', 'Visual Communication', 'Motion Graphic
 const ScenariosHub = () => {
   const { effectiveMode } = useBrowseMode();
   const { trackInteraction } = useRecommendations();
+  const shouldReduceMotion = useReducedMotion();
   const [activeFilter, setActiveFilter] = useState('All');
   const [blogPage, setBlogPage] = useState(1);
   const scrollRef = useRef(null);
   const isGuided = effectiveMode === 'guided';
+  const routeVariants = pageVariants(shouldReduceMotion);
+  const swapVariants = contentVariants(shouldReduceMotion);
+  const filterSpring = layoutSpring(shouldReduceMotion);
 
   // Reset page + scroll to top of panel on filter/page change
   useEffect(() => { setBlogPage(1); }, [activeFilter]);
@@ -202,9 +213,11 @@ const ScenariosHub = () => {
     <>
       <SEO title="Scenarios" description="Case studies on pricing, client management, and law — plus deep-dive articles from the field for creative freelancers." />
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
+        variants={routeVariants}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        transition={pageTransition(shouldReduceMotion)}
         className="p-4 md:p-8 lg:p-12 max-w-[1400px] mx-auto min-h-screen"
       >
       {/* Header */}
@@ -217,11 +230,20 @@ const ScenariosHub = () => {
         </p>
       </div>
 
+      <AnimatePresence mode="wait">
       {isGuided ? (
-        <section className="pb-16">
+        <motion.section
+          key="guided-scenarios"
+          variants={swapVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          transition={contentTransition(shouldReduceMotion)}
+          className="pb-16"
+        >
           <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6 md:gap-8">
             {pinnedPosts.map((post) => (
-              <BlogCard key={post.id} post={post} />
+              <BlogCard key={post.id} post={post} reduceMotion={shouldReduceMotion} />
             ))}
           </div>
           <div className="mt-8 flex justify-center">
@@ -233,9 +255,16 @@ const ScenariosHub = () => {
               <ArrowRight size={16} />
             </Link>
           </div>
-        </section>
+        </motion.section>
       ) : (
-        <>
+        <motion.div
+          key="explore-scenarios"
+          variants={swapVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          transition={contentTransition(shouldReduceMotion)}
+        >
           {/* Filter bar */}
           <div className="sticky top-0 z-20 bg-surface/90 backdrop-blur-md pb-4 pt-2 -mx-4 px-4 md:mx-0 md:px-0 border-b border-organic-stone/30 mb-8">
             <div className="flex overflow-x-auto hide-scrollbar gap-2 py-4">
@@ -245,18 +274,26 @@ const ScenariosHub = () => {
                 return (
                   <motion.button
                     key={filter}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                    type="button"
+                    whileHover={shouldReduceMotion ? undefined : { scale: 1.02 }}
+                    whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
                     onClick={() => setActiveFilter(filter)}
-                    className={`whitespace-nowrap px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 border
+                    className={`relative whitespace-nowrap px-5 py-2 rounded-full text-sm font-medium border
                       ${isActive
-                        ? 'bg-organic-charcoal text-white border-organic-charcoal shadow-md'
+                        ? 'text-white border-transparent'
                         : isBlog
                           ? 'bg-[#EBEBEB] text-black border-[#D5D5D5] hover:bg-[#DCDCDC]'
                           : 'bg-white text-organic-charcoal border-organic-stone hover:bg-organic-stone/30'
                       }`}
                   >
-                    {filter}
+                    {isActive && (
+                      <motion.span
+                        layoutId="scenarios-filter-pill"
+                        className="absolute inset-0 rounded-full bg-organic-charcoal shadow-md"
+                        transition={filterSpring}
+                      />
+                    )}
+                    <span className="relative z-10">{filter}</span>
                   </motion.button>
                 );
               })}
@@ -269,10 +306,11 @@ const ScenariosHub = () => {
             {isBlogFilter ? (
               <motion.div
                 key="blog-panel"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
+                variants={swapVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                transition={contentTransition(shouldReduceMotion)}
               >
                 <div className="flex gap-4 items-start">
                   {/* Scrollable card area — hides native scrollbar */}
@@ -284,7 +322,7 @@ const ScenariosHub = () => {
                     <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6 md:gap-8 pb-2">
                       <AnimatePresence mode="popLayout">
                         {pagedBlogPosts.map(post => (
-                          <BlogCard key={post.id} post={post} />
+                          <BlogCard key={post.id} post={post} reduceMotion={shouldReduceMotion} />
                         ))}
                       </AnimatePresence>
                     </div>
@@ -312,17 +350,18 @@ const ScenariosHub = () => {
               /* ── Mixed / category grid ── */
               <motion.div
                 key={`grid-${activeFilter}`}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
+                variants={swapVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                transition={contentTransition(shouldReduceMotion)}
                 layout
                 className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6 md:gap-8 pb-16"
               >
                 {activeFilter === 'All'
                   ? mixedItems.map(item =>
                       item.kind === 'blog'
-                        ? <BlogCard key={item.data.id} post={item.data} />
+                        ? <BlogCard key={item.data.id} post={item.data} reduceMotion={shouldReduceMotion} />
                         : <ResourceCard key={item.data.id} resource={item.data} onInteract={trackInteraction} />
                     )
                   : filteredResources.length > 0
@@ -343,8 +382,9 @@ const ScenariosHub = () => {
               </motion.div>
             )}
           </AnimatePresence>
-        </>
+        </motion.div>
       )}
+      </AnimatePresence>
     </motion.div>
     </>
   );

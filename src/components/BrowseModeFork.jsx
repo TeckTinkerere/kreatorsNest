@@ -2,6 +2,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Compass, Map } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useBrowseMode } from "../context/BrowseModeContext";
+import { staggerContainer, staggerItem } from "../utils/motion";
 
 const MODE_OPTIONS = [
   {
@@ -24,6 +25,8 @@ const BrowseModeFork = () => {
   const navigate = useNavigate();
   const shouldReduceMotion = useReducedMotion();
   const { setMode, dismissFork } = useBrowseMode();
+  const container = staggerContainer(shouldReduceMotion, 0.08);
+  const item = staggerItem(shouldReduceMotion);
 
   const handleModeSelect = (nextMode) => {
     if (nextMode === "guided") {
@@ -37,28 +40,40 @@ const BrowseModeFork = () => {
   };
 
   return (
-    <section className="rounded-3xl border border-organic-stone bg-white p-6 md:p-8 shadow-sm relative overflow-hidden">
+    <motion.section
+      variants={container}
+      initial="hidden"
+      animate="visible"
+      className="rounded-3xl border border-organic-stone bg-white p-6 md:p-8 shadow-sm relative overflow-hidden"
+    >
       <div className="absolute inset-0 noise-bg opacity-20 pointer-events-none" />
       <div className="relative z-10">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary-600 mb-2">
-          Choose your browse style
-        </p>
-        <h2 className="text-2xl md:text-3xl font-serif text-organic-charcoal">
-          How do you want to explore KreatorNest?
-        </h2>
-        <p className="text-organic-clay mt-3 max-w-2xl">
-          Pick a mode now, or decide later. You can switch anytime from the sidebar.
-        </p>
+        <motion.div variants={item}>
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary-600 mb-2">
+            Choose your browse style
+          </p>
+          <h2 className="text-2xl md:text-3xl font-serif text-organic-charcoal">
+            How do you want to explore KreatorNest?
+          </h2>
+          <p className="text-organic-clay mt-3 max-w-2xl">
+            Pick a mode now, or decide later. You can switch anytime from the sidebar.
+          </p>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+        <motion.div
+          variants={container}
+          className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8"
+        >
           {MODE_OPTIONS.map(({ mode, title, headline, description, Icon }) => (
             <motion.button
               key={mode}
               type="button"
+              variants={item}
               onClick={() => handleModeSelect(mode)}
               whileHover={shouldReduceMotion ? undefined : { y: -4 }}
+              whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
               transition={{ duration: 0.2 }}
-              className="text-left rounded-2xl border border-organic-stone bg-surface px-5 py-6 hover:border-primary-300 hover:shadow-md transition-all"
+              className="text-left rounded-2xl border border-organic-stone bg-surface px-5 py-6 hover:border-primary-300 hover:shadow-md transition-shadow"
             >
               <div className="flex items-center gap-2 text-primary-700 mb-3">
                 <Icon size={18} />
@@ -68,17 +83,18 @@ const BrowseModeFork = () => {
               <p className="mt-2 text-sm text-organic-clay">{description}</p>
             </motion.button>
           ))}
-        </div>
+        </motion.div>
 
-        <button
+        <motion.button
+          variants={item}
           type="button"
           onClick={dismissFork}
           className="mt-6 text-sm font-semibold text-primary-700 hover:text-primary-900 underline underline-offset-4"
         >
           Decide later
-        </button>
+        </motion.button>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

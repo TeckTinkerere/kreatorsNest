@@ -1,16 +1,25 @@
 import { useMemo, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import SEO from '../components/SEO';
 import CategoryFilter from '../components/CategoryFilter';
 import ResourceCard from '../components/ResourceCard';
 import { resourceData } from '../data/resources';
 import { useRecommendations } from '../hooks/useRecommendations';
+import {
+  contentTransition,
+  contentVariants,
+  pageTransition,
+  pageVariants,
+} from '../utils/motion';
 
 const INCLUDED_TYPES = ['Learning', 'Tools'];
 
 const Essentials = () => {
   const [activeCategory, setActiveCategory] = useState('All');
   const { trackInteraction } = useRecommendations();
+  const shouldReduceMotion = useReducedMotion();
+  const routeVariants = pageVariants(shouldReduceMotion);
+  const swapVariants = contentVariants(shouldReduceMotion);
 
   const essentials = useMemo(
     () => resourceData.filter((resource) => (
@@ -50,9 +59,11 @@ const Essentials = () => {
       />
 
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
+        variants={routeVariants}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        transition={pageTransition(shouldReduceMotion)}
         className="p-4 md:p-8 lg:p-12 max-w-[1400px] mx-auto min-h-screen"
       >
         <div className="mb-10 max-w-4xl">
@@ -69,16 +80,18 @@ const Essentials = () => {
             categories={categories}
             activeCategory={activeCategory}
             setActiveCategory={setActiveCategory}
+            layoutGroupId="essentials-category-pill"
           />
         </div>
 
         <AnimatePresence mode="wait">
           <motion.div
             key={`essentials-${activeCategory}`}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.2 }}
+            variants={swapVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition={contentTransition(shouldReduceMotion)}
           >
             {hasResults ? (
               <div className="space-y-12">

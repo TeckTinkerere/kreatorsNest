@@ -2,13 +2,14 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   Menu, X, Download, ChevronLeft, ChevronRight
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { getNavForMode } from '../config/navigation';
 import { useBrowseMode } from '../context/BrowseModeContext';
 import BrowseModeToggle from './BrowseModeToggle';
 import { NAV_ICONS } from '../utils/navIcons';
+import { contentTransition, contentVariants } from '../utils/motion';
 
 const mobileSidebarVariants = {
   open: { x: 0, transition: { type: "tween", ease: "circOut", duration: 0.3 } },
@@ -27,8 +28,10 @@ const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isInstalled, setIsInstalled] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
   const { effectiveMode } = useBrowseMode();
   const navItems = getNavForMode(effectiveMode);
+  const navSwap = contentVariants(shouldReduceMotion);
   const location = useLocation();
   // Ref for the mobile drawer — used by useFocusTrap
   const mobileDrawerRef = useRef(null);
@@ -131,26 +134,36 @@ const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
               </div>
 
               <nav className="flex-1">
-                <ul className="space-y-1">
-                  {navItems.map((item) => {
-                    const isActive = location.pathname === item.path;
-                    const Icon = NAV_ICONS[item.iconKey];
-                    return (
-                      <li key={item.path}>
-                        <Link
-                          to={item.path}
-                          onClick={() => setIsMobileOpen(false)}
-                          className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 font-medium ${
-                            isActive ? 'bg-white text-primary-700 shadow-sm border border-organic-stone' : 'text-organic-clay hover:bg-organic-stone/50 hover:text-organic-charcoal'
-                          }`}
-                        >
-                          {Icon ? <Icon size={20} /> : null}
-                          <span>{item.label}</span>
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
+                <AnimatePresence mode="wait">
+                  <motion.ul
+                    key={effectiveMode}
+                    variants={navSwap}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    transition={contentTransition(shouldReduceMotion)}
+                    className="space-y-1"
+                  >
+                    {navItems.map((item) => {
+                      const isActive = location.pathname === item.path;
+                      const Icon = NAV_ICONS[item.iconKey];
+                      return (
+                        <li key={item.path}>
+                          <Link
+                            to={item.path}
+                            onClick={() => setIsMobileOpen(false)}
+                            className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 font-medium ${
+                              isActive ? 'bg-white text-primary-700 shadow-sm border border-organic-stone' : 'text-organic-clay hover:bg-organic-stone/50 hover:text-organic-charcoal'
+                            }`}
+                          >
+                            {Icon ? <Icon size={20} /> : null}
+                            <span>{item.label}</span>
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </motion.ul>
+                </AnimatePresence>
               </nav>
 
               <div className="mt-6 pt-5 border-t border-organic-stone">
@@ -206,32 +219,42 @@ const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
         </div>
 
         <nav className="flex-1 px-3">
-          <ul className="space-y-1">
-            {navItems.map((item) => {
-              const isActive = location.pathname === item.path;
-              const Icon = NAV_ICONS[item.iconKey];
-              return (
-                <li key={item.path}>
-                  <Link
-                    to={item.path}
-                    title={!isDesktopOpen ? item.label : ""}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 font-medium whitespace-nowrap ${
-                      isActive ? 'bg-white text-primary-700 shadow-sm border border-organic-stone' : 'text-organic-clay hover:bg-organic-stone/50 hover:text-organic-charcoal'
-                    } ${!isDesktopOpen && 'justify-center px-0'}`}
-                  >
-                    <div className="shrink-0">{Icon ? <Icon size={20} /> : null}</div>
-                    <motion.span
-                      initial={false}
-                      animate={{ opacity: isDesktopOpen ? 1 : 0, width: isDesktopOpen ? "auto" : 0 }}
-                      className="overflow-hidden"
+          <AnimatePresence mode="wait">
+            <motion.ul
+              key={effectiveMode}
+              variants={navSwap}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={contentTransition(shouldReduceMotion)}
+              className="space-y-1"
+            >
+              {navItems.map((item) => {
+                const isActive = location.pathname === item.path;
+                const Icon = NAV_ICONS[item.iconKey];
+                return (
+                  <li key={item.path}>
+                    <Link
+                      to={item.path}
+                      title={!isDesktopOpen ? item.label : ""}
+                      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 font-medium whitespace-nowrap ${
+                        isActive ? 'bg-white text-primary-700 shadow-sm border border-organic-stone' : 'text-organic-clay hover:bg-organic-stone/50 hover:text-organic-charcoal'
+                      } ${!isDesktopOpen && 'justify-center px-0'}`}
                     >
-                      {item.label}
-                    </motion.span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+                      <div className="shrink-0">{Icon ? <Icon size={20} /> : null}</div>
+                      <motion.span
+                        initial={false}
+                        animate={{ opacity: isDesktopOpen ? 1 : 0, width: isDesktopOpen ? "auto" : 0 }}
+                        className="overflow-hidden"
+                      >
+                        {item.label}
+                      </motion.span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </motion.ul>
+          </AnimatePresence>
         </nav>
 
         <div className="mt-6 pt-5 border-t border-organic-stone/80 px-3">

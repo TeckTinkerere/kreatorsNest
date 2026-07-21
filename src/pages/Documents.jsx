@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { FileText, Layers } from 'lucide-react';
 import SEO from '../components/SEO';
 import CategoryFilter from '../components/CategoryFilter';
@@ -9,6 +9,12 @@ import { useBrowseMode } from '../context/BrowseModeContext';
 import { downloadsData } from '../data/downloads';
 import { resourceData } from '../data/resources';
 import { useRecommendations } from '../hooks/useRecommendations';
+import {
+  contentTransition,
+  contentVariants,
+  pageTransition,
+  pageVariants,
+} from '../utils/motion';
 
 const DOCUMENT_CATEGORIES = ['All', 'Contracts', 'Invoices', 'Templates', 'Checklists'];
 
@@ -23,6 +29,9 @@ const Documents = () => {
   const [activeCategory, setActiveCategory] = useState('All');
   const { effectiveMode } = useBrowseMode();
   const { trackInteraction } = useRecommendations();
+  const shouldReduceMotion = useReducedMotion();
+  const routeVariants = pageVariants(shouldReduceMotion);
+  const swapVariants = contentVariants(shouldReduceMotion);
 
   const filteredDownloads = useMemo(() => (
     downloadsData.filter((doc) => (
@@ -48,9 +57,11 @@ const Documents = () => {
       />
 
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
+        variants={routeVariants}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        transition={pageTransition(shouldReduceMotion)}
         className="p-4 md:p-8 lg:p-12 max-w-[1400px] mx-auto min-h-screen"
       >
         <div className="mb-10 max-w-4xl">
@@ -67,16 +78,18 @@ const Documents = () => {
             categories={DOCUMENT_CATEGORIES}
             activeCategory={activeCategory}
             setActiveCategory={setActiveCategory}
+            layoutGroupId="documents-category-pill"
           />
         </div>
 
         <AnimatePresence mode="wait">
           <motion.div
             key={`documents-${activeCategory}`}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.2 }}
+            variants={swapVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition={contentTransition(shouldReduceMotion)}
           >
             {hasResults ? (
               <div className="space-y-12">

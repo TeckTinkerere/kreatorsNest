@@ -1,10 +1,16 @@
 import { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { resourceData } from '../data/resources';
 import { useRecommendations } from '../hooks/useRecommendations';
 import CategoryFilter from '../components/CategoryFilter';
 import ResourceCard from '../components/ResourceCard';
 import SEO from '../components/SEO';
+import {
+  contentTransition,
+  contentVariants,
+  pageTransition,
+  pageVariants,
+} from '../utils/motion';
 
 /**
  * ResourceHub
@@ -18,6 +24,9 @@ import SEO from '../components/SEO';
 const ResourceHub = ({ title, typeDescription, hubType }) => {
   const [activeCategory, setActiveCategory] = useState("All");
   const { trackInteraction } = useRecommendations();
+  const shouldReduceMotion = useReducedMotion();
+  const routeVariants = pageVariants(shouldReduceMotion);
+  const swapVariants = contentVariants(shouldReduceMotion);
 
   const filteredResources = useMemo(() => {
     // Derive categories from the actual resources for this hubType
@@ -40,9 +49,11 @@ const ResourceHub = ({ title, typeDescription, hubType }) => {
     <>
       <SEO title={title} description={typeDescription} />
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
+        variants={routeVariants}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        transition={pageTransition(shouldReduceMotion)}
         className="p-4 md:p-8 lg:p-12 max-w-[1400px] mx-auto min-h-screen"
       >
       <div className="mb-10 max-w-4xl">
@@ -59,13 +70,19 @@ const ResourceHub = ({ title, typeDescription, hubType }) => {
           categories={availableCategories}
           activeCategory={activeCategory}
           setActiveCategory={setActiveCategory}
+          layoutGroupId={`${hubType}-category-pill`}
         />
       </div>
 
-      <AnimatePresence mode="popLayout">
+      <AnimatePresence mode="wait">
         {filteredResources.length > 0 ? (
-          <motion.div 
-            layout
+          <motion.div
+            key={`hub-${hubType}-${activeCategory}`}
+            variants={swapVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition={contentTransition(shouldReduceMotion)}
             className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6 md:gap-8"
           >
             {filteredResources.map((resource) => (
@@ -73,10 +90,13 @@ const ResourceHub = ({ title, typeDescription, hubType }) => {
             ))}
           </motion.div>
         ) : (
-          <motion.div 
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
+          <motion.div
+            key={`hub-empty-${hubType}-${activeCategory}`}
+            variants={swapVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition={contentTransition(shouldReduceMotion)}
             className="text-center py-24 bg-white/50 backdrop-blur-sm rounded-3xl border border-organic-stone/50 mt-8"
           >
             <span className="text-5xl block mb-4">📭</span>

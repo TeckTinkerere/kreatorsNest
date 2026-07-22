@@ -56,7 +56,7 @@ describe('connectivity utils', () => {
   describe('connectionRequiredPath', () => {
     it('encodes the destination in the query string', () => {
       expect(connectionRequiredPath('https://example.com/a b')).toBe(
-        '/connection-required?to=https%3A%2F%2Fexample.com%2Fa%20b'
+        '/connection-required?to=https%3A%2F%2Fexample.com%2Fa+b'
       );
     });
   });

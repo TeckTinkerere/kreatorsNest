@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import {
-  Menu, X, Download, ChevronLeft, ChevronRight
+  Menu, X, ChevronLeft, ChevronRight
 } from 'lucide-react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
@@ -8,8 +8,10 @@ import { useFocusTrap } from '../hooks/useFocusTrap';
 import { getNavForMode } from '../config/navigation';
 import { useBrowseMode } from '../context/BrowseModeContext';
 import BrowseModeToggle from './BrowseModeToggle';
+import PwaInstallButton from './PwaInstallButton';
 import { NAV_ICONS } from '../utils/navIcons';
 import { contentTransition, contentVariants } from '../utils/motion';
+import { isPwaInstalled, markPwaInstalled } from '../utils/pwaInstall';
 
 const mobileSidebarVariants = {
   open: { x: 0, transition: { type: "tween", ease: "circOut", duration: 0.3 } },
@@ -26,8 +28,7 @@ const mobileSidebarVariants = {
  */
 const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [deferredPrompt, setDeferredPrompt] = useState(null);
-  const [isInstalled, setIsInstalled] = useState(false);
+  const [isInstalled, setIsInstalled] = useState(() => isPwaInstalled());
   const shouldReduceMotion = useReducedMotion();
   const { effectiveMode } = useBrowseMode();
   const navItems = getNavForMode(effectiveMode);
@@ -38,15 +39,28 @@ const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
   // Trap focus inside the mobile drawer while it's open (WCAG 2.1 §F79)
   useFocusTrap(mobileDrawerRef, isMobileOpen);
 
-  // Check if already installed
+  // Hide Install once the PWA is installed (standalone launch or recorded install)
   useEffect(() => {
-    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+    const sync = () => {
+      if (isPwaInstalled()) {
+        markPwaInstalled();
+        setIsInstalled(true);
+      }
+    };
+    sync();
+    const handler = () => {
+      markPwaInstalled();
       setIsInstalled(true);
-    }
-    const handler = (e) => setIsInstalled(e.matches);
+    };
     const mq = window.matchMedia('(display-mode: standalone)');
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
+    mq.addEventListener('change', sync);
+    window.addEventListener('pwa-installed', handler);
+    window.addEventListener('appinstalled', handler);
+    return () => {
+      mq.removeEventListener('change', sync);
+      window.removeEventListener('pwa-installed', handler);
+      window.removeEventListener('appinstalled', handler);
+    };
   }, []);
 
   // Handle body scroll locking for mobile (html only — avoid double scrollbars)
@@ -64,27 +78,6 @@ const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
       document.body.style.overflow = '';
     };
   }, [isMobileOpen]);
-
-  // Handle PWA Installation event
-  useEffect(() => {
-    const handleBeforeInstallPrompt = (e) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-    };
-
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-  }, []);
-
-  const handleInstallClick = async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') {
-        setDeferredPrompt(null);
-      }
-    }
-  };
 
   const handleKeyDown = (e) => {
     if (e.key === 'Escape') setIsMobileOpen(false);
@@ -172,18 +165,7 @@ const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
 
               {!isInstalled && (
                 <div className="mt-4">
-                  <button 
-                    onClick={deferredPrompt ? handleInstallClick : undefined}
-                    disabled={!deferredPrompt}
-                    className={`w-full flex items-center justify-center gap-2 p-3 rounded-xl font-semibold transition-colors ${
-                      deferredPrompt
-                        ? 'bg-primary-600 hover:bg-primary-700 text-white cursor-pointer'
-                        : 'bg-organic-stone/50 text-organic-clay cursor-not-allowed'
-                    }`}
-                  >
-                    <Download size={18} />
-                    <span>{deferredPrompt ? 'Install App' : 'Install (build only)'}</span>
-                  </button>
+                  <PwaInstallButton variant="mobile" expanded />
                 </div>
               )}
             </motion.aside>
@@ -263,25 +245,7 @@ const Sidebar = ({ isDesktopOpen, setIsDesktopOpen }) => {
 
         {!isInstalled && (
           <div className="mt-4 px-4">
-            <button 
-              onClick={deferredPrompt ? handleInstallClick : undefined}
-              title={!isDesktopOpen ? (deferredPrompt ? "Install Web App" : "Install not available in dev mode") : ""}
-              disabled={!deferredPrompt}
-              className={`flex items-center justify-center gap-2 p-2.5 rounded-xl font-semibold transition-all shadow-sm ${
-                deferredPrompt
-                  ? 'bg-organic-charcoal hover:bg-black text-organic-cream cursor-pointer'
-                  : 'bg-organic-stone/50 text-organic-clay cursor-not-allowed'
-              } ${isDesktopOpen ? 'w-full' : 'w-10 h-10 p-0 mx-auto'}`}
-            >
-              <Download size={18} className="shrink-0" />
-              <motion.span
-                initial={false}
-                animate={{ opacity: isDesktopOpen ? 1 : 0, width: isDesktopOpen ? "auto" : 0 }}
-                className="overflow-hidden whitespace-nowrap text-sm"
-              >
-                {deferredPrompt ? 'Install App' : 'Install (build only)'}
-              </motion.span>
-            </button>
+            <PwaInstallButton variant="desktop" expanded={isDesktopOpen} />
           </div>
         )}
       </motion.aside>

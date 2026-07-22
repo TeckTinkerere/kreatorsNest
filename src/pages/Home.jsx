@@ -224,6 +224,23 @@ const Home = () => {
               </div>
             </section>
 
+            {!isReady && (
+              <section className="relative z-10" aria-busy="true" aria-label="Loading recommendations">
+                <div className="h-8 w-32 rounded-lg bg-organic-stone/50 mb-3" />
+                <div className="h-4 w-64 rounded bg-organic-stone/30 mb-8" />
+                <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6">
+                  {[0, 1, 2, 3].map((i) => (
+                    <div
+                      key={i}
+                      className={`min-h-[200px] rounded-2xl border border-organic-stone bg-white/80 ${
+                        shouldReduceMotion ? '' : 'animate-pulse'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </section>
+            )}
+
             {isReady && recommendations.length > 0 && (
               <section className="relative z-10">
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">

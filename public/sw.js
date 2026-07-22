@@ -1,6 +1,7 @@
-const CACHE_NAME = 'kreatornest-v3';
+const CACHE_NAME = 'kreatornest-v6';
 
-// Only pre-cache the shell — JS/CSS bundles are hashed and handled dynamically
+// Only pre-cache the shell — JS/CSS bundles are hashed and handled dynamically.
+// /connection-required is an SPA route; navigate fallback to index.html covers it offline.
 const PRECACHE_URLS = [
   '/',
   '/index.html',

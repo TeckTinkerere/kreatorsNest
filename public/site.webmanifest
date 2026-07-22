@@ -1,11 +1,22 @@
 {
+  "id": "/",
   "name": "KreatorNest - Freelance Resource Hub",
   "short_name": "KreatorNest",
   "description": "Curated tools and knowledge for the modern creative freelancer.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "any",
   "theme_color": "#2C2B29",
   "background_color": "#FAF9F5",
+  "categories": ["productivity", "education", "business"],
+  "prefer_related_applications": false,
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "/site.webmanifest"
+    }
+  ],
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",

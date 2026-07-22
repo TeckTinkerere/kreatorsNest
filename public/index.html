@@ -14,6 +14,12 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="description" content="KreatorNest - Your Creative Freelance Resource Hub" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@400;500;600;700&display=swap"
+    />
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -24,6 +30,23 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>KreatorNest - Creative Freelance Resource Hub</title>
+    <script>
+      // Capture beforeinstallprompt early (Android / Linux / desktop Chromium).
+      // React mounts later — without this, the event is often missed.
+      (function () {
+        var bridge = (window.__kreatorNestPwa = window.__kreatorNestPwa || { deferredPrompt: null });
+        window.addEventListener('beforeinstallprompt', function (e) {
+          e.preventDefault();
+          bridge.deferredPrompt = e;
+          window.dispatchEvent(new Event('pwa-install-available'));
+        });
+        window.addEventListener('appinstalled', function () {
+          bridge.deferredPrompt = null;
+          try { localStorage.setItem('kreatornest-pwa-installed', '1'); } catch (e) {}
+          window.dispatchEvent(new Event('pwa-installed'));
+        });
+      })();
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

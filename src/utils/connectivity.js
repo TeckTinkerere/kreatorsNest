@@ -25,11 +25,11 @@ export function isExternalHttpUrl(href) {
 
   const trimmed = href.trim();
   if (!trimmed) return false;
+  // Non-http schemes (incl. script URLs) are rejected by protocol check below.
   if (
     trimmed.startsWith('mailto:') ||
     trimmed.startsWith('tel:') ||
-    trimmed.startsWith('#') ||
-    trimmed.startsWith('javascript:')
+    trimmed.startsWith('#')
   ) {
     return false;
   }

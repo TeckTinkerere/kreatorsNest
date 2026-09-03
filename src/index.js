@@ -8,6 +8,9 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { initAnalytics } from './utils/analytics';
+
+initAnalytics();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

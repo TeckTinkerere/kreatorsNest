@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Download, FileText, Star } from 'lucide-react';
 import { useContent } from '../content/ContentContext';
+import { EVENTS, trackEvent } from '../utils/analytics';
 import SEO from '../components/SEO';
 import DownloadCard from '../components/DownloadCard';
 
@@ -16,6 +17,8 @@ const FeaturedCard = ({ doc }) => {
   const [downloaded, setDownloaded] = useState(false);
 
   const handleDownload = () => {
+    trackEvent(EVENTS.TEMPLATE_DOWNLOAD, { title: doc.title, category: doc.category });
+
     const link = document.createElement('a');
     link.href = doc.txtFile;
     link.download = doc.txtFile.split('/').pop();

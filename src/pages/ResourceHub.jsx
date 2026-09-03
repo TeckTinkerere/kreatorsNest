@@ -4,6 +4,7 @@ import { useContent } from '../content/ContentContext';
 import { useRecommendations } from '../hooks/useRecommendations';
 import CategoryFilter from '../components/CategoryFilter';
 import ResourceCard from '../components/ResourceCard';
+import SuggestResourceCard from '../components/SuggestResourceCard';
 import SEO from '../components/SEO';
 import {
   contentTransition,
@@ -89,6 +90,7 @@ const ResourceHub = ({ title, typeDescription, hubType }) => {
             {filteredResources.map((resource) => (
               <ResourceCard key={resource.id} resource={resource} onInteract={trackInteraction} />
             ))}
+            <SuggestResourceCard context={`hub-${hubType}`} />
           </motion.div>
         ) : (
           <motion.div

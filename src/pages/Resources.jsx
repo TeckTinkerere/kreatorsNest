@@ -4,6 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import SEO from '../components/SEO';
 import CategoryFilter from '../components/CategoryFilter';
 import ResourceCard from '../components/ResourceCard';
+import SuggestResourceCard from '../components/SuggestResourceCard';
 import { useContent } from '../content/ContentContext';
 import { useRecommendations } from '../hooks/useRecommendations';
 import { filterByTier } from '../utils/tierFilters';
@@ -155,6 +156,7 @@ const Resources = () => {
                     variant="full"
                   />
                 ))}
+                <SuggestResourceCard context="resources" />
               </div>
             ) : (
               <div className="text-center py-24 bg-white/50 rounded-3xl border border-organic-stone/50 mt-8">

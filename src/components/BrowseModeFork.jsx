@@ -3,6 +3,7 @@ import { Compass, Map } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useBrowseMode } from "../context/BrowseModeContext";
 import { staggerContainer, staggerItem } from "../utils/motion";
+import { EVENTS, trackEvent } from "../utils/analytics";
 
 const MODE_OPTIONS = [
   {
@@ -29,6 +30,8 @@ const BrowseModeFork = () => {
   const item = staggerItem(shouldReduceMotion);
 
   const handleModeSelect = (nextMode) => {
+    trackEvent(EVENTS.MODE_SELECT, { mode: nextMode });
+
     if (nextMode === "guided") {
       setMode("guided", {
         onAfterSet: () => navigate("/starter-kit"),

@@ -1,7 +1,9 @@
+import { useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Clock, User, Tag } from 'lucide-react';
 import { useContent } from '../content/ContentContext';
+import { EVENTS, trackEvent } from '../utils/analytics';
 import SEO from '../components/SEO';
 
 /**
@@ -16,6 +18,11 @@ const ScenarioArticle = () => {
   const navigate = useNavigate();
   const { scenarios } = useContent();
   const post = scenarios.find(p => p.slug === slug);
+
+  // Declared before the not-found guard so hook order stays stable across renders.
+  useEffect(() => {
+    if (post) trackEvent(EVENTS.ARTICLE_READ, { title: post.title, slug: post.slug });
+  }, [post]);
 
   if (!post) {
     return (

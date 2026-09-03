@@ -36,6 +36,9 @@ src/
 ├── hooks/
 │   ├── usePagination.js     # Pagination range logic with ellipsis
 │   └── useRecommendations.js # IndexedDB-backed recommendation engine
+├── config/
+│   ├── contribute.js        # Peer contribution (suggest form) config
+│   └── navigation.js        # Sidebar/nav definitions
 ├── content/                # Sheet-backed content layer
 │   ├── ContentContext.jsx   # Provides all content via useContent()
 │   ├── csv.js               # RFC 4180 CSV parser
@@ -94,6 +97,13 @@ One exception: template **files** (`public/downloads/*.txt`) still have to be
 committed. The sheet controls the card describing a download; the file it points
 at is served from this repo.
 
+### Let peers contribute
+
+Two routes, neither needing GitHub: give trusted peers **Editor** access to the
+sheet so their rows go live directly, or point
+`REACT_APP_SUGGEST_FORM_URL` at a Google Form so anyone can submit a resource for
+review. Setup for both is in **[docs/CONTRIBUTING-PEERS.md](docs/CONTRIBUTING-PEERS.md)**.
+
 ## Available Scripts
 
 ```sh
@@ -114,6 +124,7 @@ node scripts/export-content-csv.mjs   # Export src/data/ as CSVs to seed the she
 - **React Router 6** — client-side routing
 - **IndexedDB** — recommendation tracking (local)
 - **Google Sheets** — runtime content source (CSV export, no API key)
+- **Umami** — privacy-friendly, cookie-free analytics (optional)
 
 ## Deployment
 
@@ -122,6 +133,13 @@ npm run build
 # Deploy the /build folder to any static host (Vercel, Netlify, Cloudflare Pages)
 ```
 
-Set `REACT_APP_CONTENT_SHEET_ID` in the host's environment variables to enable
-sheet-backed content (see `.env.example`). Without it the site runs entirely on
-the data committed in `src/data/`.
+Set the environment variables from `.env.example` in the host's dashboard:
+
+| Variable | Effect if unset |
+|---|---|
+| `REACT_APP_CONTENT_SHEET_ID` | Site runs entirely on the data committed in `src/data/` |
+| `REACT_APP_UMAMI_WEBSITE_ID` | No analytics script is loaded at all |
+| `REACT_APP_SUGGEST_FORM_URL` | "Add a resource" entry points do not render |
+
+Every one of them is optional, and the site is fully functional with none of them
+set.

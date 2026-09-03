@@ -4,6 +4,7 @@ import { MessageSquare, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import CategoryFilter from '../components/CategoryFilter';
 import ResourceCard from '../components/ResourceCard';
+import SuggestResourceCard from '../components/SuggestResourceCard';
 import SEO from '../components/SEO';
 import { useContent } from '../content/ContentContext';
 import { useRecommendations } from '../hooks/useRecommendations';
@@ -79,6 +80,7 @@ const Community = () => {
                     variant="full"
                   />
                 ))}
+                <SuggestResourceCard context="community" />
               </motion.div>
             ) : (
               <motion.div

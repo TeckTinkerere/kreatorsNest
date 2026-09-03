@@ -36,8 +36,14 @@ src/
 ├── hooks/
 │   ├── usePagination.js     # Pagination range logic with ellipsis
 │   └── useRecommendations.js # IndexedDB-backed recommendation engine
-└── data/
-    ├── contributors.json    # Contributor profiles (editable)
+├── content/                # Sheet-backed content layer
+│   ├── ContentContext.jsx   # Provides all content via useContent()
+│   ├── csv.js               # RFC 4180 CSV parser
+│   ├── remote.js            # Google Sheets fetch, cache, and fallback
+│   └── schema.js            # Sheet row -> app object mapping + validation
+└── data/                   # Bundled fallback copy (offline + first paint)
+    ├── contributors.json    # Contributor profiles
+    ├── downloads.js         # Template documents
     ├── resources.js         # All curated resource entries + categories
     └── scenarioPosts.js     # Scenario blog article content
 ```
@@ -73,46 +79,20 @@ src/
 
 ## Adding Content
 
-### Add a contributor
+**Content is edited in a Google Sheet, not in this repository.** Add a row, save,
+and it appears on the site within 30 minutes — no commit, no rebuild, no deploy.
 
-Edit `src/data/contributors.json` and add an entry:
+See **[docs/CONTENT-SHEET.md](docs/CONTENT-SHEET.md)** for the one-time setup,
+the full column reference for all four tabs, and the article body syntax.
 
-```json
-{
-  "id": "4",
-  "name": "Your Name",
-  "avatar": "",
-  "bio": "Short bio about what you do.",
-  "contributions": ["Contribution title"],
-  "socials": {
-    "youtube": "https://youtube.com/@handle",
-    "instagram": "https://instagram.com/handle"
-  }
-}
-```
+The files in `src/data/` remain in the build as the offline/fallback copy: they
+render on first paint, keep the PWA working without a network, and are what the
+site falls back to if the sheet is ever unreachable, private, empty, or malformed.
+Editing them directly still works, it just requires a deploy.
 
-### Add a resource
-
-Edit `src/data/resources.js` and add an entry to `resourceData`:
-
-```js
-{
-  id: "l12",
-  title: "Resource Title",
-  description: "Short description.",
-  type: "Learning",  // "Learning" | "Tools" | "Templates" | "Gigs" | "Communities"
-  category: "Visual Communication",
-  link: "https://example.com",
-  icon: "BookOpen",
-  tags: ["Tag1", "Tag2"],
-}
-```
-
-### Add a scenario blog article
-
-Edit `src/data/scenarioPosts.js` and add an entry. Each post needs:
-- `id`, `slug`, `title`, `excerpt`, `author`, `date`, `readTime`, `category`, `tags`
-- `content` array with `{ type: "paragraph" | "heading" | "tip", text: "..." }` blocks
+One exception: template **files** (`public/downloads/*.txt`) still have to be
+committed. The sheet controls the card describing a download; the file it points
+at is served from this repo.
 
 ## Available Scripts
 
@@ -120,6 +100,8 @@ Edit `src/data/scenarioPosts.js` and add an entry. Each post needs:
 npm start       # Development server on port 3000
 npm run build   # Production build to /build
 npm test        # Run test suite
+
+node scripts/export-content-csv.mjs   # Export src/data/ as CSVs to seed the sheet
 ```
 
 ## Tech Stack
@@ -131,6 +113,7 @@ npm test        # Run test suite
 - **Radix UI** — Slider primitive (blog panel scrollbar)
 - **React Router 6** — client-side routing
 - **IndexedDB** — recommendation tracking (local)
+- **Google Sheets** — runtime content source (CSV export, no API key)
 
 ## Deployment
 
@@ -138,3 +121,7 @@ npm test        # Run test suite
 npm run build
 # Deploy the /build folder to any static host (Vercel, Netlify, Cloudflare Pages)
 ```
+
+Set `REACT_APP_CONTENT_SHEET_ID` in the host's environment variables to enable
+sheet-backed content (see `.env.example`). Without it the site runs entirely on
+the data committed in `src/data/`.

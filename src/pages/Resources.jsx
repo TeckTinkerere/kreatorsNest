@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import SEO from '../components/SEO';
 import CategoryFilter from '../components/CategoryFilter';
 import ResourceCard from '../components/ResourceCard';
-import { resourceData } from '../data/resources';
+import { useContent } from '../content/ContentContext';
 import { useRecommendations } from '../hooks/useRecommendations';
 import { filterByTier } from '../utils/tierFilters';
 
@@ -27,12 +27,13 @@ const Resources = () => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [tierTab, setTierTab] = useState('all');
   const { trackInteraction } = useRecommendations();
+  const { resources } = useContent();
 
   const activeTab = normalizeTab(searchParams.get('tab') ?? 'learning');
 
   const resourcesForTab = useMemo(() => (
-    resourceData.filter((resource) => resource.type === TAB_CONFIG[activeTab].type)
-  ), [activeTab]);
+    resources.filter((resource) => resource.type === TAB_CONFIG[activeTab].type)
+  ), [resources, activeTab]);
 
   const resourcesForTier = useMemo(() => (
     filterByTier(resourcesForTab, tierTab)

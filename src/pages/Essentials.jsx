@@ -3,7 +3,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import SEO from '../components/SEO';
 import CategoryFilter from '../components/CategoryFilter';
 import ResourceCard from '../components/ResourceCard';
-import { resourceData } from '../data/resources';
+import { useContent } from '../content/ContentContext';
 import { useRecommendations } from '../hooks/useRecommendations';
 import {
   contentTransition,
@@ -20,12 +20,13 @@ const Essentials = () => {
   const shouldReduceMotion = useReducedMotion();
   const routeVariants = pageVariants(shouldReduceMotion);
   const swapVariants = contentVariants(shouldReduceMotion);
+  const { resources } = useContent();
 
   const essentials = useMemo(
-    () => resourceData.filter((resource) => (
+    () => resources.filter((resource) => (
       INCLUDED_TYPES.includes(resource.type) && resource.tier === 'essential'
     )),
-    []
+    [resources]
   );
 
   const categories = useMemo(() => {

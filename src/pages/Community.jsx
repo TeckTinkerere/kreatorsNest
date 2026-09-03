@@ -5,16 +5,17 @@ import { Link } from 'react-router-dom';
 import CategoryFilter from '../components/CategoryFilter';
 import ResourceCard from '../components/ResourceCard';
 import SEO from '../components/SEO';
-import { resourceData } from '../data/resources';
+import { useContent } from '../content/ContentContext';
 import { useRecommendations } from '../hooks/useRecommendations';
 
 const Community = () => {
   const [activeCategory, setActiveCategory] = useState('All');
   const { trackInteraction } = useRecommendations();
+  const { resources } = useContent();
 
   const communityResources = useMemo(() => (
-    resourceData.filter((resource) => resource.type === 'Communities')
-  ), []);
+    resources.filter((resource) => resource.type === 'Communities')
+  ), [resources]);
 
   const availableCategories = useMemo(() => (
     ['All', ...new Set(communityResources.map((resource) => resource.category))]

@@ -1,7 +1,7 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Clock, User, Tag } from 'lucide-react';
-import { scenarioPosts } from '../data/scenarioPosts';
+import { useContent } from '../content/ContentContext';
 import SEO from '../components/SEO';
 
 /**
@@ -14,7 +14,8 @@ import SEO from '../components/SEO';
 const ScenarioArticle = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const post = scenarioPosts.find(p => p.slug === slug);
+  const { scenarios } = useContent();
+  const post = scenarios.find(p => p.slug === slug);
 
   if (!post) {
     return (

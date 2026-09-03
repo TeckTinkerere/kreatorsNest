@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { resourceData } from '../data/resources';
+import { useContent } from '../content/ContentContext';
 import { useRecommendations } from '../hooks/useRecommendations';
 import CategoryFilter from '../components/CategoryFilter';
 import ResourceCard from '../components/ResourceCard';
@@ -19,7 +19,7 @@ import {
  * @param {object} props
  * @param {string} props.title - Page heading
  * @param {string} props.typeDescription - Subtitle/description text
- * @param {string} props.hubType - Resource type key to filter from resourceData
+ * @param {string} props.hubType - Resource type key to filter from site content
  */
 const ResourceHub = ({ title, typeDescription, hubType }) => {
   const [activeCategory, setActiveCategory] = useState("All");
@@ -27,23 +27,24 @@ const ResourceHub = ({ title, typeDescription, hubType }) => {
   const shouldReduceMotion = useReducedMotion();
   const routeVariants = pageVariants(shouldReduceMotion);
   const swapVariants = contentVariants(shouldReduceMotion);
+  const { resources } = useContent();
 
   const filteredResources = useMemo(() => {
     // Derive categories from the actual resources for this hubType
-    return resourceData.filter(resource => {
+    return resources.filter(resource => {
       const matchType = resource.type === hubType;
       const matchCat = activeCategory === "All" || resource.category === activeCategory;
       return matchType && matchCat;
     });
-  }, [hubType, activeCategory]);
+  }, [resources, hubType, activeCategory]);
 
   // Only show categories that have resources for this hub type
   const availableCategories = useMemo(() => {
-    const cats = resourceData
+    const cats = resources
       .filter(r => r.type === hubType)
       .map(r => r.category);
     return ['All', ...new Set(cats)];
-  }, [hubType]);
+  }, [resources, hubType]);
 
   return (
     <>

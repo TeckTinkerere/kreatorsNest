@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useBrowseMode } from "../context/BrowseModeContext";
-import { resourceData } from "../data/resources";
+import { useContent } from "../content/ContentContext";
 import { useRecommendations } from "../hooks/useRecommendations";
 import { getTieredHomeSlice } from "../utils/tierFilters";
 import {
@@ -34,14 +34,15 @@ const Home = () => {
   const shouldReduceMotion = useReducedMotion();
   const { recommendations, isReady, trackInteraction } = useRecommendations();
   const { mode, isModeSet, forkDismissed, effectiveMode } = useBrowseMode();
+  const { resources } = useContent();
 
   const showFork = !isModeSet && !forkDismissed;
   const showGuidedHome = !showFork && (mode === "guided" || effectiveMode === "guided");
   const showExploreHome = !showFork && !showGuidedHome;
 
-  const essentials = useMemo(() => getTieredHomeSlice(resourceData, "essential", 4), []);
-  const curatorPicks = useMemo(() => getTieredHomeSlice(resourceData, "pro", 3), []);
-  const hiddenGems = useMemo(() => getTieredHomeSlice(resourceData, "hidden-gem", 6), []);
+  const essentials = useMemo(() => getTieredHomeSlice(resources, "essential", 4), [resources]);
+  const curatorPicks = useMemo(() => getTieredHomeSlice(resources, "pro", 3), [resources]);
+  const hiddenGems = useMemo(() => getTieredHomeSlice(resources, "hidden-gem", 6), [resources]);
 
   const containerVariants = shouldReduceMotion
     ? {

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Download } from 'lucide-react';
+import { EVENTS, trackEvent } from '../utils/analytics';
 
 /**
  * DownloadCard
@@ -18,6 +19,8 @@ const DownloadCard = ({ doc, showHiddenGem = false }) => {
    * Triggers browser-native download for the .txt template file.
    */
   const handleDownload = () => {
+    trackEvent(EVENTS.TEMPLATE_DOWNLOAD, { title: doc.title, category: doc.category });
+
     const link = document.createElement('a');
     link.href = doc.txtFile;
     link.download = doc.txtFile.split('/').pop();

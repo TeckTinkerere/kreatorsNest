@@ -10,6 +10,9 @@ const PageLoader = () => {
 
   return (
     <div
+      // Marks the Suspense fallback so the prerenderer waits for the real page
+      // rather than snapshotting a skeleton.
+      data-page-loader=""
       className="p-4 md:p-8 lg:p-12 max-w-[1400px] mx-auto space-y-8"
       role="status"
       aria-live="polite"

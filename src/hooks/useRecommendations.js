@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { resourceData } from '../data/resources';
+import { useContent } from '../content/ContentContext';
 
 const DB_NAME = 'KreatorNestDB';
 const DB_VERSION = 1;
@@ -20,6 +20,9 @@ export const useRecommendations = () => {
   const [isReady, setIsReady] = useState(false);
   // Cache the db reference to avoid re-opening on every interaction
   const dbRef = useRef(null);
+  const { resources } = useContent();
+  // Held in a ref so late-arriving spreadsheet content does not re-open IndexedDB.
+  const resourcesRef = useRef(resources);
 
   /**
    * generateRecommendations
@@ -40,7 +43,7 @@ export const useRecommendations = () => {
 
       if (!history || history.length === 0) {
         // No history — serve a random sample without mutating the shared module export
-        const shuffled = [...resourceData].sort(() => 0.5 - Math.random());
+        const shuffled = [...resourcesRef.current].sort(() => 0.5 - Math.random());
         setRecommendations(shuffled.slice(0, 4));
         return;
       }
@@ -52,13 +55,13 @@ export const useRecommendations = () => {
 
       // Collect resources matching top categories (preserves category priority order)
       let recs = topCategories.flatMap(cat =>
-        resourceData.filter(r => r.category === cat)
+        resourcesRef.current.filter(r => r.category === cat)
       );
 
       // Pad to at least 4 with resources from other categories
       if (recs.length < 4) {
         const existingIds = new Set(recs.map(r => r.id));
-        const others = resourceData
+        const others = resourcesRef.current
           .filter(r => !existingIds.has(r.id))
           .slice(0, 4 - recs.length);
         recs = [...recs, ...others];
@@ -69,6 +72,12 @@ export const useRecommendations = () => {
       setRecommendations(unique);
     };
   }, []);
+
+  // Regenerate when content is replaced by the spreadsheet payload
+  useEffect(() => {
+    resourcesRef.current = resources;
+    if (dbRef.current) generateRecommendations(dbRef.current);
+  }, [resources, generateRecommendations]);
 
   // Open the IndexedDB connection once on mount
   useEffect(() => {

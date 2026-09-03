@@ -4,9 +4,11 @@ import { useSearchParams } from 'react-router-dom';
 import SEO from '../components/SEO';
 import CategoryFilter from '../components/CategoryFilter';
 import ResourceCard from '../components/ResourceCard';
-import { resourceData } from '../data/resources';
+import SuggestResourceCard from '../components/SuggestResourceCard';
+import { useContent } from '../content/ContentContext';
 import { useRecommendations } from '../hooks/useRecommendations';
 import { filterByTier } from '../utils/tierFilters';
+import { collectionSchema } from '../utils/structuredData';
 
 const TAB_CONFIG = {
   learning: { label: 'Learning', type: 'Learning' },
@@ -27,12 +29,13 @@ const Resources = () => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [tierTab, setTierTab] = useState('all');
   const { trackInteraction } = useRecommendations();
+  const { resources } = useContent();
 
   const activeTab = normalizeTab(searchParams.get('tab') ?? 'learning');
 
   const resourcesForTab = useMemo(() => (
-    resourceData.filter((resource) => resource.type === TAB_CONFIG[activeTab].type)
-  ), [activeTab]);
+    resources.filter((resource) => resource.type === TAB_CONFIG[activeTab].type)
+  ), [resources, activeTab]);
 
   const resourcesForTier = useMemo(() => (
     filterByTier(resourcesForTab, tierTab)
@@ -57,6 +60,15 @@ const Resources = () => {
     setActiveCategory('All');
   };
 
+  // Lists the actual entries, so an engine can answer "what tools does
+  // KreatorNest recommend" by citing this page rather than just knowing it exists.
+  const schema = useMemo(() => collectionSchema({
+    name: `${TAB_CONFIG[activeTab].label} for creative freelancers`,
+    description: `Curated ${TAB_CONFIG[activeTab].label.toLowerCase()} resources for early-career creative freelancers.`,
+    path: `/resources?tab=${activeTab}`,
+    items: resourcesForTab,
+  }), [activeTab, resourcesForTab]);
+
   const setTier = (nextTier) => {
     setTierTab(nextTier);
     setActiveCategory('All');
@@ -67,6 +79,7 @@ const Resources = () => {
       <SEO
         title="Resources"
         description="Explore curated learning, tools, and gig platforms with tier-based filtering for creative freelancers."
+        schema={schema}
       />
 
       <motion.div
@@ -154,6 +167,7 @@ const Resources = () => {
                     variant="full"
                   />
                 ))}
+                <SuggestResourceCard context="resources" />
               </div>
             ) : (
               <div className="text-center py-24 bg-white/50 rounded-3xl border border-organic-stone/50 mt-8">

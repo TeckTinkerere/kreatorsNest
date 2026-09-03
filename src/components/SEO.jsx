@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { siteOrigin } from '../utils/structuredData';
 
 /**
  * SEO
@@ -10,8 +11,9 @@ import { useLocation } from 'react-router-dom';
  * @param {string} [props.description] - Meta description text.
  * @param {string} [props.ogImage] - URL for the Open Graph image.
  * @param {string} [props.ogType] - Open Graph type, default "website".
+ * @param {object|object[]} [props.schema] - JSON-LD graph(s) to publish for this page.
  */
-const SEO = ({ title, description, ogImage, ogType = 'website' }) => {
+const SEO = ({ title, description, ogImage, ogType = 'website', schema }) => {
   const location = useLocation();
 
   useEffect(() => {
@@ -19,13 +21,15 @@ const SEO = ({ title, description, ogImage, ogType = 'website' }) => {
       title: 'KreatorNest - Creative Freelance Resource Hub',
       description:
         'Curated resources, tools, templates, and community for creative freelancers. Level up your freelance career with KreatorNest.',
-      image: `${window.location.origin}/logomain.png`,
+      image: `${siteOrigin() || window.location.origin}/logomain.png`,
     };
 
     const pageTitle = title ? `${title} | KreatorNest` : defaults.title;
     const pageDesc = description || defaults.description;
     const pageImage = ogImage || defaults.image;
-    const pageUrl = `${window.location.origin}${location.pathname}`;
+    // Prefer the configured public origin so canonicals stay correct on
+    // preview deploys and any alternate domain the site is reachable at.
+    const pageUrl = `${siteOrigin() || window.location.origin}${location.pathname}`;
 
     document.title = pageTitle;
 
@@ -64,6 +68,31 @@ const SEO = ({ title, description, ogImage, ogType = 'website' }) => {
     setMeta('twitter:description', pageDesc);
     setMeta('twitter:image', pageImage);
   }, [title, description, ogImage, ogType, location.pathname]);
+
+  // JSON-LD is managed in its own effect and fully removed on unmount, so a
+  // route change can never leave the previous page's graph behind — a stale
+  // Article claim on a hub page is worse than no structured data at all.
+  useEffect(() => {
+    // Clear any graph already in the document. On a prerendered page the build
+    // baked one in; appending ours on top would publish it twice.
+    document
+      .querySelectorAll('script[data-seo="kreatornest"]')
+      .forEach((el) => el.remove());
+
+    const graphs = (Array.isArray(schema) ? schema : [schema]).filter(Boolean);
+    if (graphs.length === 0) return undefined;
+
+    const nodes = graphs.map((graph) => {
+      const el = document.createElement('script');
+      el.type = 'application/ld+json';
+      el.dataset.seo = 'kreatornest';
+      el.textContent = JSON.stringify(graph);
+      document.head.appendChild(el);
+      return el;
+    });
+
+    return () => nodes.forEach((el) => el.remove());
+  }, [schema]);
 
   return null;
 };

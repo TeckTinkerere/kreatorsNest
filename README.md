@@ -107,9 +107,13 @@ review. Setup for both is in **[docs/CONTRIBUTING-PEERS.md](docs/CONTRIBUTING-PE
 ## Available Scripts
 
 ```sh
-npm start       # Development server on port 3000
-npm run build   # Production build to /build
-npm test        # Run test suite
+npm start        # Development server on port 3000
+npm run build    # Production build + SEO files + prerender
+npm run build:fast  # Bundle only, skipping SEO files and prerendering
+npm test         # Run test suite
+
+npm run seo        # Regenerate robots.txt, llms.txt, sitemap.xml
+npm run prerender  # Prerender all routes to static HTML (--verbose for detail)
 
 node scripts/export-content-csv.mjs   # Export src/data/ as CSVs to seed the sheet
 ```
@@ -125,6 +129,7 @@ node scripts/export-content-csv.mjs   # Export src/data/ as CSVs to seed the she
 - **IndexedDB** — recommendation tracking (local)
 - **Google Sheets** — runtime content source (CSV export, no API key)
 - **Umami** — privacy-friendly, cookie-free analytics (optional)
+- **Playwright** — build-time prerendering so crawlers get real HTML (optional)
 
 ## Deployment
 
@@ -137,9 +142,21 @@ Set the environment variables from `.env.example` in the host's dashboard:
 
 | Variable | Effect if unset |
 |---|---|
+| `REACT_APP_SITE_URL` | No sitemap.xml, and prerendering is skipped — pages stay client-rendered and invisible to AI crawlers |
 | `REACT_APP_CONTENT_SHEET_ID` | Site runs entirely on the data committed in `src/data/` |
 | `REACT_APP_UMAMI_WEBSITE_ID` | No analytics script is loaded at all |
 | `REACT_APP_SUGGEST_FORM_URL` | "Add a resource" entry points do not render |
 
-Every one of them is optional, and the site is fully functional with none of them
-set.
+The site is fully functional with none of them set, but `REACT_APP_SITE_URL` is
+strongly recommended — it is what enables static prerendering, which is the
+difference between AI crawlers seeing your content and seeing an empty shell.
+
+To prerender, the build needs a headless browser. On Netlify, set the build
+command to:
+
+```sh
+npx playwright install --with-deps chromium && npm run build
+```
+
+Without it the build still succeeds and ships a client-rendered site.
+See **[docs/SEO-AND-GEO.md](docs/SEO-AND-GEO.md)**.

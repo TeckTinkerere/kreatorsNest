@@ -3,6 +3,7 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Clock, ArrowRight, ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
 import { useContent } from '../content/ContentContext';
+import { absoluteUrl, collectionSchema } from '../utils/structuredData';
 import { useBrowseMode } from '../context/BrowseModeContext';
 import { useRecommendations } from '../hooks/useRecommendations';
 import { usePagination } from '../hooks/usePagination';
@@ -209,9 +210,24 @@ const ScenariosHub = () => {
     [scenarioPosts]
   );
 
+  const schema = useMemo(() => collectionSchema({
+    name: 'Freelance scenarios and field guides',
+    description: 'Case studies and practical guides on pricing, client management, contracts, and getting paid.',
+    path: '/scenarios',
+    items: scenarioPosts.map((post) => ({
+      title: post.title,
+      description: post.excerpt,
+      link: absoluteUrl(`/scenarios/${post.slug}`),
+    })),
+  }), [scenarioPosts]);
+
   return (
     <>
-      <SEO title="Scenarios" description="Case studies on pricing, client management, and law — plus deep-dive articles from the field for creative freelancers." />
+      <SEO
+        title="Scenarios"
+        description="Case studies on pricing, client management, and law — plus deep-dive articles from the field for creative freelancers."
+        schema={schema}
+      />
       <motion.div
         variants={routeVariants}
         initial="initial"

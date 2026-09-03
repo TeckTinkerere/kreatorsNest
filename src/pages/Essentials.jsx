@@ -4,6 +4,7 @@ import SEO from '../components/SEO';
 import CategoryFilter from '../components/CategoryFilter';
 import ResourceCard from '../components/ResourceCard';
 import { useContent } from '../content/ContentContext';
+import { collectionSchema } from '../utils/structuredData';
 import { useRecommendations } from '../hooks/useRecommendations';
 import {
   contentTransition,
@@ -50,6 +51,13 @@ const Essentials = () => {
     [filteredEssentials]
   );
 
+  const schema = useMemo(() => collectionSchema({
+    name: 'Essential learning and tools for creative freelancers',
+    description: 'The foundational learning material and tools every early-career creative freelancer should start with.',
+    path: '/essentials',
+    items: essentials,
+  }), [essentials]);
+
   const hasResults = filteredEssentials.length > 0;
 
   return (
@@ -57,6 +65,7 @@ const Essentials = () => {
       <SEO
         title="Essentials"
         description="Guided essentials for creative freelancers: foundational learning and practical tools to start strong."
+        schema={schema}
       />
 
       <motion.div

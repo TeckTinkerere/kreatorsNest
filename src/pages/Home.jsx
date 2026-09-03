@@ -5,6 +5,7 @@ import { useBrowseMode } from "../context/BrowseModeContext";
 import { useContent } from "../content/ContentContext";
 import { useRecommendations } from "../hooks/useRecommendations";
 import { getTieredHomeSlice } from "../utils/tierFilters";
+import { websiteSchema } from "../utils/structuredData";
 import {
   contentTransition,
   contentVariants,
@@ -27,6 +28,54 @@ const STARTER_ROLES = [
 ];
 
 /**
+ * CuratedSections
+ * The Curator's Picks and Hidden Gems rows.
+ *
+ * Extracted so the first-visit fork view can show real content underneath the
+ * mode choice. Before this, a visitor — or a crawler — arriving at the home page
+ * saw only the hero and the two mode buttons, which left the site's most
+ * important page with almost no indexable content.
+ *
+ * @param {object} props
+ * @param {object[]} props.picks - Pro-tier resources.
+ * @param {object[]} props.gems - Hidden-gem resources.
+ * @param {(category: string) => void} props.onInteract - Interaction tracker.
+ */
+const CuratedSections = ({ picks, gems, onInteract }) => (
+  <>
+    <section className="relative z-10">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+        <div>
+          <h2 className="text-3xl font-serif text-organic-charcoal">Curator&apos;s Picks</h2>
+          <p className="text-organic-clay mt-2">Hand-picked resources from the pro tier.</p>
+        </div>
+        <Link to="/resources?tab=learning" className="text-sm font-semibold text-primary-600 hover:text-primary-800 transition-colors">
+          Explore resources →
+        </Link>
+      </div>
+
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6">
+        {picks.map((resource) => (
+          <ResourceCard key={resource.id} resource={resource} onInteract={onInteract} />
+        ))}
+      </div>
+    </section>
+
+    <section className="relative z-10">
+      <div className="mb-8">
+        <h2 className="text-3xl font-serif text-organic-charcoal">Hidden Gems</h2>
+        <p className="text-organic-clay mt-2">Useful finds you might have missed.</p>
+      </div>
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6">
+        {gems.map((resource) => (
+          <ResourceCard key={resource.id} resource={resource} onInteract={onInteract} />
+        ))}
+      </div>
+    </section>
+  </>
+);
+
+/**
  * Home
  * Mode-aware home page with first-visit fork, guided essentials, and explore picks.
  */
@@ -43,6 +92,7 @@ const Home = () => {
   const essentials = useMemo(() => getTieredHomeSlice(resources, "essential", 4), [resources]);
   const curatorPicks = useMemo(() => getTieredHomeSlice(resources, "pro", 3), [resources]);
   const hiddenGems = useMemo(() => getTieredHomeSlice(resources, "hidden-gem", 6), [resources]);
+  const schema = useMemo(() => websiteSchema(), []);
 
   const containerVariants = shouldReduceMotion
     ? {
@@ -83,7 +133,11 @@ const Home = () => {
 
   return (
     <>
-      <SEO title="Home" description="Curated resources, tools, templates, and community for creative freelancers. Level up your freelance career with KreatorNest." />
+      <SEO
+        title="Home"
+        description="Curated resources, tools, templates, and community for creative freelancers. Level up your freelance career with KreatorNest."
+        schema={schema}
+      />
       <motion.div
         variants={routeVariants}
         initial="initial"
@@ -195,35 +249,7 @@ const Home = () => {
             transition={contentTransition(shouldReduceMotion)}
             className="space-y-14 pb-20"
           >
-            <section className="relative z-10">
-              <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
-                <div>
-                  <h2 className="text-3xl font-serif text-organic-charcoal">Curator&apos;s Picks</h2>
-                  <p className="text-organic-clay mt-2">Hand-picked resources from the pro tier.</p>
-                </div>
-                <Link to="/resources?tab=learning" className="text-sm font-semibold text-primary-600 hover:text-primary-800 transition-colors">
-                  Explore resources →
-                </Link>
-              </div>
-
-              <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6">
-                {curatorPicks.map((resource) => (
-                  <ResourceCard key={resource.id} resource={resource} onInteract={trackInteraction} />
-                ))}
-              </div>
-            </section>
-
-            <section className="relative z-10">
-              <div className="mb-8">
-                <h2 className="text-3xl font-serif text-organic-charcoal">Hidden Gems</h2>
-                <p className="text-organic-clay mt-2">Useful finds you might have missed.</p>
-              </div>
-              <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6">
-                {hiddenGems.map((resource) => (
-                  <ResourceCard key={resource.id} resource={resource} onInteract={trackInteraction} />
-                ))}
-              </div>
-            </section>
+            <CuratedSections picks={curatorPicks} gems={hiddenGems} onInteract={trackInteraction} />
 
             {!isReady && (
               <section className="relative z-10" aria-busy="true" aria-label="Loading recommendations">
@@ -283,6 +309,14 @@ const Home = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Shown under the fork so the mode choice never leaves the page empty —
+          for a first-time visitor or for a crawler, which always sees this state. */}
+      {showFork && (
+        <div className="space-y-14 pb-20 pt-6">
+          <CuratedSections picks={curatorPicks} gems={hiddenGems} onInteract={trackInteraction} />
+        </div>
+      )}
       </motion.div>
       </motion.div>
     </>

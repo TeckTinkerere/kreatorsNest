@@ -8,6 +8,7 @@ import SuggestResourceCard from '../components/SuggestResourceCard';
 import { useContent } from '../content/ContentContext';
 import { useRecommendations } from '../hooks/useRecommendations';
 import { filterByTier } from '../utils/tierFilters';
+import { collectionSchema } from '../utils/structuredData';
 
 const TAB_CONFIG = {
   learning: { label: 'Learning', type: 'Learning' },
@@ -59,6 +60,15 @@ const Resources = () => {
     setActiveCategory('All');
   };
 
+  // Lists the actual entries, so an engine can answer "what tools does
+  // KreatorNest recommend" by citing this page rather than just knowing it exists.
+  const schema = useMemo(() => collectionSchema({
+    name: `${TAB_CONFIG[activeTab].label} for creative freelancers`,
+    description: `Curated ${TAB_CONFIG[activeTab].label.toLowerCase()} resources for early-career creative freelancers.`,
+    path: `/resources?tab=${activeTab}`,
+    items: resourcesForTab,
+  }), [activeTab, resourcesForTab]);
+
   const setTier = (nextTier) => {
     setTierTab(nextTier);
     setActiveCategory('All');
@@ -69,6 +79,7 @@ const Resources = () => {
       <SEO
         title="Resources"
         description="Explore curated learning, tools, and gig platforms with tier-based filtering for creative freelancers."
+        schema={schema}
       />
 
       <motion.div

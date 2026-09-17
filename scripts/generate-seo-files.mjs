@@ -3,10 +3,9 @@
  *
  * Writes sitemap.xml, robots.txt and llms.txt into the build output.
  *
- * All three need the site's real public origin, which only the deployment
- * knows, so they are generated at build time from REACT_APP_SITE_URL rather
- * than committed with a guessed domain. With no origin configured the sitemap
- * is skipped entirely — a sitemap full of wrong URLs is worse than none.
+ * The default origin is https://kreatornest.mohdaslam.dev, so a plain
+ * `npm run build` produces correct files with no configuration. Override with
+ * REACT_APP_SITE_URL when deploying the same code under a different domain.
  *
  *   node scripts/generate-seo-files.mjs [--build-dir build]
  */
@@ -22,7 +21,7 @@ const args = process.argv.slice(2);
 const buildDirArg = args.indexOf('--build-dir');
 const BUILD_DIR = resolve(projectRoot, buildDirArg !== -1 ? args[buildDirArg + 1] : 'build');
 
-const SITE_URL = (process.env.REACT_APP_SITE_URL || '').trim().replace(/\/$/, '');
+const SITE_URL = (process.env.REACT_APP_SITE_URL || 'https://kreatornest.mohdaslam.dev').trim().replace(/\/$/, '');
 
 /**
  * Static routes with their crawl priorities.
@@ -217,10 +216,7 @@ async function main() {
   console.log('seo-files: robots.txt, llms.txt written');
 
   if (!SITE_URL) {
-    console.warn(
-      'seo-files: REACT_APP_SITE_URL is not set — sitemap.xml skipped.\n' +
-      '           Set it to the public origin (e.g. https://kreatornest.com) to generate one.'
-    );
+    console.warn('seo-files: SITE_URL resolved to empty — sitemap.xml skipped.');
     return;
   }
 

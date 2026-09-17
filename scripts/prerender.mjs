@@ -36,12 +36,11 @@ const BUILD_DIR = resolve(
 const CHROMIUM_PATH = process.env.PLAYWRIGHT_CHROMIUM_PATH || '/opt/pw-browsers/chromium';
 
 /**
- * Public origin. Required: the app resolves canonical URLs and JSON-LD ids
- * against it, falling back to window.location.origin when it is unset — which
- * during prerendering is the local server, so an unguarded run would bake
- * http://127.0.0.1 canonicals into every page.
+ * Public origin. Defaults to the production domain so a plain `npm run build`
+ * produces correct canonicals and JSON-LD ids. Override with REACT_APP_SITE_URL
+ * when deploying under a different domain.
  */
-const SITE_URL = (process.env.REACT_APP_SITE_URL || '').trim();
+const SITE_URL = (process.env.REACT_APP_SITE_URL || 'https://kreatornest.mohdaslam.dev').trim();
 
 /** Give a route this long to finish rendering before giving up on it. */
 const ROUTE_TIMEOUT_MS = 20000;
@@ -162,12 +161,7 @@ async function main() {
   }
 
   if (!SITE_URL) {
-    console.warn(
-      'prerender: REACT_APP_SITE_URL is not set — skipping.\n' +
-      '           Prerendering without it would bake localhost canonical URLs and\n' +
-      '           JSON-LD ids into every page. Set it to the public origin\n' +
-      '           (e.g. https://kreatornest.com) to enable static rendering.'
-    );
+    console.warn('prerender: SITE_URL resolved to empty — skipping.');
     return;
   }
 

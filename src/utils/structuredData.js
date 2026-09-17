@@ -10,13 +10,20 @@
  * make a truthful claim" — an incomplete graph is worse than none, because it
  * asserts things that are not there.
  */
+import { DEFAULT_SITE_URL } from '../config/site';
 
-/** Public site origin. Falls back to the running origin in the browser. */
+/**
+ * Public site origin, read fresh on each call so tests can change the env var.
+ *
+ * In the browser bundle, CRA inlines process.env.REACT_APP_SITE_URL to the
+ * build-time value, so this is effectively a constant at runtime.
+ *
+ * @returns {string} Origin without a trailing slash.
+ */
 export function siteOrigin() {
-  const configured = (process.env.REACT_APP_SITE_URL || '').trim().replace(/\/$/, '');
-  if (configured) return configured;
-  if (typeof window !== 'undefined') return window.location.origin;
-  return '';
+  return (process.env.REACT_APP_SITE_URL || DEFAULT_SITE_URL)
+    .trim()
+    .replace(/\/$/, '');
 }
 
 /**

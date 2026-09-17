@@ -25,9 +25,9 @@ describe('siteOrigin', () => {
     expect(siteOrigin()).toBe(ORIGIN);
   });
 
-  it('falls back to the running origin when unconfigured', () => {
+  it('falls back to the production domain when unconfigured', () => {
     delete process.env.REACT_APP_SITE_URL;
-    expect(siteOrigin()).toBe(window.location.origin);
+    expect(siteOrigin()).toBe('https://kreatornest.mohdaslam.dev');
   });
 });
 

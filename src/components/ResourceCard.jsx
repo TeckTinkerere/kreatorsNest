@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { ICON_MAP } from '../utils/iconMap';
+import { EVENTS, trackEvent } from '../utils/analytics';
 
 /**
  * ResourceCard
@@ -25,6 +26,11 @@ const ResourceCard = ({ resource, onInteract, variant = 'full' }) => {
    * Calls onInteract with the resource category when the explore link is clicked.
    */
   const handleLinkClick = () => {
+    trackEvent(EVENTS.RESOURCE_CLICK, {
+      title: resource.title,
+      type: resource.type,
+      category: resource.category,
+    });
     if (onInteract) onInteract(resource.category);
   };
 

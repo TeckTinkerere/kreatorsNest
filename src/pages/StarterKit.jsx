@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { resourceData } from "../data/resources";
+import { useContent } from "../content/ContentContext";
 import { useRecommendations } from "../hooks/useRecommendations";
 import ResourceCard from "../components/ResourceCard";
 import SEO from "../components/SEO";
@@ -76,20 +76,21 @@ const StarterKit = () => {
   const [activeRoleIndex, setActiveRoleIndex] = useState(0);
   const activeRole = roles[activeRoleIndex];
   const { trackInteraction } = useRecommendations();
+  const { resources } = useContent();
 
   const phaseResources = useMemo(() => {
-    const roleResources = resourceData.filter(r => r.category === activeRole.filter);
+    const roleResources = resources.filter(r => r.category === activeRole.filter);
     return {
       learning: roleResources.filter(r => r.type === "Learning").slice(0, 2),
       tools: roleResources.filter(r => r.type === "Tools").slice(0, 2),
       templates: roleResources.filter(r => r.type === "Templates").slice(0, 2),
       gigs: roleResources.filter(r => r.type === "Gigs").slice(0, 2)
     };
-  }, [activeRole.filter]);
+  }, [resources, activeRole.filter]);
 
   const allRoleResources = useMemo(() => {
-    return resourceData.filter(r => r.category === activeRole.filter);
-  }, [activeRole.filter]);
+    return resources.filter(r => r.category === activeRole.filter);
+  }, [resources, activeRole.filter]);
 
   const containerVariants = {
     hidden: { opacity: 0 },

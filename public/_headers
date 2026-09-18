@@ -8,6 +8,11 @@
   # Basic permissions policy
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   # Content Security Policy
-  # - google.com/forms allowed in frames (Feedback page)
-  # - https: for images (contributor avatars, external resources)
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://docs.google.com; connect-src 'self'; font-src 'self' data:;
+  # - script-src   cloud.umami.is for the analytics tracker
+  # - style/font   fonts.googleapis.com + fonts.gstatic.com for the webfonts
+  #                loaded in index.html
+  # - connect-src  docs.google.com for the content sheet CSV fetch,
+  #                cloud.umami.is for analytics beacons
+  # - frame-src    docs.google.com for the Feedback page form embed
+  # - img-src      https: for contributor avatars and external resource images
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; frame-src https://docs.google.com; connect-src 'self' https://docs.google.com https://cloud.umami.is; font-src 'self' data: https://fonts.gstatic.com; base-uri 'self'; form-action 'self'; object-src 'none'

@@ -1,7 +1,8 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Download, FileText, Star } from 'lucide-react';
-import { downloadsData, DOWNLOAD_CATEGORIES } from '../data/downloads';
+import { useContent } from '../content/ContentContext';
+import { EVENTS, trackEvent } from '../utils/analytics';
 import SEO from '../components/SEO';
 import DownloadCard from '../components/DownloadCard';
 
@@ -16,6 +17,8 @@ const FeaturedCard = ({ doc }) => {
   const [downloaded, setDownloaded] = useState(false);
 
   const handleDownload = () => {
+    trackEvent(EVENTS.TEMPLATE_DOWNLOAD, { title: doc.title, category: doc.category });
+
     const link = document.createElement('a');
     link.href = doc.txtFile;
     link.download = doc.txtFile.split('/').pop();
@@ -84,18 +87,19 @@ const FeaturedCard = ({ doc }) => {
  */
 const Downloads = () => {
   const [activeCategory, setActiveCategory] = useState('All');
+  const { downloads, downloadCategories } = useContent();
 
   const featuredDocs = useMemo(
-    () => downloadsData.filter((d) => d.featured),
-    []
+    () => downloads.filter((d) => d.featured),
+    [downloads]
   );
 
   const filteredDocs = useMemo(() => {
     const all = activeCategory === 'All'
-      ? downloadsData.filter((d) => !d.featured)
-      : downloadsData.filter((d) => d.category === activeCategory);
+      ? downloads.filter((d) => !d.featured)
+      : downloads.filter((d) => d.category === activeCategory);
     return all;
-  }, [activeCategory]);
+  }, [downloads, activeCategory]);
 
   // When a category is selected show all docs in that category (including featured)
   const showingAll = activeCategory === 'All';
@@ -132,7 +136,7 @@ const Downloads = () => {
         {/* Sticky filter bar */}
         <div className="sticky top-0 z-20 bg-surface/90 backdrop-blur-md pb-4 pt-2 -mx-4 px-4 md:mx-0 md:px-0 border-b border-organic-stone/30 mb-10">
           <div className="flex overflow-x-auto hide-scrollbar gap-2 py-4">
-            {DOWNLOAD_CATEGORIES.map((cat) => (
+            {downloadCategories.map((cat) => (
               <motion.button
                 key={cat}
                 whileHover={{ scale: 1.02 }}
@@ -207,14 +211,14 @@ const Downloads = () => {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.25 }}
             >
-              {downloadsData.filter((d) => d.category === activeCategory).length > 0 ? (
+              {downloads.filter((d) => d.category === activeCategory).length > 0 ? (
                 <motion.div
                   variants={containerVariants}
                   initial="hidden"
                   animate="visible"
                   className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
                 >
-                  {downloadsData
+                  {downloads
                     .filter((d) => d.category === activeCategory)
                     .map((doc) => (
                       <DownloadCard key={doc.id} doc={doc} />

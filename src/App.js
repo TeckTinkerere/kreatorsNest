@@ -7,6 +7,7 @@ import LegacyRedirect from './components/LegacyRedirect';
 import ExternalLinkGuard from './components/ExternalLinkGuard';
 import PageLoader from './components/PageLoader';
 import { BrowseModeProvider } from './context/BrowseModeContext';
+import { ContentProvider } from './content/ContentContext';
 
 // Eager: first paint home — keeps landing snappy
 import Home from './pages/Home';
@@ -75,22 +76,24 @@ function App() {
   const [isDesktopOpen, setIsDesktopOpen] = useState(true);
 
   return (
-    <BrowseModeProvider>
-      <Router>
-        <div className="flex min-h-screen font-sans overflow-x-hidden">
-          <ScrollToTop />
-          <ExternalLinkGuard />
-          <Sidebar isDesktopOpen={isDesktopOpen} setIsDesktopOpen={setIsDesktopOpen} />
-          <main
-            className={`flex-1 relative min-w-0 max-w-full overflow-x-hidden transition-all duration-300 ease-in-out pt-16 md:pt-0 ${
-              isDesktopOpen ? 'md:ml-64' : 'md:ml-20'
-            }`}
-          >
-            <AnimatedRoutes />
-          </main>
-        </div>
-      </Router>
-    </BrowseModeProvider>
+    <ContentProvider>
+      <BrowseModeProvider>
+        <Router>
+          <div className="flex min-h-screen font-sans overflow-x-hidden">
+            <ScrollToTop />
+            <ExternalLinkGuard />
+            <Sidebar isDesktopOpen={isDesktopOpen} setIsDesktopOpen={setIsDesktopOpen} />
+            <main
+              className={`flex-1 relative min-w-0 max-w-full overflow-x-hidden transition-all duration-300 ease-in-out pt-16 md:pt-0 ${
+                isDesktopOpen ? 'md:ml-64' : 'md:ml-20'
+              }`}
+            >
+              <AnimatedRoutes />
+            </main>
+          </div>
+        </Router>
+      </BrowseModeProvider>
+    </ContentProvider>
   );
 }
 

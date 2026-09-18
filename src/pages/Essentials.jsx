@@ -3,7 +3,8 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import SEO from '../components/SEO';
 import CategoryFilter from '../components/CategoryFilter';
 import ResourceCard from '../components/ResourceCard';
-import { resourceData } from '../data/resources';
+import { useContent } from '../content/ContentContext';
+import { collectionSchema } from '../utils/structuredData';
 import { useRecommendations } from '../hooks/useRecommendations';
 import {
   contentTransition,
@@ -20,12 +21,13 @@ const Essentials = () => {
   const shouldReduceMotion = useReducedMotion();
   const routeVariants = pageVariants(shouldReduceMotion);
   const swapVariants = contentVariants(shouldReduceMotion);
+  const { resources } = useContent();
 
   const essentials = useMemo(
-    () => resourceData.filter((resource) => (
+    () => resources.filter((resource) => (
       INCLUDED_TYPES.includes(resource.type) && resource.tier === 'essential'
     )),
-    []
+    [resources]
   );
 
   const categories = useMemo(() => {
@@ -49,6 +51,13 @@ const Essentials = () => {
     [filteredEssentials]
   );
 
+  const schema = useMemo(() => collectionSchema({
+    name: 'Essential learning and tools for creative freelancers',
+    description: 'The foundational learning material and tools every early-career creative freelancer should start with.',
+    path: '/essentials',
+    items: essentials,
+  }), [essentials]);
+
   const hasResults = filteredEssentials.length > 0;
 
   return (
@@ -56,6 +65,7 @@ const Essentials = () => {
       <SEO
         title="Essentials"
         description="Guided essentials for creative freelancers: foundational learning and practical tools to start strong."
+        schema={schema}
       />
 
       <motion.div

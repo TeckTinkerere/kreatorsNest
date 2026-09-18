@@ -19,9 +19,13 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && npm run postbuild",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "postbuild": "node scripts/generate-seo-files.mjs && node scripts/prerender.mjs",
+    "build:fast": "react-scripts build",
+    "prerender": "node scripts/prerender.mjs --verbose",
+    "seo": "node scripts/generate-seo-files.mjs"
   },
   "eslintConfig": {
     "extends": [
@@ -44,6 +48,7 @@
   "devDependencies": {
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.31",
-    "tailwindcss": "^3.3.5"
+    "tailwindcss": "^3.3.5",
+    "playwright": "^1.49.0"
   }
 }

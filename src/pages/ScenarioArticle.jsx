@@ -1,7 +1,10 @@
+import { useEffect, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Clock, User, Tag } from 'lucide-react';
-import { scenarioPosts } from '../data/scenarioPosts';
+import { useContent } from '../content/ContentContext';
+import { EVENTS, trackEvent } from '../utils/analytics';
+import { articleSchema, breadcrumbSchema } from '../utils/structuredData';
 import SEO from '../components/SEO';
 
 /**
@@ -14,7 +17,23 @@ import SEO from '../components/SEO';
 const ScenarioArticle = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const post = scenarioPosts.find(p => p.slug === slug);
+  const { scenarios } = useContent();
+  const post = scenarios.find(p => p.slug === slug);
+
+  // Declared before the not-found guard so hook order stays stable across renders.
+  useEffect(() => {
+    if (post) trackEvent(EVENTS.ARTICLE_READ, { title: post.title, slug: post.slug });
+  }, [post]);
+
+  const path = `/scenarios/${slug}`;
+  const schema = useMemo(() => [
+    articleSchema(post, path),
+    breadcrumbSchema([
+      { name: 'Home', path: '/' },
+      { name: 'Scenarios', path: '/scenarios' },
+      ...(post ? [{ name: post.title, path }] : []),
+    ]),
+  ], [post, path]);
 
   if (!post) {
     return (
@@ -27,7 +46,12 @@ const ScenarioArticle = () => {
 
   return (
     <>
-      <SEO title={post?.title || "Article"} description={post?.excerpt || "Scenario article from KreatorNest"} ogType="article" />
+      <SEO
+          title={post?.title || "Article"}
+          description={post?.excerpt || "Scenario article from KreatorNest"}
+          ogType="article"
+          schema={schema}
+        />
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

@@ -6,8 +6,7 @@ import CategoryFilter from '../components/CategoryFilter';
 import DownloadCard from '../components/DownloadCard';
 import ResourceCard from '../components/ResourceCard';
 import { useBrowseMode } from '../context/BrowseModeContext';
-import { downloadsData } from '../data/downloads';
-import { resourceData } from '../data/resources';
+import { useContent } from '../content/ContentContext';
 import { useRecommendations } from '../hooks/useRecommendations';
 import {
   contentTransition,
@@ -32,19 +31,20 @@ const Documents = () => {
   const shouldReduceMotion = useReducedMotion();
   const routeVariants = pageVariants(shouldReduceMotion);
   const swapVariants = contentVariants(shouldReduceMotion);
+  const { resources, downloads } = useContent();
 
   const filteredDownloads = useMemo(() => (
-    downloadsData.filter((doc) => (
+    downloads.filter((doc) => (
       activeCategory === 'All' || mapDownloadCategory(doc.category) === activeCategory
     ))
-  ), [activeCategory]);
+  ), [downloads, activeCategory]);
 
   const filteredTemplateResources = useMemo(() => (
-    resourceData.filter((resource) => {
+    resources.filter((resource) => {
       if (resource.type !== 'Templates') return false;
       return activeCategory === 'All' || activeCategory === 'Templates';
     })
-  ), [activeCategory]);
+  ), [resources, activeCategory]);
 
   const showHiddenGemBadge = effectiveMode === 'explore';
   const hasResults = filteredDownloads.length > 0 || filteredTemplateResources.length > 0;

@@ -2,8 +2,8 @@ import { lazy, Suspense, useMemo, useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Clock, ArrowRight, ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
-import { resourceData } from '../data/resources';
-import { scenarioPosts } from '../data/scenarioPosts';
+import { useContent } from '../content/ContentContext';
+import { absoluteUrl, collectionSchema } from '../utils/structuredData';
 import { useBrowseMode } from '../context/BrowseModeContext';
 import { useRecommendations } from '../hooks/useRecommendations';
 import { usePagination } from '../hooks/usePagination';
@@ -162,6 +162,7 @@ const ScenariosHub = () => {
   const routeVariants = pageVariants(shouldReduceMotion);
   const swapVariants = contentVariants(shouldReduceMotion);
   const filterSpring = layoutSpring(shouldReduceMotion);
+  const { resources, scenarios: scenarioPosts } = useContent();
 
   // Reset page + scroll to top of panel on filter/page change
   useEffect(() => { setBlogPage(1); }, [activeFilter]);
@@ -169,7 +170,7 @@ const ScenariosHub = () => {
     if (scrollRef.current) scrollRef.current.scrollTop = 0;
   }, [blogPage]);
 
-  const scenarioResources = useMemo(() => resourceData.filter(r => r.type === 'Scenarios'), []);
+  const scenarioResources = useMemo(() => resources.filter(r => r.type === 'Scenarios'), [resources]);
 
   // ── Blog panel (paginated) ─────────────────────────────────────────────
   const isBlogFilter = activeFilter === 'Blog Articles';
@@ -177,7 +178,7 @@ const ScenariosHub = () => {
   const pagedBlogPosts = useMemo(() => {
     const start = (blogPage - 1) * ARTICLES_PER_PAGE;
     return scenarioPosts.slice(start, start + ARTICLES_PER_PAGE);
-  }, [blogPage]);
+  }, [scenarioPosts, blogPage]);
 
   // ── Category filter ────────────────────────────────────────────────────
   const filteredResources = useMemo(() => {
@@ -202,16 +203,31 @@ const ScenariosHub = () => {
     // Append remaining blog cards
     while (bi < shuffledBlogs.length) result.push(shuffledBlogs[bi++]);
     return result;
-  }, [scenarioResources]); // intentionally excludes activeFilter
+  }, [scenarioResources, scenarioPosts]); // intentionally excludes activeFilter
 
   const pinnedPosts = useMemo(
     () => scenarioPosts.filter((post) => post.pinned).slice(0, 3),
-    []
+    [scenarioPosts]
   );
+
+  const schema = useMemo(() => collectionSchema({
+    name: 'Freelance scenarios and field guides',
+    description: 'Case studies and practical guides on pricing, client management, contracts, and getting paid.',
+    path: '/scenarios',
+    items: scenarioPosts.map((post) => ({
+      title: post.title,
+      description: post.excerpt,
+      link: absoluteUrl(`/scenarios/${post.slug}`),
+    })),
+  }), [scenarioPosts]);
 
   return (
     <>
-      <SEO title="Scenarios" description="Case studies on pricing, client management, and law — plus deep-dive articles from the field for creative freelancers." />
+      <SEO
+        title="Scenarios"
+        description="Case studies on pricing, client management, and law — plus deep-dive articles from the field for creative freelancers."
+        schema={schema}
+      />
       <motion.div
         variants={routeVariants}
         initial="initial"

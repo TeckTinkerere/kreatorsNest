@@ -2,7 +2,7 @@ import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import { Youtube, Instagram, Twitter, Linkedin, Video, Users, Search, X, Clock, Share2, Check, ExternalLink } from 'lucide-react';
-import contributorsData from '../data/contributors.json';
+import { useContent } from '../content/ContentContext';
 import SEO from '../components/SEO';
 
 const FILTERS = ["All", "YouTube", "Instagram", "Twitter", "TikTok", "LinkedIn"];
@@ -39,6 +39,7 @@ const Contributors = () => {
   // Map of contributor id → DOM node, used to scroll to a shared contributor
   const cardRefs = useRef({});
   const location = useLocation();
+  const { contributors: contributorsData } = useContent();
 
   /**
    * Deep-link handler: read ?ref=<id> on mount, scroll to and highlight the card.
@@ -123,7 +124,7 @@ const Contributors = () => {
       );
     }
     return list;
-  }, [activeFilter, searchQuery]);
+  }, [contributorsData, activeFilter, searchQuery]);
 
   /**
    * handleSearch
